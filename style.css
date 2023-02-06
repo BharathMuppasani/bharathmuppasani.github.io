@@ -129,9 +129,8 @@ img {
 }
 
 .links {
-  text-decoration-line: underline;
-  text-decoration-thickness: 3px;
-  text-decoration-color: rgb(96,193,125);
+  text-decoration: none;
+  /* text-decoration-color: rgb(96,193,125); */
   font-family: 'Rubik', sans-serif;
   color: var(--font-color);
   transition: 0.3s ease-in;
