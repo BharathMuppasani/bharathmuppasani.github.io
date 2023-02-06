@@ -7,17 +7,32 @@ body {
   align-items: center;
   background-color: var(--bg-color);
   display: flex;
-  height: 100vh;
+  height: 100%;
   justify-content: center;
   margin: 0px;
-  overflow: hidden;
+  overflow: auto;
+  position: relative;
   padding: 0px;
+
 }
 
 #page-container {
   margin: 0px;
-  padding: 5%;
+  /* padding: 5%; */
+  padding-top: 5%;
   position: fixed;
+  width: 70%;
+  height: 100%;
+  top: 10px;
+  z-index: 4;
+}
+
+#page-container-papers {
+  margin: 0px;
+  /* padding: 5%; */
+  padding-top: 5%;
+  padding-bottom: 5%;
+  position: relative;
   width: 70%;
   height: 100%;
   top: 10px;
@@ -31,13 +46,15 @@ body {
   height: 10%;
   width: 70%;
   top: 10%;
-  z-index: 4;
+  z-index: 10;
+  background-color: var(--bg-color);
   /* background-color: grey; */
 }
 
 #header .nav-bar { 
   list-style:none; 
   margin-top: 20px; 
+  background-color: var(--bg-color);
 }
 #header .nav-bar li { 
   display:inline; 
@@ -51,6 +68,37 @@ body {
   color: rgb(96,193,125);
   font-size: 20px;
 }
+
+#header-papers{
+  color: var(--font-color);
+  /* font-family: "Rubik", sans-serif; */
+  position: relative;
+  height: 10%;
+  width: 70%;
+  top: 10%;
+  z-index: 10;
+  background-color: var(--bg-color);
+  /* background-color: grey; */
+}
+
+#header-papers .nav-bar { 
+  list-style:none; 
+  margin-top: 20px; 
+  background-color: var(--bg-color);
+}
+#header-papers .nav-bar li { 
+  display:inline; 
+  padding:20px; 
+  padding-left: 0;
+}
+
+#header-papers .nav-bar li a {
+  text-decoration: none;
+  font-family: 'Rubik', sans-serif;
+  color: rgb(96,193,125);
+  font-size: 20px;
+}
+
 
 .page-content {
   background-color: var(--bg-color);
@@ -103,10 +151,113 @@ img {
 
 /* -- ↓ ↓ ↓ extra card content styles ↓ ↓ ↓ -- */
 
-h1, h2, h3, h4, span {
+.footer {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-family: 'Rubik', sans-serif;
+  font-size: 18px;
+  height: 10%;
+  width: 70%;
+  position: fixed;
+  float: bottom;
+  bottom: 10%;
+  z-index: 4;
+  /* background-color: grey; */
+}
+
+.footer-float {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-family: 'Rubik', sans-serif;
+  font-size: 18px;
+  height: 10%;
+  width: 90%;
+  position: relative;
+  float: bottom;
+  bottom: 10%;
+  z-index: 4;
+  /* background-color: grey; */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+h1, h2, h3, h4, h5, span, li {
   color: var(--font-color);
   font-family: "Rubik", sans-serif;
   font-weight: 400;
   margin: 0px;
+}
+
+.br {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity: 0.7;
+}
+
+/* Set a specific color for each brand */
+
+/* Facebook */
+.fa-linkedin {
+  background: rgb(57, 63, 71);
+  border: 2px solid rgb(57, 63, 71);
+  color: var(--font-color);
+}
+
+/* Twitter */
+.fa-google {
+  background: rgb(57, 63, 71);
+  border: 2px solid rgb(57, 63, 71);
+  color: var(--font-color);
+}
+
+.fa-envelope {
+  align-self: center;
+  background: rgb(57, 63, 71);
+  border: 2px solid rgb(57, 63, 71);
+  color: var(--font-color);
+}
+
+.publications {
+  background-color: var(--bg-color);
+  font-family: 'Montserrat';
+  /* overflow: auto; */
+  margin-top: 30px;
+  width: 80%;
+  align-items: top;
+
+}
+
+.papers-list li { 
+  padding-left: 0;
+  list-style-type: number;
+  color: var(--font-color);
+  padding: 10px;
+  /* line-height: 1.2; */
+}
+
+.papers-list li a {
+  text-decoration: none;
+  color: var(--font-color);
+  font-family: 'Rubik', sans-serif;
+  font-size: 20px;
 }
 
