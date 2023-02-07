@@ -27,18 +27,6 @@ body {
   z-index: 4;
 }
 
-#page-container-papers {
-  margin: 0px;
-  /* padding: 5%; */
-  padding-top: 5%;
-  padding-bottom: 5%;
-  position: relative;
-  width: 70%;
-  height: 100%;
-  top: 10px;
-  z-index: 4;
-}
-
 #header{
   color: var(--font-color);
   /* font-family: "Rubik", sans-serif; */
@@ -49,6 +37,19 @@ body {
   z-index: 10;
   background-color: var(--bg-color);
   /* background-color: grey; */
+}
+
+#header h1 {
+  font-weight: bold;
+  font-size: 35px;
+}
+
+#header h3 {
+  font-weight: 900;
+}
+
+#header br {
+  margin-bottom: 1em;
 }
 
 #header .nav-bar { 
@@ -67,37 +68,6 @@ body {
   font-family: 'Rubik', sans-serif;
   color: rgb(96,193,125);
   font-size: 20px;
-}
-
-#header-papers{
-  color: var(--font-color);
-  /* font-family: "Rubik", sans-serif; */
-  position: relative;
-  height: 10%;
-  width: 70%;
-  top: 10%;
-  z-index: 10;
-  background-color: var(--bg-color);
-  /* background-color: grey; */
-}
-
-#header-papers .nav-bar { 
-  list-style:none; 
-  margin-top: 20px; 
-  background-color: var(--bg-color);
-}
-#header-papers .nav-bar li { 
-  display:inline; 
-  padding:20px; 
-  padding-left: 0;
-  font-family: 'Rubik', sans-serif;
-  font-size: 20px;
-}
-
-#header-papers .nav-bar li a {
-  text-decoration: none;
-  color: rgb(96,193,125);
-  
 }
 
 
@@ -119,6 +89,14 @@ body {
   text-align: left;
   font-size: 18px;
   /* align-items: center; */
+}
+
+.contact {
+  background-color: var(--bg-color);
+  height: 40%;
+  padding-top: 5%;
+  /* align-items: center; */
+  column-gap: 5px;
 }
 
 img {
@@ -270,6 +248,7 @@ h1, h2, h3, h4, h5, span, li {
   margin-top: 30px;
   width: 80%;
   align-items: top;
+  padding-bottom: 3%;
 
 }
 
@@ -286,5 +265,9 @@ h1, h2, h3, h4, h5, span, li {
   color: var(--font-color);
   font-family: 'Rubik', sans-serif;
   font-size: 20px;
+}
+
+.dummy {
+  text-indent: 3.4em;
 }
 
