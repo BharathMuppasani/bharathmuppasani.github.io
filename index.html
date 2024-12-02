@@ -1,53 +1,301 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bharath Muppasani</title>
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet"> -->
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharath Muppasani - Research Portfolio</title>
+    <meta name="description" content="Bharath Muppasani - PhD Candidate in Computer Science, researching Automated Planning, Deep Learning, and Reinforcement Learning">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
+<body class="bg-slate-900">
+    <!-- Progress bar -->
+    <div class="scroll-progress fixed top-0 left-0 h-1 var(--dark-accent) z-50"></div>
 
-<body>
-<div id="page-container">
-    <div id="header">
-        <h1>Bharath Muppasani</h1>
-        <span class="br"></span>
-        <h3>Computer Science Ph.D Student | <a href="https://www.sc.edu/" target="_blank" class="links">University of South Carolina</a></h3>
-        <div class="nav-bar">
-                <li><a href="index.html">About</a></li>
-                <!-- <li><a href="#">Projects</a></li>
-                <li><a href="#">Research</a></li> -->
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="papers.html">Publications</a></li>
-                <li><a href="contact.html">Contact</a></li>
+    <!-- Mobile menu overlay -->
+    <div class="mobile-overlay fixed inset-0 bg-slate-900/90 backdrop-blur hidden z-40"></div>
+
+    <div class="min-h-screen">
+        <div class="mx-auto max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
+            <div class="lg:flex lg:justify-between lg:gap-4">
+                <!-- Left sidebar -->
+                <header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24">
+                    <div>
+                        <h1 class="text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl">
+                            Bharath Muppasani
+                        </h1>
+                        <h2 class="mt-3 text-lg font-medium tracking-tight text-slate-200 sm:text-xl">
+                            Ph.D. Candidate in Computer Science
+                        </h2>
+                        <p class="mt-4 max-w-xs leading-normal text-slate-400">
+                            Advancing the intersection of Automated Planning, Deep Learning, and Reinforcement Learning at University of South Carolina.
+                        </p>
+                        <nav class="nav hidden lg:block">
+                            <ul class="mt-16 w-max">
+                                <li>
+                                    <a class="group flex items-center py-3" href="#about">
+                                        <span class="nav-indicator mr-4 h-px w-8"></span>
+                                        <span class="nav-text text-xs font-bold uppercase tracking-widest">About</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="group flex items-center py-3" href="#research">
+                                        <span class="nav-indicator mr-4 h-px w-8"></span>
+                                        <span class="nav-text text-xs font-bold uppercase tracking-widest">Research</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="group flex items-center py-3" href="#publications">
+                                        <span class="nav-indicator mr-4 h-px w-8"></span>
+                                        <span class="nav-text text-xs font-bold uppercase tracking-widest">Publications</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="group flex items-center py-3" href="#experience">
+                                        <span class="nav-indicator mr-4 h-px w-8"></span>
+                                        <span class="nav-text text-xs font-bold uppercase tracking-widest">Experience</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- Social links section will be in the next part -->
+                    <ul class="ml-1 mt-8 flex items-center" aria-label="Social media">
+                        <li class="mr-5 text-xs">
+                            <a class="block hover:text-slate-200" href="https://github.com/BharathMuppasani" target="_blank" rel="noreferrer">
+                                <span class="sr-only">GitHub</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-6 w-6">
+                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="mr-5 text-xs">
+                            <a class="block hover:text-slate-200" href="https://linkedin.com/in/bharathmuppasani" target="_blank" rel="noreferrer">
+                                <span class="sr-only">LinkedIn</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+                                    <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="mr-5 text-xs">
+                            <a class="block hover:text-slate-200" href="mailto:bharath@email.sc.edu">
+                                <span class="sr-only">Email</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
+                                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="mr-5 text-xs">
+                            <a class="block hover:text-slate-200" href="https://scholar.google.com" target="_blank" rel="noreferrer">
+                                <span class="sr-only">Google Scholar</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+                                    <path d="M12 0L0 12h12V0z M12 0l12 12H12V0z M12 12l-6 12h12l6-12H12z"/>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+
+                
+                <!-- Main content -->
+                <main class="pt-24 lg:w-1/2 lg:py-24">
+                    <!-- About Section -->
+                    <section id="about" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0">
+                            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">About</h2>
+                        </div>
+                        <div>
+                            <p class="mb-4 text-slate-400">
+                                I'm a Ph.D. candidate at the University of South Carolina, focusing on advancing the field of Automated Planning through the integration of deep learning and reinforcement learning techniques. My research aims to develop more efficient and adaptable planning systems that can handle complex real-world scenarios.
+                            </p>
+                            <p class="mb-4 text-slate-400">
+                                My research interests span across:
+                            </p>
+                            <ul class="mb-4 list-disc list-inside text-slate-400">
+                                <li class="mb-2">Reasoning in Automated Planning</li>
+                                <li class="mb-2">Deep Learning and Reinforcement Learning</li>
+                                <li class="mb-2">Knowledge Representation using Ontologies</li>
+                                <li class="mb-2">Large Language Models for Planning</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Research Section starting... -->
+                    <section id="research" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0">
+                            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">Featured Research</h2>
+                        </div>
+
+                        <!-- Research Project 1 -->
+                        <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                            <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
+                            <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">2023 - 2024</header>
+                            <div class="z-10 sm:col-span-6">
+                                <h3 class="font-medium leading-snug text-slate-200">
+                                    <div>Planning Strategies for Dynamic Opinion Networks</div>
+                                </h3>
+                                <p class="mt-2 text-sm leading-normal text-slate-400">
+                                    Developed intervention strategies using ranking algorithms and neural network classifiers for accurate information dissemination in dynamic networks. Created a reinforcement learning framework analyzing multiple reward structures for network dynamics.
+                                </p>
+                                <ul class="mt-2 flex flex-wrap">
+                                    <li class="mr-1.5 mt-2">
+                                        <div class="skill-tag">Deep Learning</div>
+                                    </li>
+                                    <li class="mr-1.5 mt-2">
+                                        <div class="skill-tag">Reinforcement Learning</div>
+                                    </li>
+                                    <li class="mr-1.5 mt-2">
+                                        <div class="skill-tag">Network Analysis</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Research Project 2 -->
+                        <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 mt-12">
+                            <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
+                            <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">2022 - 2023</header>
+                            <div class="z-10 sm:col-span-6">
+                                <h3 class="font-medium leading-snug text-slate-200">
+                                    <div>Automated Planning with Large Language Models</div>
+                                </h3>
+                                <p class="mt-2 text-sm leading-normal text-slate-400">
+                                    Spearheaded the development of datasets for fine-tuning LLMs in automated planning scenarios. Evaluated various LLM architectures for planning tasks and developed the Plansformer model.
+                                </p>
+                                <ul class="mt-2 flex flex-wrap">
+                                    <li class="mr-1.5 mt-2">
+                                        <div class="skill-tag">PDDL</div>
+                                    </li>
+                                    <li class="mr-1.5 mt-2">
+                                        <div class="skill-tag">Large Language Models</div>
+                                    </li>
+                                    <li class="mr-1.5 mt-2">
+                                        <div class="skill-tag">Python</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Publications Section -->
+                    <section id="publications" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0">
+                            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">Selected Publications</h2>
+                        </div>
+
+                        <div class="space-y-12">
+                            <!-- Publication 1 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
+                                <div class="z-10 sm:col-span-8">
+                                    <h3 class="font-medium text-slate-200">Towards Effective Planning Strategies for Dynamic Opinion Networks</h3>
+                                    <p class="mt-2 text-sm text-slate-400">NeurIPS Main Track (2024)</p>
+                                    <p class="mt-1 text-sm text-slate-400">With Vignesh Narayanan, Biplav Srivastava and Michael N. Huhns</p>
+                                </div>
+                            </div>
+
+                            <!-- Publication 2 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
+                                <div class="z-10 sm:col-span-8">
+                                    <h3 class="font-medium text-slate-200">Building a Plan Ontology to Represent and Exploit Planning Knowledge</h3>
+                                    <p class="mt-2 text-sm text-slate-400">CODS-COMAD (2024)</p>
+                                    <p class="mt-1 text-sm text-slate-400">With Nitin Gupta, Vishal Pallagani, Biplav Srivastava, et al.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12">
+                            <a href="#" class="inline-flex items-center font-medium leading-tight text-slate-200 font-semibold text-slate-200 group" aria-label="View Full Publication List">
+                                <span class="border-b border-transparent pb-px transition group-hover:border-teal-300 motion-reduce:transition-none">View Full Publication List</span>
+                                <span class="ml-1 inline-block h-4 w-4 shrink-0 -translate-y-px transition-transform group-hover:translate-x-2 group-focus-visible:translate-x-2 motion-reduce:transition-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                                        <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- Experience Section -->
+                    <section id="experience" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0">
+                            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">Experience</h2>
+                        </div>
+
+                        <div class="space-y-12">
+                            <!-- Experience Item 1 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
+                                <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                                    2022 - Present
+                                </header>
+                                <div class="z-10 sm:col-span-6">
+                                    <h3 class="font-medium leading-snug text-slate-200">
+                                        <div>Research Assistant</div>
+                                        <div class="text-slate-500">University of South Carolina</div>
+                                    </h3>
+                                    <p class="mt-2 text-sm leading-normal text-slate-400">
+                                        Conducting research in automated planning, deep learning, and reinforcement learning. Developing novel approaches for dynamic opinion networks and planning with large language models.
+                                    </p>
+                                
+                                    <ul class="mt-2 flex flex-wrap">
+                                        <li class="mr-1.5 mt-2">
+                                            <div class="skill-tag">Python</div>
+                                        </li>
+                                        <li class="mr-1.5 mt-2">
+                                            <div class="skill-tag">PDDL</div>
+                                        </li>
+                                        <li class="mr-1.5 mt-2">
+                                            <div class="skill-tag">Machine Learning</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Experience Item 2 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
+                                <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                                    Summer 2018
+                                </header>
+                                <div class="z-10 sm:col-span-6">
+                                    <h3 class="font-medium leading-snug text-slate-200">
+                                        <div>Research Intern</div>
+                                        <div class="text-slate-500">Indian Institute of Technology, Kharagpur</div>
+                                    </h3>
+                                    <p class="mt-2 text-sm leading-normal text-slate-400">
+                                        Conducted analysis on multi-resident smart home data, focusing on time, sensor, and frequency-based segmentation. Developed unsupervised algorithms for activity classification.
+                                    </p>
+                                    <ul class="mt-2 flex flex-wrap">
+                                        <li class="mr-1.5 mt-2">
+                                            <div class="skill-tag">Data Analysis</div>
+                                        </li>
+                                        <li class="mr-1.5 mt-2">
+                                            <div class="skill-tag">Smart Home</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Footer Section -->
+                    <!-- <footer class="mt-24 text-sm text-slate-400">
+                        <p>
+                            Built with HTML and Tailwind CSS. All content © 2024 Bharath Muppasani.
+                        </p>
+                    </footer> -->
+                </main>
+            </div>
         </div>
     </div>
-
-    <div class="page-content">
-        <div class="content-about">
-            <h3> I am a 2nd-year Computer Science Ph.D student working under the joint supervision of <a href="https://sites.google.com/site/biplavsrivastava?pli=1" target="_blank" class="links">Dr. Biplav Srivastava</a> and <a href="https://vigsnar.github.io/" target="_blank" class="links">Dr. Vignesh Narayanan</a> at the <a class="highlight">Artificial Intelligence Institute of South Carolina</a> <a href="https://aiisc.ai/" target="_blank" class="links">(AIISC)</a> lab. I am a member of the research group <a class="highlight">AI for Society</a> <a href="https://ai4society.github.io/" target="_blank" class="links">(AI4S)</a> led by Dr. Srivastava. I received by Bachelor's Degree in Electronics and Communication engineering in 2020 from <a href="https://www.iiitnr.ac.in/" target="_blank" class="links">International Institute of Information Technology (IIIT), Naya Raipur </a>in India..</h3>
-            <p></p>
-            <h3>My research interests include applying statistical machine learning methods to sensor data, knowledge graphs and automated planning. I am currently exploring the usage of <a class="highlight">ontologies</a> for <a class="highlight">automated planning</a></h3>
-        </div>
-        <div class="profile">
-            <img src="profile.jpg" alt="Avatar">
-        </div>
-    </div>
-
-    <div class="footer">
-        <hr> </hr>
-        <div class="footer-content"> 
-          <p><a href="https://ai4society.github.io/" target="_blank" class="links">AI4S</a> <a class="highlight">/</a> <a href="https://aiisc.ai/" target="_blank" class="links">AIISC</a></p>
-          <div class="contact-labels">
-            <a href="mailto:muppasanibharath.18@gmail.com" target="_blank" class="fa fa-envelope"></a>
-            <a href="https://www.linkedin.com/in/bharath-9798/" target="_blank" class="fa fa-linkedin"></a>
-            <a href="https://scholar.google.com/citations?user=4jmlBaYAAAAJ&hl=en" target="_blank" class="fa fa-google"></a>
-            <a href="https://github.com/bharathmuppasani" target="_blank" class="fa fa-github"></a>
-          </div>
-        </div>        
-    </div> 
 </div>
+
+<!-- Scripts -->
+<script src="js/main.js"></script>
+<script src="js/navigation.js"></script>
 </body>
 </html>
+

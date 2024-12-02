@@ -1,0 +1,297 @@
+:root {
+    /* Dark theme colors */
+    --dark-bg: #1a1a1a;
+    --dark-surface: #2a2a2a;
+    --dark-text: #e2e8f0;
+    --dark-text-secondary: #94a3b8;
+    --dark-accent: #cf838e;
+    --dark-accent-hover: #c88891;
+  
+    /* Light theme colors */
+    --light-bg: #e7e4e4;
+    --light-surface: #e4e2e2;
+    --light-text: #2d2d2d;
+    --light-text-secondary: #595959;
+    --light-accent: #b76e79;
+    --light-accent-hover: #9a5961;
+  
+    /* Common colors */
+    --tag-bg-dark: rgba(183, 110, 121, 0.1);
+    --tag-bg-light: rgba(183, 110, 121, 0.08);
+  }
+  
+  /* Base Styles */
+  body {
+    background-color: var(--dark-bg);
+    color: var(--dark-text-secondary);
+    font-family: system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  body.light-theme {
+    background-color: var(--light-bg);
+    color: var(--light-text-secondary);
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--dark-text);
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  body.light-theme h1,
+  body.light-theme h2,
+  body.light-theme h3,
+  body.light-theme h4,
+  body.light-theme h5,
+  body.light-theme h6 {
+    color: var(--light-text);
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: var(--dark-accent);
+  }
+  
+  body.light-theme a:hover {
+    color: var(--light-accent);
+  }
+  
+  /* Layout */
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 4rem;
+  }
+  
+  @media (min-width: 768px) {
+    .section {
+      margin-bottom: 6rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section {
+      margin-bottom: 9rem;
+      scroll-margin-top: 6rem;
+    }
+  }
+  
+  /* Section Headers */
+  .section-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: -1.5rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--dark-bg);
+    backdrop-filter: blur(8px);
+    transition: background-color 0.3s ease;
+  }
+  
+  body.light-theme .section-header {
+    background-color: var(--light-bg);
+  }
+  
+  .section-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dark-text);
+    transition: color 0.3s ease;
+  }
+  
+  body.light-theme .section-title {
+    color: var(--light-text);
+  }
+  
+  /* Content */
+  .section-content {
+    line-height: 1.6;
+  }
+
+  /* Tags */
+.tag, 
+.flex.items-center.rounded-full {
+  background-color: var(--tag-bg-dark);
+  color: var(--dark-accent);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme .tag,
+body.light-theme .flex.items-center.rounded-full {
+  background-color: var(--tag-bg-light);
+  color: var(--light-accent);
+}
+
+/* Card hover effects */
+@media (min-width: 1024px) {
+  .group:hover .absolute {
+    background-color: rgba(42, 42, 42, 0.5);
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  body.light-theme .group:hover .absolute {
+    background-color: rgba(240, 240, 240, 0.7);
+  }
+
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+  }
+}
+
+/* Navigation */
+.nav-indicator {
+  height: 1px;
+  width: 0;
+  background-color: var(--dark-surface);
+  transition: all 0.3s ease;
+}
+
+body.light-theme .nav-indicator {
+  background-color: var(--light-surface);
+}
+
+.nav-text {
+  color: var(--dark-text-secondary);
+  transition: all 0.3s ease;
+}
+
+body.light-theme .nav-text {
+  color: var(--light-text-secondary);
+}
+
+.nav a:hover .nav-indicator {
+  width: 2rem;
+  background-color: var(--dark-accent);
+}
+
+body.light-theme .nav a:hover .nav-indicator {
+  background-color: var(--light-accent);
+}
+
+.nav a:hover .nav-text {
+  color: var(--dark-accent);
+}
+
+body.light-theme .nav a:hover .nav-text {
+  color: var(--light-accent);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 50;
+  background-color: var(--dark-surface);
+}
+
+body.light-theme .theme-toggle {
+  background-color: var(--light-surface);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+  background-color: var(--dark-accent);
+}
+
+body.light-theme .theme-toggle:hover {
+  background-color: var(--light-accent);
+}
+
+.theme-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--dark-text);
+  transition: color 0.3s ease;
+}
+
+body.light-theme .theme-toggle svg {
+  color: var(--light-text);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+  background: var(--light-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dark-surface);
+  border-radius: 5px;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+  background: var(--light-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-accent);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--light-accent);
+}
+
+/* Custom tag styling */
+.skill-tag {
+    background-color: var(--tag-bg-dark);
+    color: var(--dark-accent);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+  
+  body.light-theme .skill-tag {
+    background-color: var(--tag-bg-light);
+    color: var(--light-accent);
+  }
+  
+  /* Progress bar */
+  .scroll-progress {
+    background-color: var(--dark-accent);
+  }
+  
+  body.light-theme .scroll-progress {
+    background-color: var(--light-accent);
+  }
+  
+  /* Update hover borders */
+  .group-hover\:border-teal-300:hover {
+    border-color: var(--dark-accent);
+  }
+  
+  body.light-theme .group-hover\:border-teal-300:hover {
+    border-color: var(--light-accent);
+  }

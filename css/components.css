@@ -1,0 +1,157 @@
+/* Navigation */
+.nav-indicator {
+    height: 1px;
+    background-color: var(--slate-800);
+    transition: all 0.3s ease;
+}
+
+.nav-text {
+    color: var(--slate-500);
+    transition: all 0.3s ease;
+}
+
+.nav a:hover .nav-indicator {
+    width: 4rem;
+    background-color: var(--slate-200);
+}
+
+.nav a:hover .nav-text {
+    color: var(--slate-200);
+}
+
+/* Social Icons */
+.social-icon {
+    color: var(--slate-400);
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: var(--slate-200);
+}
+
+/* Common Group Hover Effects */
+.group {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Card Hover Effects */
+@media (min-width: 1024px) {
+    /* Container hover effect */
+    section:hover .group {
+        opacity: 0.5;
+    }
+
+    section .group:hover {
+        opacity: 1 !important;
+    }
+
+    /* Background highlight effect */
+    .group:hover .absolute {
+        background-color: rgba(30, 41, 59, 0.5);
+        box-shadow: 
+            inset 0 1px 0 0 rgba(148, 163, 184, 0.1),
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Hover background for cards */
+    .absolute {
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+
+    .group:hover .absolute {
+        opacity: 1;
+    }
+}
+
+/* Tags */
+.tag, 
+.flex.items-center.rounded-full {
+    background-color: rgba(45, 212, 191, 0.1);
+    color: #5eead4;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.tag:hover,
+.flex.items-center.rounded-full:hover {
+    background-color: rgba(45, 212, 191, 0.2);
+}
+
+/* Link Animations */
+.animate-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.animate-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--teal-300);
+    transition: width 0.3s ease;
+}
+
+.animate-link:hover::after {
+    width: 100%;
+}
+
+/* Section Transitions */
+.section {
+    position: relative;
+}
+
+/* View More Link */
+.group-hover\:border-teal-300:hover {
+    border-color: var(--teal-300);
+}
+
+/* Transition Utilities */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* Card Content */
+.z-10 {
+    position: relative;
+    z-index: 10;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .group {
+        opacity: 1 !important;
+    }
+    
+    .absolute {
+        display: none;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--slate-900);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--slate-800);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--slate-700);
+}
