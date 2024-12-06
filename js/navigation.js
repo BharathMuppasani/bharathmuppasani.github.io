@@ -12,40 +12,48 @@ const navigation = {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', (e) => {
                 e.preventDefault();
-                const target = document.querySelector(anchor.getAttribute('href'));
-                if (target) {
-                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-                    const startPosition = window.pageYOffset;
-                    const distance = targetPosition - startPosition;
-                    const duration = 1000; // Duration in milliseconds
-                    let start = null;
-
-                    // Easing function
-                    const easeInOutCubic = (t) => {
-                        return t < 0.5 
-                            ? 4 * t * t * t 
-                            : 1 - Math.pow(-2 * t + 2, 3) / 2;
-                    };
-
-                    // Animation function
-                    const animation = (currentTime) => {
-                        if (start === null) start = currentTime;
-                        const timeElapsed = currentTime - start;
-                        const progress = Math.min(timeElapsed / duration, 1);
-                        const easedProgress = easeInOutCubic(progress);
-                        
-                        window.scrollTo(0, startPosition + distance * easedProgress);
-
-                        if (timeElapsed < duration) {
-                            requestAnimationFrame(animation);
-                        } else {
-                            // Update URL without page reload
-                            history.pushState(null, '', anchor.getAttribute('href'));
-                        }
-                    };
-
-                    requestAnimationFrame(animation);
+                const targetId = anchor.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (!target) return;
+    
+                const headerOffset = 150; // Increased offset to align with sidebar
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                
+                let startTime = null;
+                const duration = 800;
+    
+                function easeInOutQuart(t) {
+                    return t < 0.5 
+                        ? 8 * t * t * t * t 
+                        : 1 - Math.pow(-2 * t + 2, 4) / 2;
                 }
+    
+                function animate(currentTime) {
+                    if (startTime === null) {
+                        startTime = currentTime;
+                    }
+    
+                    const elapsedTime = currentTime - startTime;
+                    const progress = Math.min(elapsedTime / duration, 1);
+                    const eased = easeInOutQuart(progress);
+    
+                    window.scrollTo({
+                        top: startPosition + (distance * eased),
+                        behavior: 'auto'
+                    });
+    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        history.pushState(null, '', targetId);
+                    }
+                }
+    
+                requestAnimationFrame(animate);
             });
         });
     },
