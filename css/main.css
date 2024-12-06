@@ -369,3 +369,209 @@ body.light-theme .scroll-progress {
 body.light-theme .group-hover\:border-teal-300:hover {
     border-color: var(--light-accent);
 }
+
+/* Add these new styles to your main.css */
+
+/* Enhanced Section Header Styles */
+/* Section Headers */
+.section-heading {
+    font-size: 1rem !important;
+    color: var(--dark-accent) !important;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
+
+body.light-theme .section-heading {
+    color: var(--light-accent) !important;
+}
+
+/* .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(to right, var(--dark-accent), transparent);
+}
+
+body.light-theme .section-heading::after {
+    background: linear-gradient(to right, var(--light-accent), transparent);
+} */
+
+/* View All Button Styles (remain the same) */
+.view-all-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    background-color: var(--tag-bg-dark);
+    color: var(--dark-accent);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+body.light-theme .view-all-button {
+    background-color: var(--tag-bg-light);
+    color: var(--light-accent);
+}
+
+/* --tag-bg-dark: rgba(183, 110, 121, 0.1); */
+/* --tag-bg-light: rgba(183, 110, 121, 0.08); */
+
+
+.view-all-button:hover {
+    background-color: rgba(183, 140, 146, 0.1);
+    color: var(--dark-accent);
+    transform: translateY(-1px);
+}
+
+body.light-theme .view-all-button:hover {
+    background-color: rgba(174, 15, 39, 0.08);
+    color: var(--light-accent);
+}
+
+.view-all-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.2s ease;
+}
+
+.view-all-button:hover svg {
+    transform: translateX(4px);
+}
+
+/* Enhanced Card Styles */
+.card-highlight {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-highlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        var(--dark-accent),
+        transparent
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-highlight:hover::before {
+    opacity: 1;
+}
+
+body.light-theme .card-highlight::before {
+    background: linear-gradient(
+        45deg,
+        transparent,
+        var(--light-accent),
+        transparent
+    );
+}
+
+/* About Card Base Styles */
+.about-card {
+    position: relative;
+    padding: 2rem;
+    background-color: var(--dark-surface);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+body.light-theme .about-card {
+    background-color: var(--light-surface);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+                0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Static Border Effect */
+.about-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--dark-accent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.light-theme .about-card::before {
+    background: var(--light-accent);
+}
+
+/* Dynamic Border Light Effect */
+.about-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(var(--angle, 90deg), 
+        transparent,
+        var(--dark-accent) var(--distance, 100%),
+        transparent
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.light-theme .about-card::after {
+    background: linear-gradient(var(--angle, 90deg), 
+        transparent,
+        var(--light-accent) var(--distance, 100%),
+        transparent
+    );
+}
+
+/* Hover Effects */
+.about-card:hover {
+    transform: translateY(-2px);
+}
+
+.about-card:hover::before {
+    opacity: 0.4; /* Increased from 0.15 */
+}
+
+.about-card:hover::after {
+    opacity: 0.8; /* Increased from 0.3 */
+}
+
+/* Additional shadow on hover */
+.about-card:hover {
+    box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.2),
+                0 4px 8px -1px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .about-card:hover {
+    box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.08),
+                0 4px 8px -1px rgba(0, 0, 0, 0.05);
+}

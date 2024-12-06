@@ -101,28 +101,42 @@
                     <!-- About Section -->
                     <section id="about" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
                         <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-                            <h2 class="text-sm font-bold uppercase tracking-widest theme-text">About</h2>
+                            <h2 class="text-sm font-bold uppercase tracking-widest theme-text">About Me</h2>
                         </div>
-                        <div>
-                            <p class="mb-4 theme-text-secondary">
-                                I'm a Ph.D. candidate at the University of South Carolina, focusing on advancing the field of Automated Planning through the integration of deep learning and reinforcement learning techniques. My research aims to develop more efficient and adaptable planning systems that can handle complex real-world scenarios.
-                            </p>
-                            <p class="mb-4 theme-text-secondary">
-                                My research interests span across:
-                            </p>
-                            <ul class="mb-4 list-disc list-inside theme-text-secondary">
-                                <li class="mb-2">Reasoning in Automated Planning</li>
-                                <li class="mb-2">Deep Learning and Reinforcement Learning</li>
-                                <li class="mb-2">Knowledge Representation using Ontologies</li>
-                                <li class="mb-2">Large Language Models for Planning</li>
-                            </ul>
+                    
+                        <div class="about-card">
+                            <div class="card-content">
+                                <p class="mb-4 leading-relaxed">
+                                    I'm a Ph.D. candidate at the University of South Carolina, focusing on
+                                    advancing the field of Automated Planning through the integration of
+                                    deep learning and reinforcement learning techniques. My research aims to
+                                    develop more efficient and adaptable planning systems that can handle
+                                    complex real-world scenarios.
+                                </p>
+                    
+                                <p class="mb-4">My research interests span across:</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <span class="skill-tag">Reasoning in Automated Planning</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="skill-tag">Deep Learning and Reinforcement Learning</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="skill-tag">Knowledge Representation using Ontologies</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="skill-tag">Large Language Models for Planning</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
 
                     <!-- Research Section -->
                     <section id="research" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-                            <h2 class="text-sm font-bold uppercase tracking-widest theme-text">Featured Research</h2>
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
+                            <h2 class="section-heading">Featured Research</h2>
                         </div>
 
                         <!-- Research Project 1 -->
@@ -162,106 +176,121 @@
                                 </ul>
                             </div>
                         </div>
+
+                        <div class="mt-8">
+                            <a href="/research" class="view-all-button">
+                                View All Research Projects
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
                     </section>
 
-<!-- Publications Section -->
-<section id="publications" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-    <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-        <h2 class="text-sm font-bold uppercase tracking-widest theme-text">Selected Publications</h2>
-    </div>
+                    <!-- Publications Section -->
+                    <section id="publications" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
+                            <h2 class="section-heading">Selected Publications</h2>
+                        </div>
 
-    <div class="space-y-12">
-        <!-- Publication 1 -->
-        <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-            <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
-            <div class="z-10 sm:col-span-8">
-                <h3 class="font-medium theme-text">Towards Effective Planning Strategies for Dynamic Opinion Networks</h3>
-                <p class="mt-2 text-sm theme-text-secondary">NeurIPS Main Track (2024)</p>
-                <p class="mt-1 text-sm theme-text-secondary">With Vignesh Narayanan, Biplav Srivastava and Michael N. Huhns</p>
+                        <div class="space-y-12">
+                            <!-- Publication 1 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
+                                <div class="z-10 sm:col-span-8">
+                                    <h3 class="font-medium theme-text">Towards Effective Planning Strategies for Dynamic Opinion Networks</h3>
+                                    <p class="mt-2 text-sm theme-text-secondary">NeurIPS Main Track (2024)</p>
+                                    <p class="mt-1 text-sm theme-text-secondary">With Vignesh Narayanan, Biplav Srivastava and Michael N. Huhns</p>
+                                </div>
+                            </div>
+
+                            <!-- Publication 2 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
+                                <div class="z-10 sm:col-span-8">
+                                    <h3 class="font-medium theme-text">Building a Plan Ontology to Represent and Exploit Planning Knowledge</h3>
+                                    <p class="mt-2 text-sm theme-text-secondary">CODS-COMAD (2024)</p>
+                                    <p class="mt-1 text-sm theme-text-secondary">With Nitin Gupta, Vishal Pallagani, Biplav Srivastava, et al.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 space-x-4">
+                            <a href="/publications" class="view-all-button">
+                                View All Publications
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- Experience Section -->
+                    <section id="experience" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
+                        <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
+                            <h2 class="section-heading">Experience</h2>
+                        </div>
+
+                        <div class="space-y-12">
+                            <!-- Experience Item 1 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
+                                <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
+                                    2022 - Present
+                                </header>
+                                <div class="z-10 sm:col-span-6">
+                                    <h3 class="font-medium leading-snug">
+                                        <div class="theme-text">Research Assistant</div>
+                                        <div class="theme-text-secondary">University of South Carolina</div>
+                                    </h3>
+                                    <p class="mt-2 text-sm leading-normal theme-text-secondary">
+                                        Conducting research in automated planning, deep learning, and reinforcement learning. Developing novel approaches for dynamic opinion networks and planning with large language models.
+                                    </p>
+                                    <ul class="mt-2 flex flex-wrap">
+                                        <li class="mr-1.5 mt-2"><div class="skill-tag">Python</div></li>
+                                        <li class="mr-1.5 mt-2"><div class="skill-tag">PDDL</div></li>
+                                        <li class="mr-1.5 mt-2"><div class="skill-tag">Machine Learning</div></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Experience Item 2 -->
+                            <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
+                                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
+                                <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
+                                    Summer 2018
+                                </header>
+                                <div class="z-10 sm:col-span-6">
+                                    <h3 class="font-medium leading-snug">
+                                        <div class="theme-text">Research Intern</div>
+                                        <div class="theme-text-secondary">Indian Institute of Technology, Kharagpur</div>
+                                    </h3>
+                                    <p class="mt-2 text-sm leading-normal theme-text-secondary">
+                                        Conducted analysis on multi-resident smart home data, focusing on time, sensor, and frequency-based segmentation. Developed unsupervised algorithms for activity classification.
+                                    </p>
+                                    <ul class="mt-2 flex flex-wrap">
+                                        <li class="mr-1.5 mt-2"><div class="skill-tag">Data Analysis</div></li>
+                                        <li class="mr-1.5 mt-2"><div class="skill-tag">Smart Home</div></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <a href="/experience" class="view-all-button">
+                                View Full Experience
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </section>
+                </main>
             </div>
         </div>
-
-        <!-- Publication 2 -->
-        <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-            <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
-            <div class="z-10 sm:col-span-8">
-                <h3 class="font-medium theme-text">Building a Plan Ontology to Represent and Exploit Planning Knowledge</h3>
-                <p class="mt-2 text-sm theme-text-secondary">CODS-COMAD (2024)</p>
-                <p class="mt-1 text-sm theme-text-secondary">With Nitin Gupta, Vishal Pallagani, Biplav Srivastava, et al.</p>
-            </div>
-        </div>
     </div>
 
-    <div class="mt-12">
-        <a href="#" class="inline-flex items-center font-medium leading-tight group theme-text" aria-label="View Full Publication List">
-            <span class="border-b border-transparent pb-px transition">View Full Publication List</span>
-            <span class="ml-1 inline-block h-4 w-4 shrink-0 -translate-y-px transition-transform group-hover:translate-x-2 group-focus-visible:translate-x-2 motion-reduce:transition-none">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
-                    <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
-                </svg>
-            </span>
-        </a>
-    </div>
-</section>
-
-<!-- Experience Section -->
-<section id="experience" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-    <div class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-        <h2 class="text-sm font-bold uppercase tracking-widest theme-text">Experience</h2>
-    </div>
-
-    <div class="space-y-12">
-        <!-- Experience Item 1 -->
-        <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-            <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
-            <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
-                2022 - Present
-            </header>
-            <div class="z-10 sm:col-span-6">
-                <h3 class="font-medium leading-snug">
-                    <div class="theme-text">Research Assistant</div>
-                    <div class="theme-text-secondary">University of South Carolina</div>
-                </h3>
-                <p class="mt-2 text-sm leading-normal theme-text-secondary">
-                    Conducting research in automated planning, deep learning, and reinforcement learning. Developing novel approaches for dynamic opinion networks and planning with large language models.
-                </p>
-                <ul class="mt-2 flex flex-wrap">
-                    <li class="mr-1.5 mt-2"><div class="skill-tag">Python</div></li>
-                    <li class="mr-1.5 mt-2"><div class="skill-tag">PDDL</div></li>
-                    <li class="mr-1.5 mt-2"><div class="skill-tag">Machine Learning</div></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Experience Item 2 -->
-        <div class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-            <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface"></div>
-            <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
-                Summer 2018
-            </header>
-            <div class="z-10 sm:col-span-6">
-                <h3 class="font-medium leading-snug">
-                    <div class="theme-text">Research Intern</div>
-                    <div class="theme-text-secondary">Indian Institute of Technology, Kharagpur</div>
-                </h3>
-                <p class="mt-2 text-sm leading-normal theme-text-secondary">
-                    Conducted analysis on multi-resident smart home data, focusing on time, sensor, and frequency-based segmentation. Developed unsupervised algorithms for activity classification.
-                </p>
-                <ul class="mt-2 flex flex-wrap">
-                    <li class="mr-1.5 mt-2"><div class="skill-tag">Data Analysis</div></li>
-                    <li class="mr-1.5 mt-2"><div class="skill-tag">Smart Home</div></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-</main>
-</div>
-</div>
-</div>
-
-<!-- Scripts -->
-<script src="js/main.js"></script>
-<script src="js/navigation.js"></script>
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
 </body>
 </html>

@@ -140,3 +140,61 @@ const themeToggle = {
 document.addEventListener('DOMContentLoaded', () => {
     themeToggle.init();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const card = document.querySelector('.about-card');
+    let rect = card.getBoundingClientRect();
+    
+    const updateBorderEffect = (e) => {
+        rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate distance from each edge
+        const distToLeft = x;
+        const distToRight = rect.width - x;
+        const distToTop = y;
+        const distToBottom = rect.height - y;
+        
+        // Find the nearest edge
+        const minDist = Math.min(distToLeft, distToRight, distToTop, distToBottom);
+        const threshold = 100; // Increased from 50 for wider effect range
+        
+        // Calculate angle based on nearest edge
+        let angle;
+        if (minDist === distToLeft) {
+            angle = 180;
+        } else if (minDist === distToRight) {
+            angle = 0;
+        } else if (minDist === distToTop) {
+            angle = 270;
+        } else {
+            angle = 90;
+        }
+        
+        // Calculate intensity based on distance with stronger effect
+        const intensity = Math.max(0, Math.min(1, 1 - (minDist / threshold)));
+        const distance = 100 - (intensity * 50); // Increased from 30 for more noticeable effect
+        
+        card.style.setProperty('--angle', `${angle}deg`);
+        card.style.setProperty('--distance', `${distance}%`);
+    };
+
+    // Update rect on scroll or resize
+    const updateRect = () => {
+        rect = card.getBoundingClientRect();
+    };
+    
+    window.addEventListener('scroll', updateRect);
+    window.addEventListener('resize', updateRect);
+    
+    // Track mouse movement
+    card.addEventListener('mousemove', updateBorderEffect);
+    
+    // Reset when mouse leaves
+    card.addEventListener('mouseleave', () => {
+        // Return to default right-side glow
+        card.style.setProperty('--angle', '90deg');
+        card.style.setProperty('--distance', '100%');
+    });
+});
