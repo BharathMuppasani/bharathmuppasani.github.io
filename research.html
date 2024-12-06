@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <script>
-        // Get this script to run immediately
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
           document.documentElement.style.display = 'none';
@@ -11,7 +10,7 @@
             document.documentElement.style.display = '';
           });
         }
-      </script>
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Projects - Bharath Muppasani</title>
@@ -42,106 +41,117 @@
                     <span class="skill-tag">Deep Learning</span>
                     <span class="skill-tag">Network Analysis</span>
                 </div>
-                <!-- <p class="theme-text-secondary max-w-2xl mx-auto text-lg">
-                    Exploring the intersection of automated planning, deep learning, and reinforcement learning 
-                    through innovative research projects.
-                </p> -->
             </header>
 
-            <!-- Projects Grid -->
-            <div class="space-y-16">
-                <!-- Project 1 -->
-                <section class="about-card">
-                    <div class="card-content">
-                        <h2 class="text-2xl font-bold theme-text mb-4">Planning Strategies for Dynamic Opinion Networks</h2>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="skill-tag">2023 - 2024</span>
-                            <span class="skill-tag">Deep Learning</span>
-                            <span class="skill-tag">Reinforcement Learning</span>
-                        </div>
-                        <div class="space-y-4 theme-text-secondary">
-                            <p>Developed innovative intervention strategies for information dissemination in dynamic social networks using a combination of ranking algorithms and neural network classifiers.</p>
-                            
-                            <h3 class="text-lg font-semibold theme-text mt-6 mb-2">Key Contributions:</h3>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li>Designed and implemented a novel reinforcement learning framework for analyzing multiple reward structures in network dynamics</li>
-                                <li>Created efficient ranking algorithms for identifying influential nodes in dynamic networks</li>
-                                <li>Developed neural network models for predicting information spread patterns</li>
-                                <li>Achieved 87% accuracy in predicting opinion cascade effects</li>
-                            </ul>
+            <!-- Projects Section -->
+            <!-- Main Project Categories -->
+            <div class="space-y-32">
+                <!-- Planning Strategies for Dynamic Opinion Networks -->
+                <section>
+                    <!-- Main Project Title & Overview -->
+                    <h2 class="text-3xl font-bold theme-text mb-4">Planning Strategies for Dynamic Opinion Networks</h2>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="skill-tag">2023 - 2024</span>
+                        <span class="skill-tag">Network Analysis</span>
+                        <span class="skill-tag">Automated Planning</span>
+                    </div>
 
-                            <h3 class="text-lg font-semibold theme-text mt-6 mb-2">Technologies Used:</h3>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">PyTorch</span>
-                                <span class="skill-tag">NetworkX</span>
-                                <span class="skill-tag">Ray/RLlib</span>
+                    <div class="theme-text-secondary mb-12">
+                        <div class="flex flex-col space-y-2 mb-6">
+                            <h3 class="text-lg font-semibold theme-text">Research Team:</h3>
+                            <p><span class="font-medium">Students:</span> Bharath Muppasani, Protik Nag</p>
+                            <p><span class="font-medium">Faculty:</span> Michael N. Huhns, Vignesh Narayanan, Biplav Srivastava</p>
+                        </div>
+
+                        <p>Research initiative focused on developing novel strategies for understanding and influencing opinion dynamics in social networks using automated planning techniques.</p>
+                    </div>
+
+                    <!-- Sub-Projects Section -->
+                    <div class="space-y-16 pl-8 border-l-2 border-opacity-20 border-gray-500">
+                        <!-- Sub-Project 1: Opinion Network for Online User Safety -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-bold theme-text">Simulation</h3>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="skill-tag">Deep Learning</span>
+                                <span class="skill-tag">Network Analysis</span>
+                            </div>
+
+                            <div class="theme-text-secondary">
+                                <p class="mb-6">In the digital age, understanding the dynamics of information spread and opinion formation within networks is paramount. This research introduces an innovative framework that combines the principles of opinion dynamics with the strategic capabilities of Automated Planning.</p>
+
+                                <!-- <h4 class="text-m font-semibold theme-text mb-3">Key Features:</h4>
+                                <ul class="list-disc pl-5 space-y-2 mb-8">
+                                    <li>Visualize intricate networks</li>
+                                    <li>Simulate the evolution of opinions</li>
+                                    <li>Strategically influence that evolution to achieve specific outcomes</li>
+                                </ul> -->
+
+                                <div class="mb-8">
+                                    <!-- <h4 class="text-m font-semibold theme-text mb-4">System Implementation</h4> -->
+                                    <div class="rounded-lg">
+                                        <img src="./assets/InfoSpreadDemo.png" alt="Project Architecture" class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text mb-4">An overview of the project components. (a) System architecture, (b) Side panel interface showcasing network customization options, and (c) Network visualization showcasing the generated plan execution for opinion propagation.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-Project 2: Multi-Agent Opinion Dynamics -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-bold theme-text">Control</h3>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="skill-tag">Deep Learning</span>
+                                <span class="skill-tag">Network Analysis</span>
+                            </div>
+
+                            <div class="theme-text-secondary">
+                                <p class="mb-6">In the digital age, understanding the dynamics of information spread and opinion formation within networks is paramount. This research introduces an innovative framework that combines the principles of opinion dynamics with the strategic capabilities of Automated Planning.</p>
+
+                                <!-- <h4 class="text-m font-semibold theme-text mb-3">Key Features:</h4>
+                                <ul class="list-disc pl-5 space-y-2 mb-8">
+                                    <li>Visualize intricate networks</li>
+                                    <li>Simulate the evolution of opinions</li>
+                                    <li>Strategically influence that evolution to achieve specific outcomes</li>
+                                </ul> -->
+
+                                <div class="mb-8">
+                                    <!-- <h4 class="text-m font-semibold theme-text mb-4">System Implementation</h4> -->
+                                    <div class="rounded-lg">
+                                        <img src="./assets/inference_general_neurips.png" alt="Project Architecture" class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text mb-4">System architecture showing the integration of different components</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Publications -->
+                    <div class="mt-16">
+                        <h3 class="text-xl font-bold theme-text mb-6">Related Publications</h3>
+                        <div class="space-y-4">
+                            <div class="p-4">
+                                <p class="font-medium theme-text">Towards Effective Planning Strategies for Dynamic Opinion Networks</p>
+                                <p class="text-sm mt-1 theme-text-secondary">NeurIPS 2024 [AR=25.8%]</p>
+                                <div class="flex gap-2 mt-2">
+                                    <a href="#" class="text-sm skill-tag hover:opacity-80">Paper</a>
+                                </div>
+                            </div>
+
+                            <div class="p-4">
+                                <p class="font-medium theme-text">Expressive and Flexible Simulation of Information Spread Strategies</p>
+                                <p class="text-sm mt-1 theme-text-secondary">AAAI-24 Demo Track</p>
+                                <div class="flex gap-2 mt-2">
+                                    <a href="#" class="text-sm skill-tag hover:opacity-80">Paper</a>
+                                    <a href="#" class="text-sm skill-tag hover:opacity-80">Video</a>
+                                    <span class="text-sm skill-tag bg-yellow-500 bg-opacity-20 text-yellow-400">Best Demo at AAAI-24</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Project 2 -->
-                <section class="about-card">
-                    <div class="card-content">
-                        <h2 class="text-2xl font-bold theme-text mb-4">Automated Planning with Large Language Models</h2>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="skill-tag">2022 - 2023</span>
-                            <span class="skill-tag">NLP</span>
-                            <span class="skill-tag">PDDL</span>
-                        </div>
-                        <div class="space-y-4 theme-text-secondary">
-                            <p>Led research on integrating large language models with automated planning systems, developing novel approaches for plan generation and optimization.</p>
-                            
-                            <h3 class="text-lg font-semibold theme-text mt-6 mb-2">Key Contributions:</h3>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li>Developed Plansformer, a transformer-based architecture for generating PDDL plans</li>
-                                <li>Created specialized datasets for fine-tuning LLMs in planning scenarios</li>
-                                <li>Implemented evaluation frameworks for assessing plan quality and efficiency</li>
-                                <li>Reduced planning time by 45% compared to traditional methods</li>
-                            </ul>
+                <!-- You can add more main project categories following the same structure -->
 
-                            <h3 class="text-lg font-semibold theme-text mt-6 mb-2">Technologies Used:</h3>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Transformers</span>
-                                <span class="skill-tag">PDDL</span>
-                                <span class="skill-tag">Fast Downward</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Project 3 -->
-                <section class="about-card">
-                    <div class="card-content">
-                        <h2 class="text-2xl font-bold theme-text mb-4">Knowledge Representation using Ontologies</h2>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="skill-tag">2023</span>
-                            <span class="skill-tag">Semantic Web</span>
-                            <span class="skill-tag">Ontology Engineering</span>
-                        </div>
-                        <div class="space-y-4 theme-text-secondary">
-                            <p>Researched and developed ontology-based approaches for representing planning domain knowledge and improving plan generation efficiency.</p>
-                            
-                            <h3 class="text-lg font-semibold theme-text mt-6 mb-2">Key Contributions:</h3>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li>Designed comprehensive ontology for automated planning domains</li>
-                                <li>Implemented reasoning mechanisms for plan validation</li>
-                                <li>Developed tools for automated ontology population from planning problems</li>
-                                <li>Improved plan generation accuracy by 32% using ontological knowledge</li>
-                            </ul>
-
-                            <h3 class="text-lg font-semibold theme-text mt-6 mb-2">Technologies Used:</h3>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="skill-tag">OWL</span>
-                                <span class="skill-tag">Protégé</span>
-                                <span class="skill-tag">SPARQL</span>
-                                <span class="skill-tag">Python</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
         </div>
     </div>
