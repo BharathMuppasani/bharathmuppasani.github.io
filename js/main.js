@@ -80,22 +80,23 @@ const projectFilters = {
 
 const themeToggle = {
     init() {
-        this.insertToggleButton();
-        this.loadSavedTheme();
-        this.addToggleListener();
+        this.createToggleButton();
+        this.setupListeners();
+        this.updateThemeUI();
     },
 
-    insertToggleButton() {
+    createToggleButton() {
+        if (document.querySelector('.theme-toggle')) return;
+
         const button = document.createElement('button');
         button.className = 'theme-toggle';
         button.setAttribute('aria-label', 'Toggle theme');
         
-        // Add SVG icons for sun and moon
         button.innerHTML = `
             <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
         `;
@@ -103,42 +104,71 @@ const themeToggle = {
         document.body.appendChild(button);
     },
 
-    loadSavedTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        this.setTheme(savedTheme);
-    },
-
-    setTheme(theme) {
-        document.body.className = theme === 'light' ? 'light-theme' : '';
-        
-        // Update icons
+    updateThemeUI() {
+        const isLight = document.body.classList.contains('light-theme');
         const sunIcon = document.querySelector('.sun-icon');
         const moonIcon = document.querySelector('.moon-icon');
         
-        if (theme === 'light') {
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
-        } else {
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
+        if (sunIcon && moonIcon) {
+            sunIcon.style.display = isLight ? 'none' : 'block';
+            moonIcon.style.display = isLight ? 'block' : 'none';
         }
     },
 
-    addToggleListener() {
+    toggleTheme() {
+        const isLight = document.body.classList.contains('light-theme');
+        const newTheme = isLight ? 'dark' : 'light';
+        
+        // Update localStorage first
+        localStorage.setItem('theme', newTheme);
+        
+        // Then update the UI
+        document.body.classList.toggle('light-theme');
+        this.updateThemeUI();
+    },
+
+    setupListeners() {
         const button = document.querySelector('.theme-toggle');
-        button.addEventListener('click', () => {
-            const isLight = document.body.classList.contains('light-theme');
-            const newTheme = isLight ? 'dark' : 'light';
-            
-            localStorage.setItem('theme', newTheme);
-            this.setTheme(newTheme);
+        if (button) {
+            button.addEventListener('click', () => this.toggleTheme());
+        }
+
+        // Handle page loads and navigation
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                this.updateThemeUI();
+            }
+        });
+
+        // Handle back/forward navigation
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'light') {
+                    document.body.classList.add('light-theme');
+                } else {
+                    document.body.classList.remove('light-theme');
+                }
+                this.updateThemeUI();
+            }
         });
     }
 };
 
-// Initialize theme toggle when the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize as soon as possible
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => themeToggle.init());
+} else {
     themeToggle.init();
+}
+
+// Add transition class after initial load
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.body.classList.add('theme-loaded');
+    }, 100);
 });
 
 document.addEventListener('DOMContentLoaded', function() {

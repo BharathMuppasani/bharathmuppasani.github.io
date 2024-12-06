@@ -62,9 +62,13 @@ body {
     background-color: var(--dark-bg);
     color: var(--dark-text-secondary);
     font-family: system-ui, -apple-system, sans-serif;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    transition: none;
 }
   
+body.theme-loaded {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
 body.light-theme {
     background-color: var(--light-bg);
     color: var(--light-text-secondary);
@@ -117,7 +121,7 @@ body.light-theme .social-link {
 body.light-theme .social-link:hover {
     color: var(--light-text);
 }
-  
+
 /* Layout */
 .section {
     margin-bottom: 4rem;
@@ -136,103 +140,22 @@ body.light-theme .social-link:hover {
         scroll-margin-top: 6rem;
     }
 }
-  
-/* Section Headers */
-.section-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    margin: -1.5rem;
-    padding: 1.25rem 1.5rem;
-    background-color: var(--dark-bg);
-    backdrop-filter: blur(8px);
-    transition: background-color 0.3s ease-in-out;
-}
-  
-body.light-theme .section-header {
-    background-color: var(--light-bg);
-}
-  
-.section-title {
-    font-size: 0.875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--dark-text);
-    transition: color 0.3s ease-in-out;
-}
-  
-body.light-theme .section-title {
-    color: var(--light-text);
-}
-  
-/* Content */
-.section-content {
-    line-height: 1.6;
-}
 
-/* Tags */
-.tag, 
-.flex.items-center.rounded-full {
-    background-color: var(--tag-bg-dark);
-    color: var(--dark-accent);
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-body.light-theme .tag,
-body.light-theme .flex.items-center.rounded-full {
-    background-color: var(--tag-bg-light);
-    color: var(--light-accent);
-}
-
-/* Card hover effects */
-@media (min-width: 1024px) {
-    .group:hover .absolute {
-        background-color: var(--dark-surface);
-        transition: background-color 0.3s ease-in-out;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    body.light-theme .group:hover .absolute {
-        background-color: var(--light-surface);
-    }
-
-    .sticky-header {
-        position: sticky;
-        top: 0;
-        max-height: 100vh;
-    }
-}
-
-/* Navigation */
-.nav-indicator {
-    height: 1px;
-    width: 0;
-    background-color: var(--dark-surface);
-    transition: all 0.3s ease-in-out;
-}
-
-body.light-theme .nav-indicator {
-    background-color: var(--light-surface);
+/* Navigation - Updated */
+.nav {
+    display: block;
 }
 
 .nav-text {
     color: var(--dark-text-secondary);
-    transition: all 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out;
+    position: relative;
+    display: inline-block;
 }
 
 body.light-theme .nav-text {
     color: var(--light-text-secondary);
 }
-
-/* .nav a:hover .nav-indicator {
-    width: 1rem;
-    background-color: var(--dark-accent);
-}
-
-body.light-theme .nav a:hover .nav-indicator {
-    background-color: var(--light-accent);
-} */
 
 .nav a:hover .nav-text {
     color: var(--dark-accent);
@@ -242,23 +165,37 @@ body.light-theme .nav a:hover .nav-text {
     color: var(--light-accent);
 }
 
-.nav-text::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: -1px;
-    left: 0;
-    background-color: var(--dark-accent);
-    transition: width 0.3s ease;
+/* Fixed Navigation Bar */
+.fixed-nav {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-body.light-theme .nav-text::after {
-    background-color: var(--light-accent);
+body.light-theme .fixed-nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.nav a:hover .nav-text::after {
-    width: 100%;
+/* Back to Portfolio Link */
+.back-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    color: var(--dark-text-secondary);
+    transition: color 0.3s ease-in-out;
+}
+
+body.light-theme .back-link {
+    color: var(--light-text-secondary);
+}
+
+.back-link:hover {
+    color: var(--dark-accent);
+    text-decoration: none;
+}
+
+body.light-theme .back-link:hover {
+    color: var(--light-accent);
 }
 
 /* Theme toggle button */
@@ -334,7 +271,7 @@ body.light-theme ::-webkit-scrollbar-thumb:hover {
     background: var(--light-accent);
 }
 
-/* Custom tag styling */
+/* Skill Tags */
 .skill-tag {
     background-color: var(--tag-bg-dark);
     color: var(--dark-accent);
@@ -351,28 +288,7 @@ body.light-theme .skill-tag {
     background-color: var(--tag-bg-light);
     color: var(--light-accent);
 }
-  
-/* Progress bar */
-.scroll-progress {
-    background-color: var(--dark-accent);
-}
-  
-body.light-theme .scroll-progress {
-    background-color: var(--light-accent);
-}
-  
-/* Update hover borders */
-.group-hover\:border-teal-300:hover {
-    border-color: var(--dark-accent);
-}
-  
-body.light-theme .group-hover\:border-teal-300:hover {
-    border-color: var(--light-accent);
-}
 
-/* Add these new styles to your main.css */
-
-/* Enhanced Section Header Styles */
 /* Section Headers */
 .section-heading {
     font-size: 1rem !important;
@@ -390,21 +306,7 @@ body.light-theme .section-heading {
     color: var(--light-accent) !important;
 }
 
-/* .section-heading::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60%;
-    height: 2px;
-    background: linear-gradient(to right, var(--dark-accent), transparent);
-}
-
-body.light-theme .section-heading::after {
-    background: linear-gradient(to right, var(--light-accent), transparent);
-} */
-
-/* View All Button Styles (remain the same) */
+/* View All Button */
 .view-all-button {
     display: inline-flex;
     align-items: center;
@@ -415,17 +317,13 @@ body.light-theme .section-heading::after {
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
 
 body.light-theme .view-all-button {
     background-color: var(--light-bg);
     color: var(--light-accent);
 }
-
-/* --tag-bg-dark: rgba(183, 110, 121, 0.1); */
-/* --tag-bg-light: rgba(183, 110, 121, 0.08); */
-
 
 .view-all-button:hover {
     background-color: rgba(183, 140, 146, 0.1);
@@ -441,58 +339,20 @@ body.light-theme .view-all-button:hover {
 .view-all-button svg {
     width: 1.25rem;
     height: 1.25rem;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease-in-out;
 }
 
 .view-all-button:hover svg {
     transform: translateX(4px);
 }
 
-/* Enhanced Card Styles */
-.card-highlight {
-    position: relative;
-    overflow: hidden;
-}
-
-.card-highlight::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    padding: 2px;
-    background: linear-gradient(
-        45deg,
-        transparent,
-        var(--dark-accent),
-        transparent
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.card-highlight:hover::before {
-    opacity: 1;
-}
-
-body.light-theme .card-highlight::before {
-    background: linear-gradient(
-        45deg,
-        transparent,
-        var(--light-accent),
-        transparent
-    );
-}
-
-/* About Card Base Styles */
+/* About Card */
 .about-card {
     position: relative;
     padding: 2rem;
     background-color: var(--dark-surface);
     border-radius: 0.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     overflow: hidden;
@@ -502,6 +362,19 @@ body.light-theme .about-card {
     background-color: var(--light-surface);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
                 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Card hover effect */
+@media (min-width: 1024px) {
+    .group:hover .absolute {
+        background-color: var(--dark-surface);
+        transition: background-color 0.3s ease-in-out;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-theme .group:hover .absolute {
+        background-color: var(--light-surface);
+    }
 }
 
 /* Static Border Effect */
@@ -517,7 +390,7 @@ body.light-theme .about-card {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
 }
 
 body.light-theme .about-card::before {
@@ -541,7 +414,7 @@ body.light-theme .about-card::before {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
 }
 
 body.light-theme .about-card::after {
@@ -558,11 +431,11 @@ body.light-theme .about-card::after {
 }
 
 .about-card:hover::before {
-    opacity: 0.4; /* Increased from 0.15 */
+    opacity: 0.4;
 }
 
 .about-card:hover::after {
-    opacity: 0.8; /* Increased from 0.3 */
+    opacity: 0.8;
 }
 
 /* Additional shadow on hover */
