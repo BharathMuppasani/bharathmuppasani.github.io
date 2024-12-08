@@ -8,8 +8,8 @@
     --dark-accent-hover: #c88891;
   
     /* Light theme colors */
-    --light-bg: #e7e4e4;
-    --light-surface: #e4e2e2;
+    --light-bg: #eae7e7;
+    --light-surface: #e6e0e0;
     --light-text: #2d2d2d;
     --light-text-secondary: #595959;
     --light-accent: #b76e79;
@@ -19,6 +19,17 @@
     --tag-bg-dark: rgba(183, 110, 121, 0.1);
     --tag-bg-light: rgba(183, 110, 121, 0.08);
 }
+
+#particles-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.3;
+  }
 
 /* Theme Classes */
 .theme-text {
@@ -344,6 +355,39 @@ body.light-theme .view-all-button:hover {
 
 .view-all-button:hover svg {
     transform: translateX(4px);
+}
+
+/* Add these to main.css */
+.content-overlay {
+    background-color: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.3s ease-in-out;
+}
+
+body.light-theme .content-overlay {
+    background-color: rgba(234, 231, 231, 0.85);
+}
+
+.header-overlay {
+    background-color: rgba(26, 26, 26, 0.95);
+    /* how to make this box background transparrent */
+    backdrop-filter: blur(4px);
+
+    transition: background-color 0.3s ease-in-out;
+}
+
+body.light-theme .header-overlay {
+    background-color: rgba(234, 231, 231, 0.95);
+}
+
+/* Update the about-card background */
+.about-card {
+    background-color: rgba(42, 42, 42, 0.85) !important;
+    backdrop-filter: blur(4px);
+}
+
+body.light-theme .about-card {
+    background-color: rgba(230, 224, 224, 0.85) !important;
 }
 
 /* About Card */
