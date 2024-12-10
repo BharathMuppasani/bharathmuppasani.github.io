@@ -17,6 +17,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+    <style>
+        .project-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .project-header {
+            cursor: pointer;
+            position: relative;
+            padding-right: 2.5rem;
+        }
+        
+        .project-header::after {
+            content: '+';
+            position: absolute;
+            right: 1rem;
+            top: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--dark-accent);
+            transition: transform 0.3s ease;
+        }
+        
+        body.light-theme .project-header::after {
+            color: var(--light-accent);
+        }
+        
+        .project.active .project-header::after {
+            transform: rotate(45deg);
+        }
+        
+        .project.active .project-content {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+    </style>
 </head>
 <body class="theme-bg">
     <!-- Navigation Bar -->
@@ -38,125 +74,164 @@
                 <h1 class="text-5xl font-bold tracking-tight theme-text mb-6">Research Projects</h1>
                 <div class="flex justify-center gap-4 mb-8">
                     <span class="skill-tag">Automated Planning</span>
-                    <span class="skill-tag">Deep Learning</span>
-                    <span class="skill-tag">Network Analysis</span>
+                    <span class="skill-tag">Reinforcement Learning</span>
+                    <span class="skill-tag">Opinion Dynamics</span>
+                    <span class="skill-tag">Ontology</span>
                 </div>
             </header>
 
             <!-- Projects Section -->
-            <!-- Main Project Categories -->
-            <div class="space-y-32">
-                <!-- Planning Strategies for Dynamic Opinion Networks -->
-                <section>
-                    <!-- Main Project Title & Overview -->
-                    <h2 class="text-3xl font-bold theme-text mb-4">Planning Strategies for Dynamic Opinion Networks</h2>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="skill-tag">2023 - 2024</span>
-                        <span class="skill-tag">Network Analysis</span>
-                        <span class="skill-tag">Automated Planning</span>
-                    </div>
-
-                    <div class="theme-text-secondary mb-12">
-                        <div class="flex flex-col space-y-2 mb-6">
-                            <h3 class="text-lg font-semibold theme-text">Research Team:</h3>
-                            <p><span class="font-medium">Students:</span> Bharath Muppasani, Protik Nag</p>
-                            <p><span class="font-medium">Faculty:</span> Michael N. Huhns, Vignesh Narayanan, Biplav Srivastava</p>
+            <div class="space-y-12">
+                <!-- Project 1 -->
+                <section class="project theme-surface rounded-lg p-6">
+                    <div class="project-header">
+                        <h2 class="text-2xl font-bold theme-text mb-3">Planning Strategies for Dynamic Opinion Networks</h2>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="skill-tag">2023 - 2024</span>
+                            <span class="skill-tag">Opinion Networks</span>
+                            <span class="skill-tag">Automated Planning</span>
+                            <span class="skill-tag">Reinforcement Learning</span>
                         </div>
-
-                        <p>Research initiative focused on developing novel strategies for understanding and influencing opinion dynamics in social networks using automated planning techniques.</p>
+                        <div class="theme-text-secondary mb-4">
+                            <p>Our research addresses strategic interventions in dynamic opinion networks through complementary approaches. We developed a visualization framework with the first numeric PDDL for opinion dynamics, enabling network simulation and intervention planning. To tackle computational challenges in larger networks, we introduced learning-based strategies combining ranking algorithms with neural network classifiers. Our reinforcement learning framework demonstrated that GCN-based planners achieve effective control across various network configurations, particularly in mitigating misinformation spread. The results show improved performance with increased action budgets and reveal that reward strategies focusing on susceptible nodes and infection rates outperform rapid blocking approaches.</p>
+                        </div>
+                        
+                        <!-- Related Publications (Always visible) -->
+                        <section>
+                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Expressive and Flexible Simulation of Information Spread Strategies</h4>
+                                    <p class="theme-text-secondary text-sm mt-0.5">Bharath Muppasani, Vignesh Narayana, Biplav Srivastava, Michael N. Huhns</p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">AAAI-24 Demo Track</span>
+                                        <span class="paper-venue-tag award-tag">Best Demo at AAAI-24</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Towards Effective Planning Strategies for Dynamic Opinion Networks</h4>
+                                    <p class="theme-text-secondary text-sm mt-0.5">Bharath Muppasani, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">NeurIPS 2024 Main Track</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
 
-                    <!-- Sub-Projects Section -->
-                    <div class="space-y-16 pl-8 border-l-2 border-opacity-20 border-gray-500">
-                        <!-- Sub-Project 1: Opinion Network for Online User Safety -->
-                        <div class="space-y-6">
-                            <h3 class="text-xl font-bold theme-text">Simulation</h3>
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                <span class="skill-tag">Deep Learning</span>
-                                <span class="skill-tag">Network Analysis</span>
-                            </div>
-
-                            <div class="theme-text-secondary">
-                                <p class="mb-6">In the digital age, understanding the dynamics of information spread and opinion formation within networks is paramount. This research introduces an innovative framework that combines the principles of opinion dynamics with the strategic capabilities of Automated Planning.</p>
-
-                                <!-- <h4 class="text-m font-semibold theme-text mb-3">Key Features:</h4>
-                                <ul class="list-disc pl-5 space-y-2 mb-8">
-                                    <li>Visualize intricate networks</li>
-                                    <li>Simulate the evolution of opinions</li>
-                                    <li>Strategically influence that evolution to achieve specific outcomes</li>
-                                </ul> -->
-
-                                <div class="mb-8">
-                                    <!-- <h4 class="text-m font-semibold theme-text mb-4">System Implementation</h4> -->
+                    <!-- Expandable Content -->
+                    <div class="project-content mt-4">
+                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
+                            <!-- Simulation -->
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">Simulation</h3>
+                                <!-- <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="skill-tag">Automated Planning</span>
+                                    <span class="skill-tag">Opinion Networks</span>
+                                </div> -->
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">Developed an interactive tool for visualizing and simulating opinion dynamics in networks. The framework integrates the first numeric PDDL tailored for opinion networks, enabling users to model intervention strategies and observe their impacts on opinion evolution through an intuitive interface.</p>
                                     <div class="rounded-lg">
                                         <img src="./assets/InfoSpreadDemo.png" alt="Project Architecture" class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text mb-4">An overview of the project components. (a) System architecture, (b) Side panel interface showcasing network customization options, and (c) Network visualization showcasing the generated plan execution for opinion propagation.</p>
+                                        <p class="text-sm text-center mt-2 theme-text">An overview of the project components. (a) System architecture, (b) Side panel interface showcasing network customization options, and (c) Network visualization showcasing the generated plan execution for opinion propagation.</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Sub-Project 2: Multi-Agent Opinion Dynamics -->
-                        <div class="space-y-6">
-                            <h3 class="text-xl font-bold theme-text">Control</h3>
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                <span class="skill-tag">Deep Learning</span>
-                                <span class="skill-tag">Network Analysis</span>
-                            </div>
-
-                            <div class="theme-text-secondary">
-                                <p class="mb-6">In the digital age, understanding the dynamics of information spread and opinion formation within networks is paramount. This research introduces an innovative framework that combines the principles of opinion dynamics with the strategic capabilities of Automated Planning.</p>
-
-                                <!-- <h4 class="text-m font-semibold theme-text mb-3">Key Features:</h4>
-                                <ul class="list-disc pl-5 space-y-2 mb-8">
-                                    <li>Visualize intricate networks</li>
-                                    <li>Simulate the evolution of opinions</li>
-                                    <li>Strategically influence that evolution to achieve specific outcomes</li>
-                                </ul> -->
-
-                                <div class="mb-8">
-                                    <!-- <h4 class="text-m font-semibold theme-text mb-4">System Implementation</h4> -->
+                            <!-- Control -->
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">Control</h3>
+                                <!-- <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="skill-tag">Intervention Planning</span>
+                                    <span class="skill-tag">Reinforcement Learning</span>
+                                    <span class="skill-tag">Opinion Networks</span>
+                                </div> -->
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">Introduced a learning-based framework for scalable intervention planning in large networks. By combining ranking algorithms with neural networks and reinforcement learning, we developed GCN-based planners that effectively identify key nodes and optimize control strategies to mitigate misinformation spread across diverse network configurations.</p>
                                     <div class="rounded-lg">
-                                        <img src="./assets/inference_general_neurips.png" alt="Project Architecture" class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text mb-4">System architecture showing the integration of different components</p>
+                                        <img src="./assets/inference_general_neurips.png" alt="System Architecture" class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text">Learning-based framework enabling strategic interventions in opinion networks.</p>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Publications -->
-                    <div class="mt-16">
-                        <h3 class="text-xl font-bold theme-text mb-6">Related Publications</h3>
-                        <div class="space-y-4">
-                            <div class="p-4">
-                                <p class="font-medium theme-text">Towards Effective Planning Strategies for Dynamic Opinion Networks</p>
-                                <p class="text-sm mt-1 theme-text-secondary">NeurIPS 2024 [AR=25.8%]</p>
-                                <div class="flex gap-2 mt-2">
-                                    <a href="#" class="text-sm skill-tag hover:opacity-80">Paper</a>
-                                </div>
-                            </div>
-
-                            <div class="p-4">
-                                <p class="font-medium theme-text">Expressive and Flexible Simulation of Information Spread Strategies</p>
-                                <p class="text-sm mt-1 theme-text-secondary">AAAI-24 Demo Track</p>
-                                <div class="flex gap-2 mt-2">
-                                    <a href="#" class="text-sm skill-tag hover:opacity-80">Paper</a>
-                                    <a href="#" class="text-sm skill-tag hover:opacity-80">Video</a>
-                                    <span class="text-sm skill-tag bg-yellow-500 bg-opacity-20 text-yellow-400">Best Demo at AAAI-24</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- You can add more main project categories following the same structure -->
+                <!-- Project 2 -->
+                <section class="project theme-surface rounded-lg p-6">
+                    <div class="project-header">
+                        <h2 class="text-2xl font-bold theme-text mb-3">Knowledge Engineering for Planning</h2>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="skill-tag">2022 - 2023</span>
+                            <span class="skill-tag">Ontology</span>
+                            <span class="skill-tag">Automated Planning</span>
+                        </div>
+                        <div class="theme-text-secondary mb-4">
+                            <p>Ontologies effectively organize rich metadata, enable semantic queries for novel insights, and promote reuse. This paper addresses automated planning, which involves finding action sequences to transition from an initial to a goal state. We hypothesize that the wealth of planners and diverse domains contain valuable information for identifying suitable planners and enhancing performance. Using data from the International Planning Competition (IPC), we construct a planning ontology and demonstrate its utility in two use cases: selecting promising planners and improving performance with macros—action ordering constraints derived from the ontology. The ontology and resources are shared to foster further research.</p>
+                        </div>
+                        
+                        <!-- Related Publications (Always visible) -->
+                        <section>
+                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications</h4>
+                                    <p class="theme-text-secondary text-sm mt-0.5">Bharath Muppasani, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Vignesh Narayanan, Michael N. Huhns</p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">CODS COMAD 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
 
+                    <!-- Expandable Content -->
+                    <div class="project-content mt-4">
+                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
+                            <!-- Simulation -->
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">Planning Ontology</h3>
+                                <!-- <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="skill-tag">Automated Planning</span>
+                                    <span class="skill-tag">Opinion Networks</span>
+                                </div> -->
+                                <div class="theme-text-secondary">
+                                    <div class="rounded-lg">
+                                        <img src="./assets/planning_ontology.png" alt="Project Architecture" class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text">An illustrative overview of the planning ontology, segmented into categories that encapsulate the core concepts of automated planning: domain, problem, plan, and planner performance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
             </div>
         </div>
     </div>
 
     <script src="js/main.js"></script>
     <script src="js/navigation.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const projects = document.querySelectorAll('.project');
+            
+            projects.forEach(project => {
+                const header = project.querySelector('.project-header');
+                
+                header.addEventListener('click', () => {
+                    project.classList.toggle('active');
+                    
+                    // Close other projects
+                    projects.forEach(otherProject => {
+                        if (otherProject !== project) {
+                            otherProject.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
