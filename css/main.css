@@ -300,26 +300,56 @@ body.light-theme .skill-tag {
     color: var(--light-accent);
 }
 
+/* Base paper venue tag style */
 .paper-venue-tag {
-    background-color: rgba(124, 58, 237, 0.1);  /* Subtle violet background */
-    color: #8b5cf6;  /* Violet text */
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    background-color: rgba(124, 58, 237, 0.1);
+    color: #8b5cf6;
+    transition: all 0.3s ease-in-out;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.75rem;
-    font-weight: 600;  /* Made bold */
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
+    justify-content: center; /* Added for better centering */
+    border: 1px solid transparent;
+    text-align: center; /* Added for text alignment */
+    line-height: 1.2; /* Added for better vertical alignment */
 }
-  
+
 body.light-theme .paper-venue-tag {
     background-color: rgba(124, 58, 237, 0.08);
     color: #7c3aed;
 }
 
+/* First author style - now with proper background and centering */
+.paper-venue-tag.first-author {
+    border: 1px solid #8b5cf6;
+    background-color: rgba(124, 58, 237, 0.1); /* Same background as non-outlined */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.light-theme .paper-venue-tag.first-author {
+    border: 1px solid #7c3aed;
+    background-color: rgba(124, 58, 237, 0.08); /* Same background as non-outlined */
+}
+
+/* For inline first author mentions */
+.first-author {
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+}
+
+/* Award tag styles */
 .award-tag {
-    background-color: rgba(245, 158, 11, 0.1);  /* Subtle amber background */
-    color: #f59e0b;  /* Amber text */
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 body.light-theme .award-tag {
