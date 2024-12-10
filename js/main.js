@@ -1,19 +1,7 @@
 // Theme management
 const theme = {
     init() {
-        this.setThemePreference();
-        this.addThemeToggleListener();
-    },
-
-    setThemePreference() {
-        const darkModePreferred = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', darkModePreferred);
-    },
-
-    addThemeToggleListener() {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            document.documentElement.classList.toggle('dark', e.matches);
-        });
+        document.body.classList.add('theme-loaded');
     }
 };
 
@@ -43,12 +31,6 @@ const scrollAnimations = {
         );
     }
 };
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    theme.init();
-    scrollAnimations.init();
-});
 
 // Project filtering
 const projectFilters = {
@@ -105,25 +87,25 @@ const themeToggle = {
     },
 
     updateThemeUI() {
-        const isLight = document.body.classList.contains('light-theme');
+        const isDark = document.body.classList.contains('dark-theme');
         const sunIcon = document.querySelector('.sun-icon');
         const moonIcon = document.querySelector('.moon-icon');
         
         if (sunIcon && moonIcon) {
-            sunIcon.style.display = isLight ? 'none' : 'block';
-            moonIcon.style.display = isLight ? 'block' : 'none';
+            sunIcon.style.display = isDark ? 'block' : 'none';
+            moonIcon.style.display = isDark ? 'none' : 'block';
         }
     },
 
     toggleTheme() {
-        const isLight = document.body.classList.contains('light-theme');
-        const newTheme = isLight ? 'dark' : 'light';
+        const isDark = document.body.classList.contains('dark-theme');
+        const newTheme = isDark ? 'light' : 'dark';
         
         // Update localStorage first
         localStorage.setItem('theme', newTheme);
         
         // Then update the UI
-        document.body.classList.toggle('light-theme');
+        document.body.classList.toggle('dark-theme');
         this.updateThemeUI();
     },
 
@@ -136,8 +118,8 @@ const themeToggle = {
         // Handle page loads and navigation
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
                 this.updateThemeUI();
             }
         });
@@ -146,10 +128,10 @@ const themeToggle = {
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 const savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'light') {
-                    document.body.classList.add('light-theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-theme');
                 } else {
-                    document.body.classList.remove('light-theme');
+                    document.body.classList.remove('dark-theme');
                 }
                 this.updateThemeUI();
             }
@@ -171,8 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
 
+// About card hover effects
 document.addEventListener('DOMContentLoaded', function() {
     const card = document.querySelector('.about-card');
+    if (!card) return;
+
     let rect = card.getBoundingClientRect();
     
     const updateBorderEffect = (e) => {
