@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script>
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
-          document.documentElement.style.display = 'none';
-          window.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('light-theme');
-            document.documentElement.style.display = '';
-          });
+            document.documentElement.style.display = 'none';
+            window.addEventListener('DOMContentLoaded', () => {
+                document.body.classList.add('light-theme');
+                document.documentElement.style.display = '';
+            });
         }
     </script>
     <meta charset="UTF-8">
@@ -23,13 +24,13 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
-        
+
         .project-header {
             cursor: pointer;
             position: relative;
             padding-right: 2.5rem;
         }
-        
+
         .project-header::after {
             content: '+';
             position: absolute;
@@ -39,21 +40,22 @@
             color: var(--dark-accent);
             transition: transform 0.3s ease;
         }
-        
+
         body.light-theme .project-header::after {
             color: var(--light-accent);
         }
-        
+
         .project.active .project-header::after {
             transform: rotate(45deg);
         }
-        
+
         .project.active .project-content {
             max-height: 2000px;
             transition: max-height 0.5s ease-in;
         }
     </style>
 </head>
+
 <body class="theme-bg">
     <!-- Navigation Bar -->
     <nav class="fixed top-0 w-full z-50 theme-surface fixed-nav">
@@ -72,47 +74,60 @@
             <!-- Header Section -->
             <header class="text-center mb-16">
                 <h1 class="text-5xl font-bold tracking-tight theme-text mb-6">Research Projects</h1>
-                <div class="flex justify-center gap-4 mb-8">
-                    <span class="skill-tag">Automated Planning</span>
-                    <span class="skill-tag">Reinforcement Learning</span>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
                     <span class="skill-tag">Opinion Dynamics</span>
                     <span class="skill-tag">Ontology</span>
+                    <span class="skill-tag">MAPF</span>
+                    <span class="skill-tag">LLMs</span>
+                    <span class="skill-tag">SafeChat</span>
                 </div>
             </header>
 
             <!-- Projects Section -->
             <div class="space-y-12">
-                <!-- Project 1 -->
+
+                <!-- Theme 1: Opinion Dynamics -->
                 <section class="project theme-surface rounded-lg p-6">
                     <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">Planning Strategies for Dynamic Opinion Networks</h2>
+                        <h2 class="text-2xl font-bold theme-text mb-3">Opinion Dynamics & Information Spread in Networks
+                        </h2>
                         <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2023 - 2024</span>
+                            <span class="skill-tag">2023 - Present</span>
                             <span class="skill-tag">Opinion Networks</span>
                             <span class="skill-tag">Automated Planning</span>
-                            <span class="skill-tag">Reinforcement Learning</span>
+                            <span class="skill-tag">RL</span>
                         </div>
                         <div class="theme-text-secondary mb-4">
-                            <p>Our research addresses strategic interventions in dynamic opinion networks through complementary approaches. We developed a visualization framework with the first numeric PDDL for opinion dynamics, enabling network simulation and intervention planning. To tackle computational challenges in larger networks, we introduced learning-based strategies combining ranking algorithms with neural network classifiers. Our reinforcement learning framework demonstrated that GCN-based planners achieve effective control across various network configurations, particularly in mitigating misinformation spread. The results show improved performance with increased action budgets and reveal that reward strategies focusing on susceptible nodes and infection rates outperform rapid blocking approaches.</p>
+                            <p>Research on modeling, simulating, and controlling opinion dynamics in social networks
+                                using automated planning, learning, and reinforcement learning. Focuses on
+                                misinformation control, intervention strategies, and interactive visual tools.</p>
                         </div>
-                        
+
                         <!-- Related Publications (Always visible) -->
                         <section>
                             <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
                             <div class="space-y-3">
                                 <div>
-                                    <h4 class="font-medium theme-text text-base">Expressive and Flexible Simulation of Information Spread Strategies</h4>
-                                    <p class="theme-text-secondary text-sm mt-0.5">Bharath Muppasani, Vignesh Narayana, Biplav Srivastava, Michael N. Huhns</p>
+                                    <h4 class="font-medium theme-text text-base">Towards Effective Planning Strategies
+                                        for Dynamic Opinion Networks</h4>
                                     <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">AAAI-24 Demo Track</span>
-                                        <span class="paper-venue-tag award-tag">Best Demo at AAAI-24</span>
+                                        <span class="paper-venue-tag">NeurIPS 2024</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-medium theme-text text-base">Towards Effective Planning Strategies for Dynamic Opinion Networks</h4>
-                                    <p class="theme-text-secondary text-sm mt-0.5">Bharath Muppasani, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
+                                    <h4 class="font-medium theme-text text-base">Expressive and Flexible Simulation of
+                                        Information Spread Strategies</h4>
                                     <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">NeurIPS 2024 Main Track</span>
+                                        <span class="paper-venue-tag">AAAI 2024 Demo</span>
+                                        <span class="award-tag">
+                                            <svg class="award-icon" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Best Demo Award
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -122,35 +137,52 @@
                     <!-- Expandable Content -->
                     <div class="project-content mt-4">
                         <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <!-- Simulation -->
+                            <!-- Project 1.1 -->
                             <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Simulation</h3>
-                                <!-- <div class="flex flex-wrap gap-2 mb-4">
-                                    <span class="skill-tag">Automated Planning</span>
-                                    <span class="skill-tag">Opinion Networks</span>
-                                </div> -->
+                                <h3 class="text-lg font-bold theme-text">Planning Strategies for Dynamic Opinion
+                                    Networks</h3>
                                 <div class="theme-text-secondary">
-                                    <p class="mb-4">Developed an interactive tool for visualizing and simulating opinion dynamics in networks. The framework integrates the first numeric PDDL tailored for opinion networks, enabling users to model intervention strategies and observe their impacts on opinion evolution through an intuitive interface.</p>
+                                    <p class="mb-4">Models information propagation and opinion change as a numerical
+                                        planning problem over network states. Proposes a ranking-based labeling method
+                                        to identify influential nodes and target them for interventions. Introduces a
+                                        reinforcement learning planner (GCN-based) that learns when and where to
+                                        intervene by balancing infection rate, susceptible populations, and budget
+                                        constraints.</p>
                                     <div class="rounded-lg">
-                                        <img src="./assets/InfoSpreadDemo.png" alt="Project Architecture" class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text">An overview of the project components. (a) System architecture, (b) Side panel interface showcasing network customization options, and (c) Network visualization showcasing the generated plan execution for opinion propagation.</p>
+                                        <img src="./assets/inference_general_neurips.png" alt="System Architecture"
+                                            class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text">Learning-based framework enabling
+                                            strategic interventions in opinion networks.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Control -->
+                            <!-- Project 1.2 -->
                             <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Control</h3>
-                                <!-- <div class="flex flex-wrap gap-2 mb-4">
-                                    <span class="skill-tag">Intervention Planning</span>
-                                    <span class="skill-tag">Reinforcement Learning</span>
-                                    <span class="skill-tag">Opinion Networks</span>
-                                </div> -->
+                                <h3 class="text-lg font-bold theme-text">Simulation of Information Spread Strategies
+                                </h3>
                                 <div class="theme-text-secondary">
-                                    <p class="mb-4">Introduced a learning-based framework for scalable intervention planning in large networks. By combining ranking algorithms with neural networks and reinforcement learning, we developed GCN-based planners that effectively identify key nodes and optimize control strategies to mitigate misinformation spread across diverse network configurations.</p>
+                                    <p class="mb-4">An interactive simulator that uses planning models to explore
+                                        "what-if" information spread strategies over networks. Users can visualize
+                                        opinion evolution under different interventions, analyze trade-offs, and
+                                        understand how targeted actions affect long-term outcomes. Recognized with the
+                                        <span class="award-tag"
+                                            style="display: inline-flex; font-size: 0.75em; padding: 0.1em 0.5em; vertical-align: middle;">
+                                            <svg class="award-icon" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24" fill="currentColor"
+                                                style="width: 0.8em; height: 0.8em;">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Best Demo Award
+                                        </span> at AAAI 2024.
+                                    </p>
                                     <div class="rounded-lg">
-                                        <img src="./assets/inference_general_neurips.png" alt="System Architecture" class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text">Learning-based framework enabling strategic interventions in opinion networks.</p>
+                                        <img src="./assets/InfoSpreadDemo.png" alt="Project Architecture"
+                                            class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text">Interactive simulation tool for
+                                            opinion dynamics.</p>
                                     </div>
                                 </div>
                             </div>
@@ -158,26 +190,36 @@
                     </div>
                 </section>
 
-                <!-- Project 2 -->
+                <!-- Theme 2: Planning Ontologies -->
                 <section class="project theme-surface rounded-lg p-6">
                     <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">Knowledge Engineering for Planning</h2>
+                        <h2 class="text-2xl font-bold theme-text mb-3">Planning Ontologies & Multi-Agent Explanations
+                        </h2>
                         <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2022 - 2023</span>
+                            <span class="skill-tag">2022 - Present</span>
                             <span class="skill-tag">Ontology</span>
-                            <span class="skill-tag">Automated Planning</span>
+                            <span class="skill-tag">MAPF</span>
+                            <span class="skill-tag">Explanations</span>
                         </div>
                         <div class="theme-text-secondary mb-4">
-                            <p>Ontologies effectively organize rich metadata, enable semantic queries for novel insights, and promote reuse. This paper addresses automated planning, which involves finding action sequences to transition from an initial to a goal state. We hypothesize that the wealth of planners and diverse domains contain valuable information for identifying suitable planners and enhancing performance. Using data from the International Planning Competition (IPC), we construct a planning ontology and demonstrate its utility in two use cases: selecting promising planners and improving performance with macros—action ordering constraints derived from the ontology. The ontology and resources are shared to foster further research.</p>
+                            <p>Developing ontologies to capture planning knowledge for both single-agent and multi-agent
+                                systems. This work bridges the gap between raw planner logs and human-understandable
+                                explanations, enabling semantic queries and performance improvements.</p>
                         </div>
-                        
-                        <!-- Related Publications (Always visible) -->
+
                         <section>
                             <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
                             <div class="space-y-3">
                                 <div>
-                                    <h4 class="font-medium theme-text text-base">Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications</h4>
-                                    <p class="theme-text-secondary text-sm mt-0.5">Bharath Muppasani, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Vignesh Narayanan, Michael N. Huhns</p>
+                                    <h4 class="font-medium theme-text text-base">OMEGA: An Ontology-Driven Tool for
+                                        Explaining Multi-Agent Path Finding</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">AAAI 2026 Demo</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Building a Plan Ontology to Represent
+                                        and Exploit Planning Knowledge</h4>
                                     <div class="flex items-center gap-2 mt-0.5">
                                         <span class="paper-venue-tag">CODS-COMAD 2024</span>
                                     </div>
@@ -186,27 +228,200 @@
                         </section>
                     </div>
 
-                    <!-- Expandable Content -->
                     <div class="project-content mt-4">
                         <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <!-- Simulation -->
                             <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Planning Ontology</h3>
-                                <!-- <div class="flex flex-wrap gap-2 mb-4">
-                                    <span class="skill-tag">Automated Planning</span>
-                                    <span class="skill-tag">Opinion Networks</span>
-                                </div> -->
+                                <h3 class="text-lg font-bold theme-text">Planning Ontology & maPO</h3>
                                 <div class="theme-text-secondary">
+                                    <p class="mb-4">Designed a planning ontology to capture domains, problems, plans,
+                                        and performance metadata. Extended this to multi-agent planning with maPO, a
+                                        schema that models agents, conflicts, and joint plans. This enables semantic
+                                        queries (SPARQL) to answer questions about planner performance and generate
+                                        natural language explanations.</p>
                                     <div class="rounded-lg">
-                                        <img src="./assets/planning_ontology.png" alt="Project Architecture" class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text">An illustrative overview of the planning ontology, segmented into categories that encapsulate the core concepts of automated planning: domain, problem, plan, and planner performance.</p>
+                                        <img src="./assets/planning_ontology.png" alt="Planning Ontology"
+                                            class="w-full rounded" />
+                                        <p class="text-sm text-center mt-2 theme-text">Overview of the planning ontology
+                                            structure.</p>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">OMEGA: Explanations for MAPF</h3>
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">OMEGA is an ontology-driven tool that uses maPO to provide
+                                        explanations for Multi-Agent Path Finding (MAPF). It explains why collisions
+                                        occur, how agents are rerouted, and what trade-offs are made, in
+                                        human-understandable language.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
+                <!-- Theme 3: MAPF & Algorithms -->
+                <section class="project theme-surface rounded-lg p-6">
+                    <div class="project-header">
+                        <h2 class="text-2xl font-bold theme-text mb-3">Multi-Agent Path Finding & Planning Algorithms
+                        </h2>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="skill-tag">2023 - 2024</span>
+                            <span class="skill-tag">MAPF</span>
+                            <span class="skill-tag">Rubik's Cube</span>
+                            <span class="skill-tag">Search</span>
+                        </div>
+                        <div class="theme-text-secondary mb-4">
+                            <p>Work on path finding and search in multi-agent settings: MAPF with hybrid learning,
+                                ontology-based explanations, and benchmarking domain-independent planners on challenging
+                                combinatorial puzzles like the Rubik's Cube.</p>
+                        </div>
+
+                        <section>
+                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Scalable Multi-Agent Path Finding using
+                                        Collision-Aware Dynamic Alert Mask and a Hybrid Execution Strategy</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">arXiv 2025</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Solving the Rubik’s Cube With a PDDL
+                                        Planner</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">ICAPS 2024 Demo</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Comparing Rubik’s Cube Solvability in
+                                        Domain-Independent Planners</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">HSDIP Workshop @ ICAPS 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="project-content mt-4">
+                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">Hybrid Learning Framework for MAPF</h3>
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">Proposes a hybrid framework combining decentralized reinforcement
+                                        learning with lightweight centralized coordination to enable scalable,
+                                        privacy-preserving, and collision-free MAPF. Achieves significant reduction in
+                                        information sharing compared to traditional distributed methods.</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">Rubik’s Cube Planning</h3>
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">Explores how classical planners handle the Rubik’s Cube using
+                                        standard PDDL representations. Benchmarks multiple planners, analyzing search
+                                        behavior and scalability, connecting these insights to future learning-based
+                                        methods.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Theme 4: LLMs for Planning -->
+                <section class="project theme-surface rounded-lg p-6">
+                    <div class="project-header">
+                        <h2 class="text-2xl font-bold theme-text mb-3">Large Language Models for Planning</h2>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="skill-tag">2022 - 2024</span>
+                            <span class="skill-tag">LLMs</span>
+                            <span class="skill-tag">Automated Planning</span>
+                            <span class="skill-tag">Decision Support</span>
+                        </div>
+                        <div class="theme-text-secondary mb-4">
+                            <p>Investigates how LLMs can support or perform planning, how they compare to classical
+                                planners, and how they can be used for decision support (e.g., financial advising).</p>
+                        </div>
+
+                        <section>
+                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">On the Prospects of Incorporating LLMs
+                                        in Automated Planning and Scheduling</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">ICAPS 2024</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">Plansformer: Demonstrating Generation
+                                        of Symbolic Plans With Transformers</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">IJCAI 2023 Demo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="project-content mt-4">
+                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold theme-text">Solving Planning Problems with LLMs</h3>
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">Develops datasets and benchmarks for using LLMs in planning tasks.
+                                        Analyzes various architectures and introduces models like Plansformer for
+                                        generating symbolic plans from text/structured inputs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Theme 5: SafeChat -->
+                <section class="project theme-surface rounded-lg p-6">
+                    <div class="project-header">
+                        <h2 class="text-2xl font-bold theme-text mb-3">SafeChat</h2>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="skill-tag">2023</span>
+                            <span class="skill-tag">SafeChat</span>
+                            <span class="skill-tag">Chatbots</span>
+                        </div>
+                        <div class="theme-text-secondary mb-4">
+                            <p>Designs and evaluates conversational agents aimed at promoting voter participation in a
+                                safe, usable, and trustworthy manner. Explores design choices that avoid misinformation,
+                                bias, and confusion while aiding voter education.</p>
+                        </div>
+
+                        <section>
+                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium theme-text text-base">On Safe and Usable Chatbots for
+                                        Promoting Voter Participation</h4>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="paper-venue-tag">AI Magazine 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="project-content mt-4">
+                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
+                            <div class="space-y-4">
+                                <div class="theme-text-secondary">
+                                    <p class="mb-4">Focused on designing conversational agents that can effectively and
+                                        safely assist users with voter registration and information, ensuring
+                                        trustworthiness and usability in civic contexts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
@@ -214,15 +429,15 @@
     <script src="js/main.js"></script>
     <script src="js/navigation.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const projects = document.querySelectorAll('.project');
-            
+
             projects.forEach(project => {
                 const header = project.querySelector('.project-header');
-                
+
                 header.addEventListener('click', () => {
                     project.classList.toggle('active');
-                    
+
                     // Close other projects
                     projects.forEach(otherProject => {
                         if (otherProject !== project) {
@@ -233,5 +448,8 @@
             });
         });
     </script>
+    <script src="js/confetti.browser.min.js"></script>
+    <script src="js/award.js"></script>
 </body>
+
 </html>

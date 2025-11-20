@@ -6,7 +6,7 @@
     --text-secondary: #595959;
     --accent: #b76e79;
     --accent-hover: #9a5961;
-  
+
     /* Dark theme colors */
     --dark-bg: #1a1a1a;
     --dark-surface: #2a2a2a;
@@ -14,7 +14,7 @@
     --dark-text-secondary: #94a3b8;
     --dark-accent: #cf838e;
     --dark-accent-hover: #c88891;
-  
+
     /* Common colors */
     --tag-bg: rgba(183, 110, 121, 0.08);
     --tag-bg-dark: rgba(183, 110, 121, 0.1);
@@ -67,15 +67,21 @@ body.dark-theme .theme-bg {
 body.dark-theme .theme-surface {
     background-color: var(--dark-surface);
 }
-  
+
 /* Base Styles */
 body {
     background-color: var(--bg);
     color: var(--text-secondary);
     font-family: system-ui, -apple-system, sans-serif;
     transition: none;
+    /* Magnetic Scroll */
+    scroll-snap-type: y proximity;
+    /* proximity is smoother than mandatory for varied content heights */
+    scroll-behavior: smooth;
+    height: 100vh;
+    overflow-y: auto;
 }
-  
+
 body.theme-loaded {
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
@@ -86,12 +92,17 @@ body.dark-theme {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: var(--text);
     font-weight: 600;
     transition: color 0.3s ease-in-out;
 }
-  
+
 body.dark-theme h1,
 body.dark-theme h2,
 body.dark-theme h3,
@@ -100,17 +111,17 @@ body.dark-theme h5,
 body.dark-theme h6 {
     color: var(--dark-text);
 }
-  
+
 a {
     color: inherit;
     text-decoration: none;
     transition: color 0.3s ease-in-out;
 }
-  
+
 a:hover {
     color: var(--accent);
 }
-  
+
 body.dark-theme a:hover {
     color: var(--dark-accent);
 }
@@ -118,15 +129,17 @@ body.dark-theme a:hover {
 /* Layout */
 .section {
     margin-bottom: 4rem;
-    scroll-margin-top: 4rem;
+    scroll-margin-top: 6rem;
+    /* Adjust for fixed header */
+    scroll-snap-align: start;
 }
-  
+
 @media (min-width: 768px) {
     .section {
         margin-bottom: 6rem;
     }
 }
-  
+
 @media (min-width: 1024px) {
     .section {
         margin-bottom: 9rem;
@@ -225,7 +238,7 @@ body.dark-theme .back-link:hover {
     transition: all 0.3s ease-in-out;
     z-index: 50;
     background-color: var(--surface);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-theme .theme-toggle {
@@ -295,7 +308,7 @@ body.dark-theme ::-webkit-scrollbar-thumb:hover {
     display: flex;
     align-items: center;
 }
-  
+
 body.dark-theme .skill-tag {
     background-color: var(--tag-bg-dark);
     color: var(--dark-accent);
@@ -343,18 +356,40 @@ body.dark-theme .paper-venue-tag.first-author {
 }
 
 /* Award tag styles */
+/* Award tag styles */
 .award-tag {
-    background-color: rgba(245, 158, 11, 0.08);
-    color: #d97706;
-    border: none;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+    color: #b45309;
+    /* Darker gold/orange for readability */
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.375rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
 body.dark-theme .award-tag {
-    background-color: rgba(245, 158, 11, 0.1);
-    color: #f59e0b;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.15));
+    color: #fbbf24;
+    /* Lighter gold for dark mode */
+    border-color: rgba(255, 215, 0, 0.4);
+}
+
+.award-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(255, 165, 0, 0.1), 0 2px 4px -1px rgba(255, 165, 0, 0.06);
+    border-color: rgba(255, 215, 0, 0.6);
+}
+
+.award-icon {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
 }
 
 /* Section Headers */
@@ -443,7 +478,7 @@ body.dark-theme .header-overlay {
     border-radius: 0.5rem;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
-                0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        0 2px 4px -1px rgba(0, 0, 0, 0.03);
     overflow: hidden;
     backdrop-filter: blur(4px);
 }
@@ -451,7 +486,7 @@ body.dark-theme .header-overlay {
 body.dark-theme .about-card {
     background-color: rgba(42, 42, 42, 0.85) !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Card hover effects */
@@ -494,11 +529,10 @@ body.dark-theme .about-card::before {
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(var(--angle, 90deg), 
-        transparent,
-        var(--accent) var(--distance, 100%),
-        transparent
-    );
+    background: linear-gradient(var(--angle, 90deg),
+            transparent,
+            var(--accent) var(--distance, 100%),
+            transparent);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -508,11 +542,10 @@ body.dark-theme .about-card::before {
 }
 
 body.dark-theme .about-card::after {
-    background: linear-gradient(var(--angle, 90deg), 
-        transparent,
-        var(--dark-accent) var(--distance, 100%),
-        transparent
-    );
+    background: linear-gradient(var(--angle, 90deg),
+            transparent,
+            var(--dark-accent) var(--distance, 100%),
+            transparent);
 }
 
 /* Additional hover effects for about-card */
@@ -531,28 +564,32 @@ body.dark-theme .about-card::after {
 /* Additional shadow on hover */
 .about-card:hover {
     box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.08),
-                0 4px 8px -1px rgba(0, 0, 0, 0.05);
+        0 4px 8px -1px rgba(0, 0, 0, 0.05);
 }
 
 body.dark-theme .about-card:hover {
     box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.2),
-                0 4px 8px -1px rgba(0, 0, 0, 0.1);
+        0 4px 8px -1px rgba(0, 0, 0, 0.1);
 }
 
 .highlight {
-    background: rgba(104, 175, 110, 0.08);  /* Soft sage background */
+    background: rgba(104, 175, 110, 0.08);
+    /* Soft sage background */
     border-radius: 2px;
     padding: 0.1em 0.2em;
-    color: #558f5c;  /* Sage text */
+    color: #558f5c;
+    /* Sage text */
 }
 
 body.dark-theme .highlight {
     background: rgba(104, 175, 110, 0.1);
-    color: #75bf7c;  /* Lighter sage for dark theme */
+    color: #75bf7c;
+    /* Lighter sage for dark theme */
 }
 
 .hiring-tag {
-    background-color: rgba(183, 110, 121, 0.12); /* Slightly more opaque version of your accent color */
+    background-color: rgba(183, 110, 121, 0.12);
+    /* Slightly more opaque version of your accent color */
     color: var(--accent);
     padding: 0.3rem 1.25rem;
     border-radius: 9999px;
@@ -567,4 +604,145 @@ body.dark-theme .hiring-tag {
     background-color: rgba(207, 131, 142, 0.12);
     color: var(--dark-accent);
     border-color: var(--dark-accent);
+}
+
+/* Gold Text Shine Animation */
+@keyframes gold-shine {
+    0% {
+        background-position: -100% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+.gold-text-shine {
+    position: relative;
+    display: inline-block;
+    /* Ensures proper positioning */
+}
+
+.gold-text-shine::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    animation: gold-shine 2.5s ease-in-out forwards;
+}
+
+/* Light Theme Gradient: Transparent -> Gold -> Transparent */
+.gold-text-shine::after {
+    background-image: linear-gradient(120deg,
+            transparent 0%,
+            transparent 30%,
+            #a07c26 40%,
+            #ffd700 48%,
+            #ffffff 50%,
+            #ffd700 52%,
+            #a07c26 60%,
+            transparent 70%,
+            transparent 100%);
+}
+
+/* Dark Theme Gradient: Transparent -> Gold -> Transparent */
+body.dark-theme .gold-text-shine::after {
+    background-image: linear-gradient(120deg,
+            transparent 0%,
+            transparent 30%,
+            #fde68a 40%,
+            #fbbf24 48%,
+            #ffffff 50%,
+            #fbbf24 52%,
+            #fde68a 60%,
+            transparent 70%,
+            transparent 100%);
+}
+
+/* Twinkle Star Animation */
+.twinkle-star {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #FFD700;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: twinkle-fade 0.8s ease-in-out forwards;
+    pointer-events: none;
+    z-index: 50;
+    box-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+}
+
+@keyframes twinkle-fade {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1) rotate(180deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Shimmer/Slash Animation Effect */
+@keyframes shimmer-slash {
+    0% {
+        transform: translateX(-150%) skewX(-20deg);
+    }
+
+    100% {
+        transform: translateX(150%) skewX(-20deg);
+    }
+}
+
+.shimmer-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            transparent 0%,
+            rgba(255, 215, 0, 0.1) 30%,
+            rgba(255, 215, 0, 0.4) 50%,
+            rgba(255, 215, 0, 0.1) 70%,
+            transparent 100%);
+    transform: translateX(-150%) skewX(-20deg);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.shimmer-effect.animate::before {
+    animation: shimmer-slash 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark mode adjustment for shimmer */
+body.dark-theme .shimmer-effect::before {
+    background: linear-gradient(to right,
+            transparent 0%,
+            rgba(255, 215, 0, 0.05) 30%,
+            rgba(255, 215, 0, 0.2) 50%,
+            rgba(255, 215, 0, 0.05) 70%,
+            transparent 100%);
 }
