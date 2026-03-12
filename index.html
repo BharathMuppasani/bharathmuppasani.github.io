@@ -1,449 +1,737 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <script>
-        // Get this script to run immediately
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.documentElement.style.display = 'none';
-            window.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.add('light-theme');
-                document.documentElement.style.display = '';
-            });
-        }
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharath Muppasani - Research Portfolio</title>
-    <meta name="description"
-        content="Bharath Muppasani - PhD Candidate in Computer Science, researching Automated Planning, Deep Learning, and Reinforcement Learning">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bharath Muppasani — Research Portfolio</title>
+  <meta name="description" content="Bharath Muppasani — PhD Candidate in Computer Science at the University of South Carolina, researching Automated Planning, Multi-Agent Systems, and Reinforcement Learning.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg: #faf7f7; --surface: #f2eded; --border: #e4dcdc;
+      --text: #2a2020; --muted: #6b5b5b;
+      --accent: #b76e79; --accent-faint: rgba(183,110,121,0.08); --accent-border: rgba(183,110,121,0.25);
+      --ff-sans: 'Instrument Sans', system-ui, sans-serif;
+      --ff-serif: 'Hedvig Letters Serif', Georgia, serif;
+      --sidebar-w: 18rem;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1616; --surface: #231e1e; --border: #3a3030;
+      --text: #ede5e5; --muted: #a08888;
+      --accent: #cf838e; --accent-faint: rgba(207,131,142,0.08); --accent-border: rgba(207,131,142,0.28);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--ff-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    /* Both backgrounds: fixed behind content */
+    #particles-background, #mapf-background {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    /* Opinion network - left sidebar area only */
+    #particles-background {
+      opacity: 0.8;
+      -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 18rem, rgba(0,0,0,0.1) calc(18rem + 10rem), transparent calc(18rem + 18rem));
+      mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 18rem, rgba(0,0,0,0.1) calc(18rem + 10rem), transparent calc(18rem + 18rem));
+    }
+    [data-theme="dark"] #particles-background { opacity: 0.65; }
+    /* MAPF grid - right half of page, from middle to right edge, entire bottom-right */
+    #mapf-background {
+      opacity: 1;
+      -webkit-mask-image:
+        linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.3) 50%, transparent 65%),
+        linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 30%, transparent 55%);
+      mask-image:
+        linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.3) 50%, transparent 65%),
+        linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 30%, transparent 55%);
+      -webkit-mask-composite: source-over;
+      mask-composite: add;
+    }
+    [data-theme="dark"] #mapf-background { opacity: 1; }
+
+    /* ── Sun/Moon icon toggle ── */
+    .theme-toggle-wrap {
+      position: fixed; top: 1.5rem; right: 1.5rem; z-index: 100;
+      cursor: pointer; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      width: 2.5rem; height: 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      transition: all 400ms ease;
+    }
+    .theme-toggle-wrap:hover {
+      box-shadow: 0 3px 14px rgba(183,110,121,0.2);
+      transform: scale(1.08);
+    }
+    .theme-toggle-wrap input { display: none; }
+    .theme-icon {
+      width: 1.15rem; height: 1.15rem;
+      color: var(--accent);
+      transition: color 400ms ease;
+    }
+    .theme-icon-sun { display: block; }
+    .theme-icon-moon { display: none; }
+    .theme-toggle-wrap input:checked ~ .theme-icon-sun { display: none; }
+    .theme-toggle-wrap input:checked ~ .theme-icon-moon { display: block; }
+
+    /* ── Page layout ── */
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 76rem; margin: 0 auto;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      gap: 0;
+      min-height: 100vh;
+    }
+    @media (max-width: 768px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .sidebar { position: static !important; border-right: none; border-bottom: 1px solid var(--border); padding: 2rem 1.5rem; height: auto; }
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky; top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1.5rem 1.25rem;
+      display: flex; flex-direction: column; gap: 0;
+      background: color-mix(in srgb, var(--bg) 50%, transparent);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+
+    /* Profile photo */
+    .profile-photo {
+      width: 70%; aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 20%;
+      border: 2px solid var(--border);
+      margin-bottom: 1rem;
+      transition: border-color 0.3s;
+    }
+    .profile-photo:hover { border-color: var(--accent); }
+
+    /* Large name - equal width fill */
+    .hero-name {
+      font-family: var(--ff-serif);
+      line-height: 1.0;
+      margin-bottom: 0.6rem;
+      width: 100%;
+    }
+    .hero-name .fn, .hero-name .ln {
+      display: block;
+      width: 100%;
+      font-weight: 700;
+    }
+    .hero-name .fn {
+      font-size: 2.35rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+    }
+    .hero-name .ln {
+      font-size: 1.62rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    /* Badge chips */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6rem; }
+    .chip {
+      font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 5px 9px; color: var(--muted); background: var(--surface);
+    }
+    .chip.accent { background: var(--accent-faint); border-color: var(--accent-border); color: var(--accent); }
+
+    /* Internship notice - not tag style */
+    .internship-notice {
+      font-size: 0.76rem; font-weight: 600; color: var(--accent);
+      margin-bottom: 0.5rem;
+      padding: 0.3rem 0.5rem;
+      letter-spacing: 0.01em;
+      background: var(--accent-faint);
+      border-radius: 6px;
+      white-space: nowrap;
+      position: relative;
+    }
+    /* Animated border using conic gradient */
+    .internship-notice::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      padding: 1px;
+      background: conic-gradient(from var(--border-angle, 0deg), transparent 60%, var(--accent) 80%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .internship-notice.glow::before {
+      opacity: 1;
+      animation: border-spin 1.5s linear;
+    }
+    @keyframes border-spin {
+      0%   { --border-angle: 0deg; }
+      100% { --border-angle: 360deg; }
+    }
+    @property --border-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    /* Tagline - now below chips */
+    .hero-sub {
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.5; margin-bottom: 0.6rem;
+      padding-left: 0.85rem;
+      border-left: 2px solid var(--accent-border);
+    }
+
+    /* Sidebar nav */
+    .side-nav { margin-top: 0.5rem; }
+    .side-nav a {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.45rem 0; text-decoration: none;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.15s;
+    }
+    .side-nav a::before {
+      content: ''; display: block;
+      width: 1.25rem; height: 1px;
+      background: currentColor; opacity: 0.4;
+      transition: width 0.2s, opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .side-nav a:hover { color: var(--accent); }
+    .side-nav a:hover::before,
+    .side-nav a.active::before { width: 2.25rem; opacity: 1; background: var(--accent); }
+    .side-nav a.active { color: var(--accent); }
+
+    /* Social icons */
+    .social-row {
+      display: flex; gap: 0.85rem; align-items: center;
+      margin-top: auto; padding-top: 1rem;
+    }
+    .social-row a { color: var(--muted); opacity: 0.7; transition: opacity 0.2s, color 0.2s; }
+    .social-row a:hover { opacity: 1; color: var(--accent); }
+    .social-row svg { display: block; width: 1.1rem; height: 1.1rem; }
+
+    /* ── Main content ── */
+    .main-content {
+      padding: 3rem 3rem 4rem; min-width: 0;
+      background: radial-gradient(ellipse at bottom right, transparent 0%, color-mix(in srgb, var(--bg) 30%, transparent) 25%, color-mix(in srgb, var(--bg) 55%, transparent) 50%, color-mix(in srgb, var(--bg) 70%, transparent) 75%);
+      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    }
+    @media (max-width: 768px) { .main-content { padding: 2rem 1.5rem 3rem; } }
+
+    /* Section headings */
+    .section { margin-bottom: 4rem; scroll-margin-top: 3rem; }
+    .section-title {
+      font-family: var(--ff-sans); font-weight: 600;
+      color: var(--accent); letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1.75rem;
+      text-transform: uppercase; font-size: 0.8rem;
+    }
+
+    /* About section - clean, no box, no thick border */
+    .about-body {
+      font-size: 0.95rem; line-height: 1.85; color: var(--text);
+      background: transparent;
+    }
+    .about-body p { margin-bottom: 0.85rem; }
+    .hl { background: var(--accent-faint); color: var(--accent); padding: 0.05em 0.2em; border-radius: 0.2rem; font-weight: 500; }
+
+    /* Venue tags - base */
+    .venue-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .vtag {
+      font-size: 0.69rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 999px; padding: 0.2rem 0.6rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .vtag:hover { transform: translateY(-1px); }
+    /* First-author venue tags */
+    .vtag.fa { border-color: var(--accent-border); background: var(--accent-faint); color: var(--accent); }
+
+    .vtag.award { background: rgba(215,175,55,0.1); border-color: rgba(215,175,55,0.4); color: #9a7a00; }
+    [data-theme="dark"] .vtag.award { color: #d4aa30; }
+
+    /* Award tag */
+    .award-tag {
+      background: rgba(215,175,55,0.1); border: 1px solid rgba(215,175,55,0.35);
+      color: #9a7a00; border-radius: 999px; padding: 0.1rem 0.5rem;
+      font-size: 0.66rem; font-weight: 700; cursor: pointer; user-select: none;
+    }
+    [data-theme="dark"] .award-tag { color: #d4aa30; background: rgba(215,175,55,0.15); border-color: rgba(215,175,55,0.4); }
+
+    /* Skill/interest tags - warm muted tone, distinct from venue tags */
+    .skill-tag {
+      font-size: 0.69rem; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase;
+      background: rgba(150,120,100,0.08); border: 1px solid rgba(150,120,100,0.2);
+      color: #8a7060; border-radius: 999px; padding: 0.15rem 0.55rem;
+    }
+    [data-theme="dark"] .skill-tag {
+      background: rgba(190,160,140,0.1); border-color: rgba(190,160,140,0.22);
+      color: #bea08a;
+    }
+
+    /* Research project cards - transparent with hover */
+    .proj-card {
+      background: color-mix(in srgb, var(--surface) 30%, transparent);
+      border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.4rem; margin-bottom: 1rem;
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .proj-card:hover {
+      background: color-mix(in srgb, var(--surface) 75%, transparent);
+      border-color: var(--accent-border);
+      box-shadow: 0 4px 20px rgba(183,110,121,0.08);
+      transform: translateY(-2px);
+    }
+    .proj-card-head { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.4rem; }
+    .proj-year { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent); flex-shrink: 0; }
+    .proj-title { font-family: var(--ff-serif); font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .proj-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.75rem; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+    /* Publication entries - transparent with hover */
+    .pub-entry {
+      background: color-mix(in srgb, var(--surface) 25%, transparent);
+      border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+      border-radius: 0.75rem;
+      padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .pub-entry:hover {
+      background: color-mix(in srgb, var(--surface) 75%, transparent);
+      border-color: var(--accent-border);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(183,110,121,0.06);
+    }
+    .pub-title-link { text-decoration: none; display: block; }
+    .pub-title-link .pub-entry:hover { border-color: var(--accent-border); }
+    .pub-title-link:hover .pub-title { color: var(--accent); }
+    .pub-title { font-family: var(--ff-serif); font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 0.3rem; color: var(--text); }
+    .pub-authors { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .pub-authors strong { color: var(--text); font-weight: 600; }
+    .pub-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+
+    /* Type badges - distinct styles per paper type */
+    .type-badge {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      border-radius: 999px; padding: 0.18rem 0.55rem; border: 1px solid;
+    }
+    .type-badge.conference { background: rgba(59,91,219,0.08); border-color: rgba(59,91,219,0.3); color: #3b5bdb; }
+    .type-badge.journal    { background: rgba(47,150,90,0.08); border-color: rgba(47,150,90,0.3); color: #2f965a; }
+    .type-badge.workshop   { background: rgba(230,119,40,0.08); border-color: rgba(230,119,40,0.3); color: #d4721e; }
+    .type-badge.demo       { background: rgba(183,110,121,0.08); border-color: rgba(183,110,121,0.3); color: var(--accent); }
+    .type-badge.under-review { background: rgba(107,91,91,0.08); border-color: rgba(107,91,91,0.25); color: #6b5b5b; font-style: italic; }
+    [data-theme="dark"] .type-badge.conference { color: #7b9cff; border-color: rgba(123,156,255,0.35); background: rgba(123,156,255,0.08); }
+    [data-theme="dark"] .type-badge.journal    { color: #5bc98a; border-color: rgba(91,201,138,0.35); background: rgba(91,201,138,0.08); }
+    [data-theme="dark"] .type-badge.workshop   { color: #f0a05a; border-color: rgba(240,160,90,0.35); background: rgba(240,160,90,0.08); }
+    [data-theme="dark"] .type-badge.demo       { color: var(--accent); border-color: rgba(207,131,142,0.35); background: rgba(207,131,142,0.09); }
+    [data-theme="dark"] .type-badge.under-review { color: #a08888; border-color: rgba(160,136,136,0.3); background: rgba(160,136,136,0.08); }
+
+    /* Experience cards */
+    .exp-role { font-family: var(--ff-serif); font-size: 1rem; font-weight: 600; color: var(--text); }
+    .exp-org  { font-size: 0.84rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .exp-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.65rem; }
+
+    /* View all link */
+    .view-all {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--accent);
+      text-decoration: none; margin-top: 0.75rem;
+      border: 1px solid var(--accent-border); border-radius: 999px;
+      padding: 0.3rem 0.9rem; transition: background 0.15s;
+    }
+    .view-all:hover { background: var(--accent-faint); }
+    .view-all svg { width: 0.85rem; height: 0.85rem; }
+
+    /* Resume link */
+    .resume-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--accent);
+      text-decoration: none; margin-top: 0.85rem;
+      border: 1px solid var(--accent-border); border-radius: 999px;
+      padding: 0.3rem 0.9rem; transition: background 0.15s;
+    }
+    .resume-link:hover { background: var(--accent-faint); }
+    .resume-link svg { width: 0.85rem; height: 0.85rem; }
+
+    /* Project card links */
+    .proj-card-link { text-decoration: none; color: inherit; display: block; }
+    .proj-card-link:hover .proj-title { color: var(--accent); }
+  </style>
 </head>
 
-<body class="theme-bg">
-    <canvas id="particles-background"></canvas>
-    <!-- Progress bar -->
-    <!-- <div class="scroll-progress fixed top-0 left-0 h-1 z-50"></div> -->
+<body>
+  <canvas id="particles-background"></canvas>
+  <canvas id="mapf-background"></canvas>
 
-    <!-- Mobile menu overlay -->
-    <div class="mobile-overlay fixed inset-0 backdrop-blur hidden z-40 theme-bg"></div>
+  <label class="theme-toggle-wrap" aria-label="Toggle theme">
+    <input type="checkbox" id="theme-toggle">
+    <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </label>
 
-    <div class="min-h-screen">
-        <div class="mx-auto max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
-            <div class="lg:flex lg:justify-between lg:gap-4">
-                <!-- Left sidebar -->
-                <header
-                    class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24">
-                    <div class="header-overlay rounded-lg p-4">
-                        <h1 class="text-4xl font-bold tracking-tight sm:text-5xl theme-text">
-                            Bharath Muppasani
-                        </h1>
-                        <div class="flex items-center space-x-4">
-                            <h2 class="mt-3 text-lg font-medium tracking-tight sm:text-xl theme-text">
-                                Ph.D. Candidate in Computer Science
-                            </h2>
-                            <div class="mt-3 paper-venue-tag award-tag">Jan 2022 - Present</div>
-                        </div>
+  <div class="page-wrap">
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <img src="assets/profile.jpg" alt="Bharath Muppasani" class="profile-photo">
 
+      <div class="hero-name">
+        <span class="fn">Bharath</span>
+        <span class="ln">Muppasani</span>
+      </div>
 
-                        <div class="flex items-center space-x-4 mt-4">
-                            <div class="hiring-tag">
-                                Looking for Summer Internships - 2026
-                            </div>
-                        </div>
+      <div class="chip-row">
+        <span class="chip">PhD Candidate</span>
+        <span class="chip">CS · UofSC</span>
+        <span class="chip">2022 – Present</span>
+      </div>
 
-                        <p class="mt-4 max-w-xs leading-normal theme-text-secondary">
-                            Working at the intersection of Planning, Leaning and Representation at University of South
-                            Carolina, Columbia, USA.
-                        </p>
+      <div class="internship-notice">Looking for Summer Internships 2026</div>
 
-                        <nav class="nav hidden lg:block">
-                            <ul class="mt-16 w-max">
-                                <li>
-                                    <a class="group flex items-center py-3" href="#about">
-                                        <span class="nav-text text-xs font-bold uppercase tracking-widest">About</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="group flex items-center py-3" href="#research">
-                                        <span
-                                            class="nav-text text-xs font-bold uppercase tracking-widest">Research</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="group flex items-center py-3" href="#publications">
-                                        <span
-                                            class="nav-text text-xs font-bold uppercase tracking-widest">Publications</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="group flex items-center py-3" href="#experience">
-                                        <span
-                                            class="nav-text text-xs font-bold uppercase tracking-widest">Experience</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <ul class="ml-1 mt-8 flex items-center" aria-label="Social media">
-                        <li class="mr-5 text-xs">
-                            <a class="block social-link" href="https://github.com/BharathMuppasani" target="_blank"
-                                rel="noreferrer">
-                                <span class="sr-only">GitHub</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                                    class="h-6 w-6">
-                                    <path
-                                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
-                                    </path>
-                                </svg>
-                            </a>
-                        </li>
-                        <li class="mr-5 text-xs">
-                            <a class="block social-link" href="https://www.linkedin.com/in/bharath-9798/"
-                                target="_blank" rel="noreferrer">
-                                <span class="sr-only">LinkedIn</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="h-6 w-6">
-                                    <path
-                                        d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z">
-                                    </path>
-                                </svg>
-                            </a>
-                        </li>
-                        <li class="mr-5 text-xs">
-                            <a class="block social-link" href="mailto:bharath@email.sc.edu">
-                                <span class="sr-only">Email</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" class="h-6 w-6">
-                                    <path
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </a>
-                        </li>
-                        <li class="mr-5 text-xs">
-                            <a class="block social-link"
-                                href="https://scholar.google.com/citations?user=4jmlBaYAAAAJ&hl=en" target="_blank"
-                                rel="noreferrer">
-                                <span class="sr-only">Google Scholar</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="h-6 w-6">
-                                    <path d="M12 0L0 12h12V0z M12 0l12 12H12V0z M12 12l-6 12h12l6-12H12z" />
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="./assets/Bharath_Resume.pdf" class="block social-link" target="_blank"
-                                rel="noreferrer">
-                                <span class="sr-only">Resume</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" class="h-6 w-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
-                </header>
+      <p class="hero-sub">
+        Planning · Learning · Representation<br>
+        University of South Carolina, Columbia
+      </p>
 
-                <!-- Main content -->
-                <main class="pt-24 lg:w-1/2 lg:py-24">
-                    <!-- About Section -->
-                    <section id="about" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-                        <div
-                            class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-                            <h2 class="text-sm font-bold uppercase tracking-widest theme-text">About Me</h2>
-                        </div>
+      <nav class="side-nav">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#experience">Experience</a>
+      </nav>
 
-                        <div class="about-card">
-                            <div class="card-content relative"> <!-- Added relative positioning -->
-                                <p class="mb-4 leading-relaxed">
-                                    I'm a Ph.D. candidate at the University of South Carolina, focusing on developing
-                                    <span class="highlight">planning strategies for dynamic environments</span>.
-                                    My research aims to develop more efficient and adaptable planning systems that can
-                                    handle
-                                    complex real-world scenarios.
-                                </p>
+      <div class="social-row">
+        <a href="https://github.com/BharathMuppasani" target="_blank" rel="noreferrer" title="GitHub">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/bharathmuppasani/" target="_blank" rel="noreferrer" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+        </a>
+        <a href="mailto:bharath@email.sc.edu" title="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </a>
+        <a href="https://scholar.google.com/citations?user=4jmlBaYAAAAJ&hl=en" target="_blank" rel="noreferrer" title="Google Scholar">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+        </a>
+        <a href="./assets/Bharath_Resume.pdf" target="_blank" rel="noreferrer" title="Resume">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </a>
+      </div>
+    </aside>
 
-                                <!-- Fixed Resume Button with multiple fixes -->
-                                <a href="assets/Bharath_resume.pdf" target="_blank" rel="noopener noreferrer"
-                                    style="position: relative; z-index: 30;"
-                                    onclick="window.open('assets/Bharath_Resume.pdf', '_blank')"
-                                    class="inline-flex items-center gap-2 text-sm font-medium mb-4 view-all-button hover:cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" class="h-5 w-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    Resume
-                                </a>
+    <!-- ── Main content ── -->
+    <main class="main-content">
 
-                                <p class="mb-4">My research interests span across:</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="skill-tag">Automated Planning</span>
-                                    <span class="skill-tag">Reinforcement Learning</span>
-                                    <span class="skill-tag">Knowledge Representation</span>
-                                    <span class="skill-tag">Large Language Models</span>
-                                </div>
+      <!-- About -->
+      <section id="about" class="section">
+        <div class="section-title">About Me</div>
+        <div class="about-body">
+          <p>
+            I'm a Ph.D. candidate at the University of South Carolina working on
+            <span class="hl">planning and learning in dynamic, multi-agent environments</span>.
+            My work spans opinion networks, multi-agent path finding for robots, and
+            ontology-driven tools for making planning decisions explainable.
+          </p>
+          <p>
+            Advised by <strong>Prof. Biplav Srivastava</strong> and <strong>Prof. Vignesh Narayanan</strong>
+            at the AI4Society lab.
+          </p>
 
-                                <!-- Publications Section -->
-                                <p class="mb-2">Published at:
-                                    <a class="text-xs theme-text-secondary mb-2">(Outlined - first authorship)</a>
-                                </p>
-                                <div class="flex flex-wrap gap-2 mb-6">
-                                    <span class="paper-venue-tag first-author">NeurIPS '24</span>
-                                    <span class="paper-venue-tag first-author">AAAI '24 Demo <span
-                                            class="award-tag ml-1">Best Demo</span></span>
-                                    <span class="paper-venue-tag">ICAPS '24 (Position, <span
-                                            class="first-author">Demo</span>, <span
-                                            class="first-author">HSDIP</span>)</span>
-                                    <span class="paper-venue-tag">NeurIPS GenPlan '23</span>
-                                    <span class="paper-venue-tag first-author">AAAI/IAAI '23</span>
-                                    <span class="paper-venue-tag first-author">AAAI Magazine '23</span>
-                                    <span class="paper-venue-tag">IJCAI '23 Demo</span>
-                                    <span class="paper-venue-tag first-author">ICAPS PLATO '23</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+          <div class="chip-row" style="margin-top: 1rem;">
+            <span class="skill-tag">Automated Planning</span>
+            <span class="skill-tag">Multi-Agent Systems</span>
+            <span class="skill-tag">Reinforcement Learning</span>
+            <span class="skill-tag">Knowledge Representation</span>
+            <span class="skill-tag">Ontology &amp; Explainability</span>
+          </div>
 
-                    <!-- Research Section -->
-                    <section id="research" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-                        <div
-                            class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-                            <h2 class="section-heading">Featured Research</h2>
-                        </div>
+          <p style="margin-top: 1rem; font-size: 0.82rem; color: var(--muted);">Published at:</p>
+          <div class="venue-row">
+            <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2026</span>
+            <span class="vtag fa">AAAI Demo</span>
+            <span class="vtag fa">MAKE @ AAAI</span>
+          </div>
+          <div class="venue-row" style="margin-top:0.3rem;">
+            <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2024</span>
+            <span class="vtag fa">NeurIPS</span>
+            <span class="vtag fa">AAAI Demo <span class="award-tag" style="font-size:0.58rem; font-weight:700; border-radius:4px; padding:0 4px; display:inline; vertical-align:middle; cursor:pointer;">★ Best Demo</span></span>
+            <span class="vtag fa">ICAPS</span>
+            <span class="vtag fa">Discover Data</span>
+          </div>
+          <div class="venue-row" style="margin-top:0.3rem;">
+            <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2023</span>
+            <span class="vtag fa">AAAI/IAAI</span>
+            <span class="vtag fa">AI Magazine</span>
+            <span class="vtag fa">IJCAI Demo</span>
+          </div>
 
-                        <!-- Research Project 1 -->
-                        <div
-                            class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-                            <div
-                                class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface">
-                            </div>
-                            <header
-                                class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
-                                2023 - 2024</header>
-                            <div class="z-10 sm:col-span-6">
-                                <h3 class="font-medium leading-snug theme-text">
-                                    <div>Planning Strategies for Dynamic Opinion Networks</div>
-                                </h3>
-                                <p class="mt-2 text-sm leading-normal theme-text-secondary">
-                                    Developed intervention strategies using ranking algorithms and neural network
-                                    classifiers for accurate information dissemination in dynamic networks. Created a
-                                    reinforcement learning framework analyzing multiple reward structures for network
-                                    dynamics.
-                                </p>
-                                <ul class="mt-2 flex flex-wrap">
-                                    <li class="mr-1.5 mt-2">
-                                        <div class="skill-tag">Deep Learning</div>
-                                    </li>
-                                    <li class="mr-1.5 mt-2">
-                                        <div class="skill-tag">Reinforcement Learning</div>
-                                    </li>
-                                    <li class="mr-1.5 mt-2">
-                                        <div class="skill-tag">Network Analysis</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Research Project 2 -->
-                        <div
-                            class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 mt-12">
-                            <div
-                                class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface">
-                            </div>
-                            <header
-                                class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
-                                2022 - 2023</header>
-                            <div class="z-10 sm:col-span-6">
-                                <h3 class="font-medium leading-snug theme-text">
-                                    <div>Automated Planning with Large Language Models</div>
-                                </h3>
-                                <p class="mt-2 text-sm leading-normal theme-text-secondary">
-                                    Spearheaded the development of datasets for fine-tuning LLMs in automated planning
-                                    scenarios. Evaluated various LLM architectures for planning tasks and developed the
-                                    Plansformer model.
-                                </p>
-                                <ul class="mt-2 flex flex-wrap">
-                                    <li class="mr-1.5 mt-2">
-                                        <div class="skill-tag">PDDL</div>
-                                    </li>
-                                    <li class="mr-1.5 mt-2">
-                                        <div class="skill-tag">Large Language Models</div>
-                                    </li>
-                                    <li class="mr-1.5 mt-2">
-                                        <div class="skill-tag">Python</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="mt-8">
-                            <a href="./research.html" class="view-all-button">
-                                View All Research Projects
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div>
-                    </section>
-
-                    <!-- Publications Section -->
-                    <section id="publications" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-                        <div
-                            class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-                            <h2 class="section-heading">Selected Publications</h2>
-                        </div>
-
-                        <div class="space-y-12">
-                            <!-- Publication 1 -->
-                            <a href="https://openreview.net/pdf?id=LYivxMp5es" target="_blank"
-                                class="block group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 hover:no-underline">
-                                <div
-                                    class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface">
-                                </div>
-                                <div class="z-10 sm:col-span-8">
-                                    <h3 class="font-medium theme-text">Towards Effective Planning Strategies for Dynamic
-                                        Opinion Networks</h3>
-                                    <p class="mt-1 text-sm theme-text-secondary">Bharath Muppasani, Protik Nag, Vignesh
-                                        Narayanan, Biplav Srivastava and Michael N. Huhns</p>
-                                    <div class="mt-2 flex flex-wrap gap-2">
-                                        <span class="paper-venue-tag">NeurIPS 2024</span>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <!-- Publication 2 -->
-                            <a href="https://ai4society.github.io/planning-ontology/" target="_blank"
-                                class="block group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 hover:no-underline">
-                                <div
-                                    class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface">
-                                </div>
-                                <div class="z-10 sm:col-span-8">
-                                    <h3 class="font-medium theme-text">Building a Plan Ontology to Represent and Exploit
-                                        Planning Knowledge</h3>
-                                    <p class="mt-1 text-sm theme-text-secondary">Bharath Muppasani, Nitin Gupta, Vishal
-                                        Pallagani, Biplav Srivastava, Raghava Mutharaju, Vignesh Narayanan, and Michael
-                                        N. Huhns</p>
-                                    <div class="mt-2 flex flex-wrap gap-2">
-                                        <span class="paper-venue-tag">CODS-COMAD 2024</span>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <div class="mt-8 space-x-4">
-                                <a href="./publications.html" class="view-all-button">
-                                    View All Publications
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </a>
-                            </div>
-                    </section>
-
-                    <!-- Experience Section -->
-                    <section id="experience" class="section mb-16 scroll-mt-16 md:mb-24 lg:mb-36">
-                        <div
-                            class="sticky top-0 z-20 -mx-6 mb-4 w-screen px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 theme-bg">
-                            <h2 class="section-heading">Experience</h2>
-                        </div>
-
-                        <div class="space-y-12">
-                            <!-- Experience Item 1 -->
-                            <div
-                                class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-                                <div
-                                    class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface">
-                                </div>
-                                <header
-                                    class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
-                                    2022 - Present
-                                </header>
-                                <div class="z-10 sm:col-span-6">
-                                    <h3 class="font-medium leading-snug">
-                                        <div class="theme-text">Research Assistant</div>
-                                        <div class="theme-text-secondary">University of South Carolina</div>
-                                    </h3>
-                                    <p class="mt-2 text-sm leading-normal theme-text-secondary">
-                                        Conducting research in automated planning, deep learning, and reinforcement
-                                        learning. Developing novel approaches for dynamic opinion networks and planning
-                                        with large language models.
-                                    </p>
-                                    <ul class="mt-2 flex flex-wrap">
-                                        <li class="mr-1.5 mt-2">
-                                            <div class="skill-tag">Automated Planning</div>
-                                        </li>
-                                        <li class="mr-1.5 mt-2">
-                                            <div class="skill-tag">Machine Learning</div>
-                                        </li>
-                                        <li class="mr-1.5 mt-2">
-                                            <div class="skill-tag">Ontology</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Experience Item 2 -->
-                            <div
-                                class="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100">
-                                <div
-                                    class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg theme-surface">
-                                </div>
-                                <header
-                                    class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2 theme-text-secondary">
-                                    Summer 2018
-                                </header>
-                                <div class="z-10 sm:col-span-6">
-                                    <h3 class="font-medium leading-snug">
-                                        <div class="theme-text">Research Intern</div>
-                                        <div class="theme-text-secondary">Indian Institute of Technology, Kharagpur -
-                                            Samsung Research</div>
-                                    </h3>
-                                    <p class="mt-2 text-sm leading-normal theme-text-secondary">
-                                        Conducted analysis on multi-resident smart home data, focusing on time, sensor,
-                                        and frequency-based segmentation. Developed unsupervised algorithms for activity
-                                        classification.
-                                    </p>
-                                    <ul class="mt-2 flex flex-wrap">
-                                        <li class="mr-1.5 mt-2">
-                                            <div class="skill-tag">Data Analysis</div>
-                                        </li>
-                                        <li class="mr-1.5 mt-2">
-                                            <div class="skill-tag">Sensor Data</div>
-                                        </li>
-                                        <li class="mr-1.5 mt-2">
-                                            <div class="skill-tag">Smart Home</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="mt-8">
-                            <a href="/experience" class="view-all-button">
-                                View Full Experience
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div> -->
-                    </section>
-                </main>
-            </div>
+          <a href="assets/Bharath_Resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Download CV
+          </a>
         </div>
-    </div>
+      </section>
 
-    <!-- Scripts -->
-    <script src="js/main.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/particles.js"></script>
+      <!-- Research -->
+      <section id="research" class="section">
+        <div class="section-title">Featured Research</div>
+
+        <a href="projects/himapf/index.html" class="proj-card-link">
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <span class="proj-year">2024 – Present</span>
+              <span class="proj-title">HI-MAPF: Resource-Efficient Multi-Robot Coordination</span>
+            </div>
+            <p class="proj-desc">
+              A hybrid decentralized planning framework for multi-agent path finding that minimizes inter-robot
+              information sharing. Achieves 2–510× reduction in coordination overhead and tested on physical TurtleBot4 robots.
+            </p>
+            <div class="proj-tags">
+              <span class="skill-tag">Multi-Agent Planning</span>
+              <span class="skill-tag">Robotics</span>
+              <span class="skill-tag">Reinforcement Learning</span>
+              <span class="type-badge under-review">Under Review</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="projects/infospread/index.html" class="proj-card-link">
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <span class="proj-year">2023 – Present</span>
+              <span class="proj-title">Opinion Dynamics &amp; Information Spread Control</span>
+            </div>
+            <p class="proj-desc">
+              Generalized planning combined with graph convolutional networks to select optimal intervention nodes
+              in social networks, reducing misinformation spread by 86% on real-world Cora graph (2000 nodes).
+              Award-winning AAAI 2024 demo.
+            </p>
+            <div class="proj-tags">
+              <span class="skill-tag">Generalized Planning</span>
+              <span class="skill-tag">Graph Neural Networks</span>
+              <span class="skill-tag">Opinion Dynamics</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="projects/ontology/index.html" class="proj-card-link">
+          <div class="proj-card">
+            <div class="proj-card-head">
+              <span class="proj-year">Jan 2022 – Present</span>
+              <span class="proj-title">Planning Ontology &amp; Explainability (PO, maPO, OMEGA)</span>
+            </div>
+            <p class="proj-desc">
+              OWL 2 ontologies for annotating and querying planning decisions. Extends to multi-agent settings
+              via maPO; OMEGA tool generates natural-language explanations for MAPF executions.
+              95.2% user preference in evaluations.
+            </p>
+            <div class="proj-tags">
+              <span class="skill-tag">Ontology</span>
+              <span class="skill-tag">Explainability</span>
+              <span class="skill-tag">Knowledge Representation</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="research.html" class="view-all">
+          All research projects
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
+        </a>
+      </section>
+
+      <!-- Selected Publications -->
+      <section id="publications" class="section">
+        <div class="section-title">Selected Publications</div>
+
+        <div class="pub-entry">
+          <p class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Ritirupa Dey, Biplav Srivastava, Vignesh Narayanan</p>
+          <div class="pub-meta"><span class="type-badge demo">Demo</span><span class="vtag fa">AAAI 2026</span><span class="skill-tag">MAPF</span><span class="skill-tag">Ontology</span></div>
+        </div>
+
+        <div class="pub-entry">
+          <p class="pub-title">maPO: An Ontology for Multi-Agent Path Finding and Its Usage for Explaining Planner Behaviour</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Ritirupa Dey, Biplav Srivastava, Vignesh Narayanan</p>
+          <div class="pub-meta"><span class="type-badge workshop">Workshop</span><span class="vtag fa">AAAI-MAKE 2026</span><span class="skill-tag">MAPF</span><span class="skill-tag">Ontology</span></div>
+        </div>
+
+        <div class="pub-entry">
+          <p class="pub-title">Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Michael N. Huhns, Vignesh Narayanan</p>
+          <div class="pub-meta"><span class="type-badge journal">Journal</span><span class="vtag fa">Discover Data 2025</span><span class="skill-tag">Ontology</span></div>
+        </div>
+
+        <div class="pub-entry">
+          <p class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Biplav Srivastava, Vignesh Narayanan</p>
+          <div class="pub-meta"><span class="type-badge workshop">Workshop</span><span class="vtag fa">GenPlan, AAAI 2025</span><span class="skill-tag">Opinion Networks</span></div>
+        </div>
+
+        <div class="pub-entry">
+          <p class="pub-title">Towards Effective Planning Strategies for Dynamic Opinion Networks</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
+          <div class="pub-meta"><span class="type-badge conference">Conference</span><span class="vtag fa">NeurIPS 2024</span><span class="skill-tag">Opinion Networks</span></div>
+        </div>
+
+        <div class="pub-entry">
+          <p class="pub-title">Expressive and Flexible Simulation of Information Spread Strategies in Social Networks Using Planning</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
+          <div class="pub-meta"><span class="type-badge demo">Demo</span><span class="vtag fa">AAAI 2024</span><span class="award-tag">★ Best Demo Award</span><span class="skill-tag">Opinion Networks</span></div>
+        </div>
+
+        <a href="publications.html" class="view-all">
+          All publications
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
+        </a>
+      </section>
+
+      <!-- Experience -->
+      <section id="experience" class="section">
+        <div class="section-title">Experience</div>
+
+        <div class="proj-card">
+          <div class="proj-card-head">
+            <span class="proj-year">2022 – Present</span>
+            <span class="exp-role">Research Assistant</span>
+          </div>
+          <p class="exp-org">University of South Carolina · AI4Society Lab</p>
+          <p class="exp-desc">
+            Conducting research in automated planning, multi-agent systems, and reinforcement learning.
+            Developing novel approaches for opinion network intervention, multi-agent path finding, and
+            ontology-driven explainability tools.
+          </p>
+          <div class="proj-tags">
+            <span class="skill-tag">Automated Planning</span>
+            <span class="skill-tag">Machine Learning</span>
+            <span class="skill-tag">Ontology</span>
+          </div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-card-head">
+            <span class="proj-year">Summer 2018</span>
+            <span class="exp-role">Research Intern</span>
+          </div>
+          <p class="exp-org">IIT Kharagpur – Samsung Research</p>
+          <p class="exp-desc">
+            Conducted analysis on multi-resident smart home sensor data using time, frequency-based segmentation.
+            Developed unsupervised algorithms for activity classification.
+          </p>
+          <div class="proj-tags">
+            <span class="skill-tag">Data Analysis</span>
+            <span class="skill-tag">Sensor Data</span>
+            <span class="skill-tag">Smart Home</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Theme toggle (planet sun/moon)
+    const themeCheckbox = document.getElementById('theme-toggle');
+    // Sync checkbox with current theme
+    if (document.documentElement.getAttribute('data-theme') === 'dark') {
+      themeCheckbox.checked = true;
+    }
+    themeCheckbox.addEventListener('change', () => {
+      if (themeCheckbox.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Fit name text to equal container width
+    function fitName() {
+      const container = document.querySelector('.hero-name');
+      if (!container) return;
+      const fn = container.querySelector('.fn');
+      const ln = container.querySelector('.ln');
+      const boxW = container.offsetWidth;
+      [fn, ln].forEach(el => {
+        let size = 10;
+        el.style.fontSize = size + 'px';
+        while (el.scrollWidth <= boxW && size < 80) {
+          size += 0.5;
+          el.style.fontSize = size + 'px';
+        }
+        el.style.fontSize = (size - 0.5) + 'px';
+      });
+    }
+    fitName();
+    window.addEventListener('resize', fitName);
+
+    // Active nav on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.side-nav a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.side-nav a[href="#${e.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
+  <script>
+    // Border glow animation on internship notice every 30s
+    (function() {
+      var el = document.querySelector('.internship-notice');
+      if (!el) return;
+      function glow() {
+        el.classList.remove('glow');
+        void el.offsetWidth;
+        el.classList.add('glow');
+      }
+      el.addEventListener('animationend', function() { el.classList.remove('glow'); });
+      glow();
+      setInterval(glow, 30000);
+    })();
+  </script>
+  <script src="js/particles.js"></script>
+  <script src="js/mapf-grid.js"></script>
+  <script src="js/confetti.browser.min.js"></script>
+  <script src="js/award.js"></script>
 </body>
-
 </html>

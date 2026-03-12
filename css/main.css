@@ -1,11 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
 :root {
     /* Light theme colors (base colors) */
-    --bg: #eae7e7;
-    --surface: #e6e0e0;
+    --bg: #faf7f7;
+    --surface: #f2eded;
     --text: #2d2d2d;
     --text-secondary: #595959;
     --accent: #b76e79;
     --accent-hover: #9a5961;
+    --ff-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+    --ff-serif: 'Lora', Georgia, serif;
 
     /* Dark theme colors */
     --dark-bg: #1a1a1a;
@@ -72,7 +76,7 @@ body.dark-theme .theme-surface {
 body {
     background-color: var(--bg);
     color: var(--text-secondary);
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: var(--ff-sans);
     transition: none;
     /* Magnetic Scroll */
     scroll-snap-type: y proximity;
@@ -429,7 +433,7 @@ body.dark-theme .view-all-button {
 }
 
 .view-all-button:hover {
-    background-color: rgba(174, 15, 39, 0.08);
+    background-color: rgba(183, 110, 121, 0.08);
     color: var(--accent);
     transform: translateY(-1px);
 }
@@ -451,7 +455,7 @@ body.dark-theme .view-all-button:hover {
 
 /* Content Overlays */
 .content-overlay {
-    background-color: rgba(234, 231, 231, 0.85);
+    background-color: rgba(250, 247, 247, 0.85);
     backdrop-filter: blur(4px);
     transition: background-color 0.3s ease-in-out;
 }
@@ -461,7 +465,7 @@ body.dark-theme .content-overlay {
 }
 
 .header-overlay {
-    background-color: rgba(234, 231, 231, 0.95);
+    background-color: rgba(250, 247, 247, 0.95);
     backdrop-filter: blur(4px);
     transition: background-color 0.3s ease-in-out;
 }
@@ -474,7 +478,7 @@ body.dark-theme .header-overlay {
 .about-card {
     position: relative;
     padding: 2rem;
-    background-color: rgba(230, 224, 224, 0.85) !important;
+    background-color: rgba(242, 237, 237, 0.90) !important;
     border-radius: 0.5rem;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
@@ -489,16 +493,30 @@ body.dark-theme .about-card {
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* Card hover effects */
+/* Card hover effects - always show a subtle background, enhance on hover */
 @media (min-width: 1024px) {
+    .group .absolute.theme-surface {
+        background-color: rgba(242, 237, 237, 0.65) !important;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(183, 110, 121, 0.10);
+    }
+
     .group:hover .absolute {
-        background-color: rgba(230, 224, 224, 0.85) !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        background-color: rgba(242, 237, 237, 0.95) !important;
+        box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.09), 0 3px 6px -2px rgba(0, 0, 0, 0.05);
+        border-color: rgba(183, 110, 121, 0.18);
+    }
+
+    body.dark-theme .group .absolute.theme-surface {
+        background-color: rgba(42, 42, 42, 0.55) !important;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 1px 2px -1px rgba(0, 0, 0, 0.18);
+        border: 1px solid rgba(207, 131, 142, 0.10);
     }
 
     body.dark-theme .group:hover .absolute {
-        background-color: var(--dark-surface) !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background-color: rgba(42, 42, 42, 0.95) !important;
+        box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.35), 0 3px 6px -2px rgba(0, 0, 0, 0.25);
+        border-color: rgba(207, 131, 142, 0.20);
     }
 }
 
@@ -588,8 +606,7 @@ body.dark-theme .highlight {
 }
 
 .hiring-tag {
-    background-color: rgba(183, 110, 121, 0.12);
-    /* Slightly more opaque version of your accent color */
+    background-color: rgba(183, 110, 121, 0.10);
     color: var(--accent);
     padding: 0.3rem 1.25rem;
     border-radius: 9999px;
@@ -597,7 +614,7 @@ body.dark-theme .highlight {
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--accent);
+    border: 1px solid rgba(183, 110, 121, 0.5);
 }
 
 body.dark-theme .hiring-tag {

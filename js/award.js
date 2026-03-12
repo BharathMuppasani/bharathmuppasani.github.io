@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
             fire(0.1, { spread: 120, startVelocity: 45, colors: [accentColor] });
 
             // --- 2. Find the Title ---
-            const container = tag.closest('.publication-item') || tag.closest('.project-header') || tag.parentElement.parentElement;
+            const container = tag.closest('.publication-item') || tag.closest('.pub-entry') || tag.closest('.project-header') || tag.parentElement.parentElement;
             let title = null;
 
             if (container) {
-                title = container.querySelector('h3, h4, h2');
+                title = container.querySelector('h3, h4, h2, .pub-title');
             }
 
             // --- 3. Apply Text Shine & Twinkle Stars ---

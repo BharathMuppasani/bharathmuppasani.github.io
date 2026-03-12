@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment with Minimal Inter-Agent Information Sharing — Bharath Muppasani">
+  <title>HI-MAPF — Bharath Muppasani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- MathJax for I-MAPF formulation -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] }, options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  <!-- Chart.js for results plots -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #faf7f7; --surface: #f2eded; --border: #e4dcdc; --text: #2a2020; --muted: #6b5b5b;
+      --accent: #b76e79; --accent-faint: rgba(183,110,121,0.08); --accent-border: rgba(183,110,121,0.25);
+      --ff-sans: 'Instrument Sans', system-ui, sans-serif; --ff-serif: 'Lora', Georgia, serif;
+      --code-bg: rgba(42,32,32,0.07); --code-color: #7a3540; --max: 56rem;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1616; --surface: #231e1e; --border: #3a3030; --text: #ede5e5; --muted: #a08888;
+      --accent: #cf838e; --accent-faint: rgba(207,131,142,0.08); --accent-border: rgba(207,131,142,0.28);
+      --code-bg: rgba(237,229,229,0.09); --code-color: #e89fa8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--ff-sans); background: var(--bg); color: var(--text); line-height: 1.75; }
+    #mapf-background, #mapf-background-tl {
+      position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+    }
+    #mapf-background {
+      bottom: 0; right: 0;
+      opacity: 1;
+      mask-image: radial-gradient(ellipse at bottom right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at bottom right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+    }
+    #mapf-background-tl {
+      top: 0; left: 0;
+      opacity: 1;
+      mask-image: radial-gradient(ellipse at top left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at top left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+    }
+
+    .site-nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; gap: 1rem; }
+    .site-nav a { color: var(--text); text-decoration: none; font-size: 0.875rem; font-weight: 500; opacity: 0.75; transition: opacity 0.15s; }
+    .site-nav a:hover { opacity: 1; }
+    .site-nav a.brand { font-weight: 600; opacity: 1; font-size: 0.95rem; font-family: var(--ff-serif); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .back-link { color: var(--accent) !important; opacity: 1 !important; font-size: 0.82rem; }
+    .theme-btn { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.8rem; color: var(--muted); }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .prose { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+
+    .proj-header { max-width: var(--max); margin: 3rem auto 0; padding: 0 1.5rem 0 1.75rem; border-left: 3px solid var(--accent); position: relative; z-index: 1; }
+    .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+    .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 999px; padding: 0.15rem 0.6rem; }
+    .proj-header h1 { font-family: var(--ff-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; line-height: 1.25; color: var(--text); margin-bottom: 0.45rem; }
+    .byline { font-size: 0.84rem; color: var(--muted); }
+    .byline a { color: var(--accent); text-decoration: none; }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem; font-size: 0.78rem; font-weight: 600; color: #6b5b5b; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.7rem; }
+
+    .links-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .link-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; font-weight: 500; color: var(--accent); border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.35rem 1rem; text-decoration: none; transition: background 0.15s; }
+    .link-btn:hover { background: var(--accent-faint); }
+    .link-btn.filled { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .link-btn.filled:hover { opacity: 0.9; background: var(--accent); }
+
+    .stat-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .stat-chip { flex: 1; min-width: 9rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.75rem 1rem; text-align: center; }
+    .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--accent); display: block; font-family: var(--ff-serif); }
+    .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+    hr.d { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    h2.sh { font-family: var(--ff-serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin: 2rem 0 0.75rem; }
+    h3.ssh { font-family: var(--ff-serif); font-size: 1.05rem; font-weight: 600; color: var(--text); margin: 1.5rem 0 0.5rem; }
+
+    p.bt { font-size: 0.93rem; color: var(--text); opacity: 0.87; margin-bottom: 0.75rem; line-height: 1.85; }
+    ul.bt-list { font-size: 0.93rem; color: var(--text); opacity: 0.87; margin: 0.5rem 0 0.75rem 1.25rem; line-height: 1.8; }
+    ul.bt-list li { margin-bottom: 0.35rem; }
+
+    code.hl { font-family: var(--ff-sans); font-size: 0.85em; background: var(--code-bg); color: var(--code-color); padding: 0.1em 0.38em; border-radius: 0.25rem; font-weight: 500; }
+
+    .key-idea { margin: 2rem 0; padding: 1.1rem 1.3rem; border: 1.5px solid var(--accent-border); border-left: 4px solid var(--accent); border-radius: 0.5rem; background: var(--accent-faint); font-size: 0.93rem; line-height: 1.75; }
+    .key-idea strong { color: var(--accent); font-weight: 600; }
+
+    .math-block { margin: 1.25rem 0; padding: 1rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; overflow-x: auto; font-size: 0.95rem; }
+
+    /* tier cards */
+    .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .tier-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 0.5rem; padding: 0.85rem 1rem; display: flex; flex-direction: column; }
+    .tier-card .tier-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem; }
+    .tier-card .tier-name { font-weight: 600; color: var(--text); font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .tier-card .tier-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; flex: 1; }
+    .tier-card .tier-iu { font-size: 0.7rem; font-weight: 600; color: var(--accent); margin-top: 0.4rem; }
+
+    /* Strategy allocation cards */
+    .strat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .strat-grid { grid-template-columns: repeat(2, 1fr); } }
+    .strat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.7rem; text-align: center; }
+    .strat-card .strat-label { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-bottom: 0.2rem; }
+    .strat-card .strat-val { font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1; }
+    .strat-card .strat-sub { font-size: 0.68rem; color: var(--muted); margin-top: 0.15rem; }
+    .strat-card .strat-success { display: inline-block; margin-top: 0.3rem; font-size: 0.68rem; font-weight: 600; background: var(--accent-faint); color: var(--accent); border-radius: 999px; padding: 0.1rem 0.5rem; }
+
+    /* result table */
+    .result-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 1rem 0; }
+    .result-table th { text-align: left; padding: 0.45rem 0.75rem; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .result-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text); }
+    .result-table tr:last-child td { border-bottom: none; }
+    .result-table .hi { color: var(--accent); font-weight: 600; }
+    .result-table .best { background: var(--accent-faint); }
+
+    .fig { margin: 1.5rem 0; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+    .fig img { width: 100%; height: auto; display: block; max-height: 340px; object-fit: contain; padding: 0.75rem; }
+    .fig figcaption { font-size: 0.75rem; color: var(--muted); text-align: center; padding: 0.3rem 1rem 0.6rem; border-top: 1px solid var(--border); }
+
+    /* Video + image side by side */
+    .media-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; align-items: center; }
+    @media (max-width: 600px) { .media-row { grid-template-columns: 1fr; } }
+    .media-row video, .media-row img { width: 100%; border-radius: 0.5rem; border: 1px solid var(--border); }
+
+    /* Charts */
+    .chart-container { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.4rem 0.3rem 0.2rem; margin: 0.5rem 0; }
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin: 0.5rem 0; }
+    @media (max-width: 700px) { .chart-grid { grid-template-columns: 1fr; } }
+    .chart-grid .chart-container { margin: 0; }
+    .map-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 1rem 0 0.5rem; }
+    .map-btn { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--accent-border); background: transparent; color: var(--accent); cursor: pointer; transition: all 0.15s; }
+    .map-btn:hover { background: var(--accent-faint); }
+    .map-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .chart-legend { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; font-size: 0.75rem; color: var(--muted); margin: 0.5rem 0; }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 0.3rem; }
+    .legend-line { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid; vertical-align: middle; }
+
+    /* IU breakdown cards */
+    .iu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .iu-grid { grid-template-columns: 1fr; } }
+    .iu-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 0.5rem; padding: 0.85rem 1rem; }
+    .iu-card .iu-name { font-weight: 700; color: var(--text); margin-bottom: 0.3rem; font-size: 0.9rem; }
+    .iu-card .iu-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .iu-card .iu-badges { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
+    .iu-badge { font-size: 0.7rem; font-weight: 600; border-radius: 999px; padding: 0.1rem 0.5rem; }
+
+    /* Per-map breakdown table */
+    .breakdown-table { width: 100%; font-size: 0.78rem; border-collapse: collapse; margin: 0.5rem 0; }
+    .breakdown-table th { text-align: center; padding: 0.3rem; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; }
+    .breakdown-table th:first-child { text-align: left; }
+    .breakdown-table td { text-align: center; padding: 0.3rem; border-bottom: 1px solid var(--border); }
+    .breakdown-table td:first-child { text-align: left; font-weight: 600; }
+
+    .pub-list { list-style: none; margin-top: 0.5rem; }
+    .pub-list li { font-size: 0.84rem; color: var(--muted); padding: 0.55rem 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.5rem; }
+    .pub-list li:last-child { border-bottom: 1px solid var(--border); }
+    .pub-row { display: contents; }
+    .venue-badge { order: 3; margin-left: auto; flex-shrink: 0; font-size: 0.68rem; font-weight: 700; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 0.2rem; padding: 0.05rem 0.4rem; white-space: nowrap; }
+    .pub-title { order: 1; width: 100%; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .pub-authors { order: 2; flex: 1; font-size: 0.76rem; color: var(--muted); }
+    .pub-authors strong { color: var(--text); font-weight: 600; }
+
+    .site-footer { text-align: center; padding: 1.5rem 1.5rem 2.5rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; position: relative; z-index: 1; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+
+    details { margin: 0.75rem 0; }
+    details summary { cursor: pointer; font-weight: 600; font-size: 0.85rem; color: var(--text); padding: 0.4rem 0; }
+    details summary span.arrow { color: var(--accent); }
+
+    .bibtex-block { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.75rem 1rem; overflow-x: auto; font-size: 0.78rem; font-family: monospace; white-space: pre; color: var(--muted); line-height: 1.5; }
+
+    /* Strategy Visualization */
+    .strategy-layout { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 1rem; margin: 1rem 0; align-items: start; }
+    @media (max-width: 700px) { .strategy-layout { grid-template-columns: 1fr; } }
+    .strategy-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; }
+    .strategy-tab-list { display: flex; gap: 0.35rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .strategy-tab {
+      font-family: var(--ff-sans); font-size: 0.78rem; font-weight: 600; padding: 0.35rem 0.75rem;
+      border: 1px solid var(--border); border-radius: 999px; background: transparent; color: var(--muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .strategy-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .strategy-tab.is-active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .strategy-copy { font-size: 0.85rem; line-height: 1.65; }
+    .strategy-copy h3 { font-family: var(--ff-serif); font-size: 1rem; font-weight: 600; margin: 0.5rem 0 0.4rem; }
+    .strategy-copy p { margin-bottom: 0.4rem; color: var(--text); opacity: 0.87; }
+    .strategy-meta { display: flex; gap: 0.4rem; margin-bottom: 0.4rem; }
+    .strategy-chip { font-size: 0.7rem; font-weight: 700; border-radius: 999px; padding: 0.15rem 0.55rem; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); }
+    .strategy-viz { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; overflow: hidden; }
+    .strategy-viz canvas { width: 100%; display: block; background: #fff; }
+    [data-theme="dark"] .strategy-viz canvas { background: #1e1a1a; }
+    .canvas-caption { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; padding: 0.5rem 0.75rem; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); }
+    .canvas-caption .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.2rem; vertical-align: middle; }
+    .swatch.agent-a { background: #3273dc; }
+    .swatch.agent-b { background: #363636; }
+    [data-theme="dark"] .swatch.agent-b { background: #ccc; }
+    .swatch.alert { background: #ff3860; }
+    .swatch.bay { background: #23d160; }
+  </style>
+</head>
+<body>
+<canvas id="mapf-background-tl"></canvas>
+<canvas id="mapf-background"></canvas>
+
+<nav class="site-nav">
+  <a href="../../index.html" class="brand">Bharath Muppasani</a>
+  <div class="nav-links">
+    <a href="../../research.html" class="back-link">&larr; Research</a>
+    <a href="../../publications.html">Publications</a>
+    <button class="theme-btn" id="themeBtn">&#9789;</button>
+  </div>
+</nav>
+
+<!-- header -->
+<header class="proj-header">
+  <div class="tag-row">
+    <span class="tag">Multi-Agent Path Finding</span>
+    <span class="tag">Robotics</span>
+    <span class="tag">Decentralized Planning</span>
+    <span class="tag">Information-Centric</span>
+  </div>
+  <h1>HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment with Minimal Information Sharing</h1>
+  <p class="byline">
+    <a href="../../index.html">Bharath Muppasani</a>, Risha Patel, Biplav Srivastava, Vignesh Narayanan &middot;
+    University of South Carolina
+  </p>
+  <div class="status-badge" style="font-style:italic;">Under Review</div>
+</header>
+
+<div class="prose">
+
+  <div class="links-row">
+    <a href="results.html" class="link-btn filled">Full Results Page</a>
+    <a href="#demo-video" class="link-btn">Demo Video</a>
+    <a href="#results" class="link-btn">Results</a>
+    <a href="#bibtex" class="link-btn">BibTeX</a>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-chip"><span class="stat-num">2&ndash;510&times;</span><span class="stat-label">IU reduction vs. baselines</span></div>
+    <div class="stat-chip"><span class="stat-num">5</span><span class="stat-label">TurtleBot4 robots</span></div>
+    <div class="stat-chip"><span class="stat-num">4</span><span class="stat-label">Benchmark maps</span></div>
+    <div class="stat-chip"><span class="stat-num">199 IU</span><span class="stat-label">Hardware total (vs 42,413)</span></div>
+  </div>
+
+  <hr class="d">
+
+  <!-- ABSTRACT -->
+  <h2 class="sh">Abstract</h2>
+  <p class="bt">
+    Multi-Agent Path Finding (MAPF) is central to coordinating multiple agents in shared environments.
+    Existing solutions impose significant requirements on communication, sensing, and computation,
+    limiting their applicability in resource-constrained robotic deployments. Centralized search methods
+    require full access to global state information and high-bandwidth channels, while distributed
+    learning-based methods depend on sophisticated onboard perception (e.g., LiDAR, RGB-D cameras) and
+    frequent inter-agent communication.
+  </p>
+  <p class="bt">
+    To address these limitations, we formulate <strong>Information-Centric MAPF (I-MAPF)</strong>
+    and introduce <strong>HI-MAPF</strong>, a hybrid framework that augments decentralized planning with
+    a lightweight centralized coordinator. We further introduce a method-agnostic metric,
+    <strong>Information Units (IU)</strong>, to quantify coordination overhead as a proxy for deployment cost.
+    We evaluate HI-MAPF against recent communication-focused algorithms in both simulation
+    (8&ndash;128 agents across structured and unstructured environments) and on ground robots in a physical
+    deployment, demonstrating <strong>2&times; to 510&times;</strong> reduction in information sharing
+    while maintaining high success rates.
+  </p>
+
+  <hr class="d">
+
+  <!-- I-MAPF FORMULATION -->
+  <h2 class="sh">I-MAPF: Information-Centric Formulation</h2>
+  <p class="bt">
+    We characterize MAPF coordination by the information available to each agent $i$ at time $t$:
+  </p>
+  <div class="math-block">
+    $$\mathcal{I}_i(t) = \bigl(\mathcal{M}_i,\;\mathcal{S}_i,\;\mathcal{O}_j,\;\mathcal{E}_{ij}(t)\bigr)$$
+  </div>
+  <ul class="bt-list">
+    <li><strong>$\mathcal{M}_i = (V, E, O)$</strong> &mdash; (possibly partial) environment knowledge: grid cells, edges, and obstacles</li>
+    <li><strong>$\mathcal{S}_i = (s_i^t, g_i^t, \pi_{i|t_s:t_r})$</strong> &mdash; self-state: current position, goal, and planned trajectory</li>
+    <li><strong>$\mathcal{O}_j = \{(s_j^t, g_j^t, \pi_{j|t_s:t_r})\}_{j \in \mathcal{N}_i(t)}$</strong> &mdash; other-agent information available through sensing or communication</li>
+    <li><strong>$\mathcal{E}_{ij}(t)$</strong> &mdash; event-triggered coordination signals: predicted collisions, deadlocks, or constraint/alert messages</li>
+  </ul>
+  <p class="bt">
+    Different MAPF paradigms differ in how much of $\mathcal{I}_i(t)$ each agent accesses:
+    <strong>Centralized</strong> methods use global $\mathcal{M}$ and all agents' trajectories.
+    <strong>Distributed</strong> methods restrict $\mathcal{M}_i$ to a local FOV and $\mathcal{O}_j$ to neighbors.
+    <strong>Hybrid</strong> methods (including HI-MAPF) selectively reveal $\mathcal{O}_j$ and constraints in response to $\mathcal{E}_{ij}(t)$.
+  </p>
+
+  <figure class="fig">
+    <img src="images/mapf_example.png" alt="MAPF coordination paradigms and four-stage pipeline">
+    <figcaption>Left: Example MAPF problem with vertex/edge collisions. Top right: Inter-agent information available under centralized, distributed, and decentralized paradigms. Bottom right: General four-stage MAPF pipeline &mdash; path planning, collision detection, resolution, and replanning.</figcaption>
+  </figure>
+
+  <h3 class="ssh">Information Units (IU)</h3>
+  <p class="bt">
+    To enable principled comparison of information consumption across MAPF paradigms, we define:
+  </p>
+  <div class="key-idea">
+    <strong>Definition (Information Unit):</strong> An IU is one atomic datum of the form
+    $(v, s, t, e) \in V \times S \times T \times E$, where $v$ is a grid cell, $s$ is its state
+    (free, obstacle, occupied, reserved), $t$ is a timestep, and $e$ is a scalar message entry.
+    Any sensing output or transmitted message is modeled as a finite multiset of IUs.
+  </div>
+  <p class="bt">
+    Lower IU indicates lower bandwidth, energy, and onboard hardware burden, improving
+    feasibility for long-term robotic deployment. A $d$-dimensional inter-agent message vector
+    (e.g., SCRIMP's 512-dim messages) contributes $d$ IUs per transmission.
+  </p>
+
+  <hr class="d">
+
+  <!-- HI-MAPF FRAMEWORK -->
+  <h2 class="sh">HI-MAPF Framework</h2>
+
+  <div class="key-idea">
+    <strong>Core principle:</strong> Minimize sensing, communication, and computation resources per agent.
+    Planning is decentralized by default; information sharing is conflict-driven and tiered.
+  </div>
+
+  <p class="bt">
+    HI-MAPF operates as a four-stage pipeline that iterates until all conflicts are resolved:
+  </p>
+  <ul class="bt-list">
+    <li><strong>S1 &mdash; Decentralized Planning:</strong> Each agent independently computes a path using A* with only map knowledge $\mathcal{M}_i$ and its own start/goal. No inter-agent communication. <em>0 inter-agent IU.</em></li>
+    <li><strong>S2 &mdash; Centralized Conflict Detection:</strong> A coordinator scans all submitted trajectories for vertex and edge conflicts.</li>
+    <li><strong>S3 &mdash; Heuristic Control:</strong> For each conflict $c = (t_j, \Delta_c, A_c)$, the controller selects a replanning agent via Fewest Future Collisions (FFC) heuristic and issues an alert $\mathcal{A}(c) = (a_{c_k}, t_{j-r}, \Delta_c)$ &mdash; only the conflict location and time, a payload of a few bytes.</li>
+    <li><strong>S4 &mdash; Tiered Replanning:</strong> The selected agent replans using one of four escalating strategies, each consuming more information but applied only when lower tiers fail.</li>
+  </ul>
+
+  <h3 class="ssh">Tiered Replanning Strategies</h3>
+  <div class="tier-grid">
+    <div class="tier-card">
+      <div class="tier-num">S4.1 &mdash; Yield</div>
+      <div class="tier-name">Local Coordination</div>
+      <div class="tier-desc">Agent performs a short-horizon yield: moves to a nearby parking cell, waits while protected agents pass, then resumes.</div>
+      <div class="tier-iu">Cost: 1 IU</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-num">S4.2 &mdash; Static Replan</div>
+      <div class="tier-name">Bounded Constraint</div>
+      <div class="tier-desc">Agent replans a bounded path segment treating conflict cells $\Delta_c$ as forbidden static obstacles. Uses A*.</div>
+      <div class="tier-iu">Cost: $|\Delta c|$ IUs</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-num">S4.3 &mdash; Dynamic Replan</div>
+      <div class="tier-name">Time-Indexed Avoidance</div>
+      <div class="tier-desc">Agent receives short sub-paths of conflicting agents as time-varying obstacles over horizon $r$. Uses RL policy.</div>
+      <div class="tier-iu">Cost: $r$ IUs</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-num">S4.4 &mdash; Joint A*</div>
+      <div class="tier-name">Coupled Replanning</div>
+      <div class="tier-desc">A tightly coupled subset $A_c^J$ is replanned jointly over a bounded window. Maximum IU, used sparingly.</div>
+      <div class="tier-iu">Cost: $|A_c^J| \cdot r$ IUs</div>
+    </div>
+  </div>
+
+  <!-- Interactive Strategy Visualization -->
+  <div class="strategy-layout">
+    <div class="strategy-panel">
+      <div class="strategy-tab-list" role="tablist" aria-label="Repair strategies">
+        <button class="strategy-tab is-active" type="button" data-strategy="yield">Yield</button>
+        <button class="strategy-tab" type="button" data-strategy="static">Static replan</button>
+        <button class="strategy-tab" type="button" data-strategy="dynamic">Dynamic replan</button>
+        <button class="strategy-tab" type="button" data-strategy="joint">Joint A*</button>
+      </div>
+      <div class="strategy-copy" id="strategyDetails"></div>
+    </div>
+    <div class="strategy-viz">
+      <canvas id="strategyCanvas" width="680" height="520" aria-label="Strategy animation"></canvas>
+      <div class="canvas-caption">
+        <span><span class="swatch agent-a"></span> Protected agent</span>
+        <span><span class="swatch agent-b"></span> Replanning agent</span>
+        <span><span class="swatch alert"></span> Conflict region</span>
+        <span><span class="swatch bay"></span> Parking/bay</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="ssh">Strategy Allocation &amp; Effectiveness</h3>
+  <p class="bt">
+    Across all simulated benchmarks (8&ndash;128 agents), the vast majority of conflicts are resolved
+    at the cheapest tier:
+  </p>
+  <div class="strat-grid">
+    <div class="strat-card">
+      <div class="strat-label">S4.1 Yield</div>
+      <div class="strat-val">91&ndash;99%</div>
+      <div class="strat-sub">usage share</div>
+      <div class="strat-success">91&ndash;99% success</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-label">S4.2 Static</div>
+      <div class="strat-val">1&ndash;8%</div>
+      <div class="strat-sub">usage share</div>
+      <div class="strat-success">99&ndash;100% success</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-label">S4.3 Dynamic</div>
+      <div class="strat-val">&lt;0.5%</div>
+      <div class="strat-sub">usage share</div>
+      <div class="strat-success">11% success</div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-label">S4.4 Joint A*</div>
+      <div class="strat-val">&lt;0.5%</div>
+      <div class="strat-sub">usage share</div>
+      <div class="strat-success">72&ndash;100% success</div>
+    </div>
+  </div>
+
+  <details>
+    <summary><span class="arrow">&#9656;</span> Per-Map Strategy Breakdown</summary>
+    <table class="breakdown-table">
+      <thead>
+        <tr><th>Map</th><th>Yield</th><th>Static</th><th>Dynamic</th><th>Joint</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>random-32</td><td style="color:var(--accent);">91.8% <span style="font-size:0.68rem;color:var(--muted);">(91.4% sr)</span></td><td>7.6% <span style="font-size:0.68rem;color:var(--muted);">(99.1%)</span></td><td>0.3% <span style="font-size:0.68rem;color:var(--muted);">(11.1%)</span></td><td>0.3% <span style="font-size:0.68rem;color:var(--muted);">(71.7%)</span></td></tr>
+        <tr><td>random-64</td><td style="color:var(--accent);">97.9% <span style="font-size:0.68rem;color:var(--muted);">(97.9% sr)</span></td><td>2.0% <span style="font-size:0.68rem;color:var(--muted);">(98.7%)</span></td><td>0.0%</td><td>0.0%</td></tr>
+        <tr><td>den312d</td><td style="color:var(--accent);">98.1% <span style="font-size:0.68rem;color:var(--muted);">(98.0% sr)</span></td><td>1.9% <span style="font-size:0.68rem;color:var(--muted);">(100%)</span></td><td>0.0%</td><td>0.0%</td></tr>
+        <tr><td>warehouse</td><td style="color:var(--accent);">99.2% <span style="font-size:0.68rem;color:var(--muted);">(99.2% sr)</span></td><td>0.8% <span style="font-size:0.68rem;color:var(--muted);">(100%)</span></td><td style="color:var(--muted);">N/A</td><td style="color:var(--muted);">N/A</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <hr class="d">
+
+  <!-- RESULTS -->
+  <h2 class="sh" id="results">Results</h2>
+
+  <h3 class="ssh">Hardware Validation (5 TurtleBot4)</h3>
+  <p class="bt">
+    All five algorithms achieve 100% success rate across five problem instances.
+    HI-MAPF achieves the lowest average makespan (12.2) and the lowest total IU (199),
+    compared to 42,413 IU for SCRIMP (213&times;).
+  </p>
+
+  <table class="result-table">
+    <thead>
+      <tr>
+        <th>Algorithm</th>
+        <th>Success Rate</th>
+        <th>Avg Makespan</th>
+        <th>Total IU</th>
+        <th>IU Multiplier</th>
+        <th>Exec Time (s)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="best">
+        <td class="hi"><strong>HI-MAPF</strong></td>
+        <td><strong>100%</strong></td>
+        <td><strong>12.2</strong></td>
+        <td class="hi"><strong>199</strong></td>
+        <td><strong>1.0&times;</strong></td>
+        <td>181.5</td>
+      </tr>
+      <tr>
+        <td>MAPF-GPT-2M</td>
+        <td>100%</td>
+        <td>13.6</td>
+        <td>588</td>
+        <td>3.0&times;</td>
+        <td><strong>176.2</strong></td>
+      </tr>
+      <tr>
+        <td>DCC</td>
+        <td>100%</td>
+        <td>19.4</td>
+        <td>596</td>
+        <td>3.0&times;</td>
+        <td>235.0</td>
+      </tr>
+      <tr>
+        <td>EPH</td>
+        <td>100%</td>
+        <td>21.8</td>
+        <td>623</td>
+        <td>3.1&times;</td>
+        <td>234.9</td>
+      </tr>
+      <tr>
+        <td>SCRIMP</td>
+        <td>100%</td>
+        <td>16.4</td>
+        <td style="color:var(--accent);">42,413</td>
+        <td style="color:var(--accent); font-weight:600;">213.0&times;</td>
+        <td>211.2</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="media-row" style="margin-top: 1rem;">
+    <div>
+      <img src="images/robot_setup.jpg" alt="5 TurtleBot4 robots in 6x6 grid" style="border-radius: 0.5rem; border: 1px solid var(--border); width: 100%;">
+      <p class="bt" style="font-size: 0.82rem; color: var(--muted); text-align: center; margin-top: 0.25rem;">Physical deployment: 5 TurtleBot4 robots in a 6&times;6 grid using ROS 2</p>
+    </div>
+    <div>
+      <img src="images/hw_planning_results.png" alt="Multi-axis comparison of hardware deployment results" style="border-radius: 0.5rem; border: 1px solid var(--border); width: 100%;">
+      <p class="bt" style="font-size: 0.82rem; color: var(--muted); text-align: center; margin-top: 0.25rem;">Multi-axis comparison: HI-MAPF achieves the most balanced profile across makespan, IU, and communication frequency</p>
+    </div>
+  </div>
+
+  <div id="demo-video" style="margin-top: 1rem;">
+    <video controls style="border-radius: 0.5rem; border: 1px solid var(--border); width: 100%;">
+      <source src="media/demo.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p class="bt" style="font-size: 0.82rem; color: var(--muted); text-align: center; margin-top: 0.25rem;">
+      Hardware demo: robots communicate only via lightweight alert protocol.
+    </p>
+  </div>
+
+  <!-- IU Breakdown -->
+  <h3 class="ssh">Information Unit Breakdown</h3>
+  <div class="iu-grid">
+    <div class="iu-card">
+      <div class="iu-name">HI-MAPF</div>
+      <div class="iu-desc">IU dominated by <strong>initial map broadcast (71%)</strong>, with remaining IU from conflict-triggered constraints during replanning. No onboard perception required.</div>
+      <div class="iu-badges">
+        <span class="iu-badge" style="background:var(--accent); color:var(--bg);">199 IU</span>
+        <span class="iu-badge" style="background:var(--accent-faint); color:var(--accent);">1.0&times;</span>
+      </div>
+    </div>
+    <div class="iu-card" style="border-left-color: #e74c3c;">
+      <div class="iu-name" style="color:#e74c3c;">SCRIMP</div>
+      <div class="iu-desc">99% of IU from <strong>512-dim inter-agent messages</strong> transmitted via transformer-based communication module at every timestep.</div>
+      <div class="iu-badges">
+        <span class="iu-badge" style="background:#e74c3c; color:white;">42,413 IU</span>
+        <span class="iu-badge" style="background:rgba(231,76,60,0.1); color:#e74c3c;">213&times;</span>
+      </div>
+    </div>
+    <div class="iu-card" style="border-left-color: #f39c12;">
+      <div class="iu-name" style="color:#b56e1f;">DCC &amp; EPH</div>
+      <div class="iu-desc">IU dominated by <strong>per-timestep position broadcasts</strong> and action transmissions (49&ndash;53%), with FOV sensing contributing ~20&ndash;22%.</div>
+      <div class="iu-badges">
+        <span class="iu-badge" style="background:#f39c12; color:white;">596&ndash;623 IU</span>
+        <span class="iu-badge" style="background:rgba(243,156,18,0.1); color:#b56e1f;">3.0&ndash;3.1&times;</span>
+      </div>
+    </div>
+    <div class="iu-card" style="border-left-color: #3498db;">
+      <div class="iu-name" style="color:#1a4a9e;">MAPF-GPT-2M</div>
+      <div class="iu-desc">Competitive makespan (13.6) but requires <strong>11&times;11 FOV observations</strong> (~41% of IU) compared to 3&times;3 in SCRIMP.</div>
+      <div class="iu-badges">
+        <span class="iu-badge" style="background:#3498db; color:white;">588 IU</span>
+        <span class="iu-badge" style="background:rgba(52,152,219,0.1); color:#1a4a9e;">3.0&times;</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="d">
+
+  <!-- SIMULATION RESULTS -->
+  <h3 class="ssh">Simulation Benchmarks</h3>
+  <p class="bt">
+    We evaluated HI-MAPF on four standard MAPF benchmarks against CBS, SCRIMP, DCC, MAPF-GPT-2M, and EPH across 8&ndash;128 agents.
+  </p>
+
+  <div class="map-btns" id="mapButtons">
+    <button class="map-btn active" data-map="random-32-32-20">random-32&times;32</button>
+    <button class="map-btn" data-map="random-64-64-20">random-64&times;64</button>
+    <button class="map-btn" data-map="den312d">den312d</button>
+    <button class="map-btn" data-map="warehouse">warehouse</button>
+  </div>
+
+  <div class="chart-legend">
+    <span><span class="legend-line" style="border-color:#363636; border-top-style:solid;"></span> HI-MAPF</span>
+    <span><span class="legend-line" style="border-color:#3498db; border-top-style:dashed;"></span> MAPF-GPT-2M</span>
+    <span><span class="legend-line" style="border-color:#f39c12; border-top-style:dashed;"></span> DCC</span>
+    <span><span class="legend-line" style="border-color:#2ecc71; border-top-style:dashed;"></span> EPH</span>
+    <span><span class="legend-line" style="border-color:#e74c3c; border-top-style:dashed;"></span> SCRIMP</span>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-container">
+      <canvas id="srChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="msChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="iuChart"></canvas>
+    </div>
+  </div>
+  <p class="bt" style="font-size: 0.78rem; color: var(--muted); text-align: center;">
+    Quantitative results across agent densities. <a href="results.html" style="color: var(--accent); text-decoration: none; font-weight: 600;">View full per-map results &rarr;</a>
+  </p>
+
+  <hr class="d">
+
+  <!-- PUBLICATIONS -->
+  <h2 class="sh">Publications</h2>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge" style="background:rgba(107,91,91,0.07);border-color:rgba(107,91,91,0.2);color:var(--muted);font-style:italic;">Under Review</span><span class="pub-title">HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment with Minimal Inter-Agent Information Sharing</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Risha Patel, Biplav Srivastava, Vignesh Narayanan</div>
+    </li>
+  </ul>
+
+  <hr class="d">
+
+  <!-- BIBTEX -->
+  <h2 class="sh" id="bibtex">BibTeX</h2>
+  <div class="bibtex-block">@inproceedings{muppasani2025himapf,
+  title={HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment},
+  author={Muppasani, Bharath and Patel, Risha and Srivastava, Biplav and Narayanan, Vignesh},
+  year={2025},
+  note={Under Review}
+}</div>
+
+  <div style="height:1rem;"></div>
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Bharath Muppasani &middot; <a href="https://github.com/BharathMuppasani" target="_blank">GitHub</a> &middot; <a href="../../index.html">Home</a></p>
+</footer>
+
+<script>
+  const btn = document.getElementById('themeBtn');
+  function applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.textContent = dark ? '\u2600' : '\u263D';
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('theme') === 'dark');
+  btn.addEventListener('click', () => {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+</script>
+
+<!-- Chart.js Results -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const MAP_DATA = {
+    'random-32-32-20': {
+      labels: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 128],
+      sr: {
+        'HI-MAPF': [100,100,100,100,100,100,100,100,95,85,0],
+        'MAPF-GPT-2M': [100,100,100,100,100,100,100,100,100,100,90],
+        'DCC': [100,100,100,95,90,70,60,60,30,40,0],
+        'EPH': [100,95,100,100,95,95,65,70,25,50,5],
+        'SCRIMP': [100,100,100,95,100,90,90,80,60,60,70]
+      },
+      ms: {
+        'HI-MAPF': [50.5,56,55.5,107,61.4,128.2,65.5,71.8,82.8,76.5,null],
+        'MAPF-GPT-2M': [49.2,53.8,53.9,57.2,58.9,63,68.2,72.9,70,77,94.1],
+        'DCC': [49.1,58,59.5,72.8,81.7,92,104.5,111.7,117.8,117.5,127],
+        'EPH': [47.6,62.5,62,64.5,79,88.7,110.7,108.9,123.8,121,127.5],
+        'SCRIMP': [48,50.5,52.4,58,56.8,71.4,70.5,83.8,96.9,97.2,96.6]
+      },
+      iu: {
+        'HI-MAPF': [3.6,18.8,66.3,48.8,221.4,214.2,2158.2,1405.5,1950.7,3693.9,null],
+        'MAPF-GPT-2M': [510.8,2571.8,5410.6,10023.4,16817.5,25789.6,37317.4,52094.2,65378,84993.4,167878.4],
+        'DCC': [26.1,211.2,696.2,1407,3356.1,6337.2,10385,17196.1,29474.4,37877.7,94612.2],
+        'EPH': [19.7,204.2,576.8,1403,3183.2,6155.1,11735.3,20330.8,36040.6,41383.7,129548.7],
+        'SCRIMP': [262.2,565.2,884.8,1377.7,1645.2,2822.8,3158.8,4660.8,6292.6,6982.9,8615.5]
+      }
+    },
+    'random-64-64-20': {
+      labels: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 128],
+      sr: {
+        'HI-MAPF': [100,100,100,100,100,100,100,100,95,90,5],
+        'MAPF-GPT-2M': [100,100,100,100,100,85,95,95,75,75,55],
+        'DCC': [100,100,90,100,85,65,50,20,60,25,0],
+        'EPH': [95,100,100,100,100,95,85,90,80,45,15],
+        'SCRIMP': [50,10,10,0,0,0,0,0,0,0,0]
+      },
+      ms: {
+        'HI-MAPF': [108,115.6,118.2,122.6,124,130.2,128.2,128.7,130.4,130.1,132],
+        'MAPF-GPT-2M': [99.6,110.2,111.7,112.7,115.2,117.7,118.7,121,121.3,123.8,126.2],
+        'DCC': [97.7,107.8,112.2,112.8,116.8,120.8,123.5,126.8,124.6,127.2,128],
+        'EPH': [97.3,105.7,109.5,112.3,113.8,116.1,120.8,120.2,122.2,125.3,127.7],
+        'SCRIMP': [112.5,126.5,126.7,128,128,128,128,128,128,128,128]
+      },
+      iu: {
+        'HI-MAPF': [0.9,6.2,23.4,45,109.8,110.8,183,211.9,243.6,472.9,530],
+        'MAPF-GPT-2M': [314.8,1432.2,3440.9,6165.6,9882.4,14413.4,20501.5,26414.2,34021.6,42306.8,70208.3],
+        'DCC': [10.6,59.4,172.2,382.4,889.7,1258,1823.1,2947.4,4095.8,6134.2,13053],
+        'EPH': [7.8,47.8,141.8,328.9,638,964.6,1640.2,2520.7,3187.4,5290,12250.5],
+        'SCRIMP': [612.1,1382,2190.3,2912.6,3668.7,4454.6,5275.4,5860.5,6649.9,7296.5,9213.7]
+      }
+    },
+    'den312d': {
+      labels: [8, 16, 32, 64, 128],
+      sr: {
+        'HI-MAPF': [100,100,100,100,0],
+        'MAPF-GPT-2M': [100,100,100,100,35],
+        'DCC': [100,100,85,90,5],
+        'EPH': [100,100,100,100,90],
+        'SCRIMP': [20,0,0,0,0]
+      },
+      ms: {
+        'HI-MAPF': [115.3,124,136.7,153.1,null],
+        'MAPF-GPT-2M': [114,120.9,126.4,137.8,234],
+        'DCC': [114.2,130.7,163.5,190.7,254.8],
+        'EPH': [111.9,122.2,127,146.1,207.7],
+        'SCRIMP': [226.2,256,256,256,256]
+      },
+      iu: {
+        'HI-MAPF': [3.6,21.8,105.2,759.9,null],
+        'MAPF-GPT-2M': [300,1464.8,6425.6,27326.8,320115.9],
+        'DCC': [22.6,191.3,1195.6,8180.1,112519.4],
+        'EPH': [13,128.4,627.5,6722.3,77108.9],
+        'SCRIMP': [1156.7,2629.9,5292.6,10960.8,14090.8]
+      }
+    },
+    'warehouse': {
+      labels: [8, 16, 32, 64, 128],
+      sr: {
+        'HI-MAPF': [100,100,100,100,100],
+        'MAPF-GPT-2M': [100,100,100,100,95],
+        'DCC': [100,100,100,100,95],
+        'EPH': [100,100,100,100,90],
+        'SCRIMP': [0,0,0,0,0]
+      },
+      ms: {
+        'HI-MAPF': [192.8,215.1,220.3,227.6,234.7],
+        'MAPF-GPT-2M': [193.6,214,221.8,229.3,237.2],
+        'DCC': [191.8,213.3,219.2,227.6,236.8],
+        'EPH': [191.6,212.9,218.1,227.8,239.1],
+        'SCRIMP': [256,256,256,256,256]
+      },
+      iu: {
+        'HI-MAPF': [0.8,1.0,10.7,23.6,139.1],
+        'MAPF-GPT-2M': [107,509.6,2303.8,9468.8,38508.6],
+        'DCC': [4.3,15.6,89,356.9,2016.5],
+        'EPH': [1.7,11.1,57.7,265.1,1502.4],
+        'SCRIMP': [997.6,1729.3,3575.1,7262.5,9408.9]
+      }
+    }
+  };
+
+  const ALGO_STYLES = {
+    'HI-MAPF':      { color: '#363636', width: 3, dash: [] },
+    'MAPF-GPT-2M':  { color: '#3498db', width: 2, dash: [5,5] },
+    'DCC':          { color: '#f39c12', width: 2, dash: [5,5] },
+    'EPH':          { color: '#2ecc71', width: 2, dash: [5,5] },
+    'SCRIMP':       { color: '#e74c3c', width: 2, dash: [5,5] }
+  };
+
+  // Detect dark mode for chart styling
+  function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
+  function chartTextColor() { return isDark() ? '#a08888' : '#6b5b5b'; }
+  function chartGridColor() { return isDark() ? 'rgba(160,136,136,0.15)' : 'rgba(107,91,91,0.12)'; }
+
+  let srChart, msChart, iuChart;
+
+  function buildDatasets(mapKey, metric) {
+    const d = MAP_DATA[mapKey][metric];
+    return Object.keys(d).map(algo => ({
+      label: algo,
+      data: d[algo],
+      borderColor: ALGO_STYLES[algo].color,
+      borderWidth: ALGO_STYLES[algo].width,
+      borderDash: ALGO_STYLES[algo].dash,
+      tension: 0.1,
+      pointRadius: 3,
+      spanGaps: false
+    }));
+  }
+
+  function renderCharts(mapKey) {
+    const labels = MAP_DATA[mapKey].labels;
+    const txtColor = chartTextColor();
+    const gridColor = chartGridColor();
+    const baseOpts = {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: 1.6,
+      layout: { padding: { left: 2, right: 6, top: 4, bottom: 2 } },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { title: { display: true, text: 'Agents', color: txtColor, font: { size: 11 } }, ticks: { color: txtColor, font: { size: 10 } }, grid: { color: gridColor } },
+        y: { ticks: { color: txtColor, font: { size: 10 }, maxTicksLimit: 6 }, grid: { color: gridColor } }
+      }
+    };
+
+    if (srChart) srChart.destroy();
+    if (msChart) msChart.destroy();
+    if (iuChart) iuChart.destroy();
+
+    srChart = new Chart(document.getElementById('srChart').getContext('2d'), {
+      type: 'line',
+      data: { labels, datasets: buildDatasets(mapKey, 'sr') },
+      options: { ...baseOpts, scales: { ...baseOpts.scales, y: { ...baseOpts.scales.y, min: 0, max: 100, title: { display: true, text: 'SR (%)', color: txtColor } } } }
+    });
+
+    msChart = new Chart(document.getElementById('msChart').getContext('2d'), {
+      type: 'line',
+      data: { labels, datasets: buildDatasets(mapKey, 'ms') },
+      options: { ...baseOpts, scales: { ...baseOpts.scales, y: { ...baseOpts.scales.y, title: { display: true, text: 'Makespan', color: txtColor } } } }
+    });
+
+    iuChart = new Chart(document.getElementById('iuChart').getContext('2d'), {
+      type: 'line',
+      data: { labels, datasets: buildDatasets(mapKey, 'iu') },
+      options: { ...baseOpts, scales: { ...baseOpts.scales, y: { ...baseOpts.scales.y, type: 'logarithmic', title: { display: true, text: 'IU (log)', color: txtColor }, ticks: { color: txtColor, callback: function(val) { if (val === 0) return '0'; var exp = Math.round(Math.log10(val)); if (Math.abs(val - Math.pow(10, exp)) < 0.01) { var sup = {'0':'\u2070','1':'\u00B9','2':'\u00B2','3':'\u00B3','4':'\u2074','5':'\u2075','6':'\u2076'}; return '10' + String(exp).split('').map(function(c){return sup[c]||c;}).join(''); } return ''; } } } } }
+    });
+  }
+
+  renderCharts('random-32-32-20');
+
+  document.querySelectorAll('#mapButtons button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#mapButtons button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      renderCharts(b.dataset.map);
+    });
+  });
+
+  // Re-render charts on theme change
+  const observer = new MutationObserver(() => {
+    const activeMap = document.querySelector('#mapButtons .active');
+    if (activeMap) renderCharts(activeMap.dataset.map);
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+});
+</script>
+
+<script src="canvas.js"></script>
+<script src="../../js/mapf-grid.js"></script>
+<script>
+// Second MAPF grid for top-left corner
+(function() {
+  const canvas = document.getElementById('mapf-background-tl');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  const GRID_SIZE = 30;
+  const agents = [];
+  const agentCount = 35;
+  const PALETTE = [
+    'rgba(183,110,121,0.5)','rgba(154,89,97,0.5)','rgba(207,131,142,0.5)',
+    'rgba(160,100,110,0.4)','rgba(130,80,88,0.4)','rgba(180,130,135,0.4)'
+  ];
+  function getGridColor() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
+  }
+  function getAgentOpacity() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return isDark ? 0.5 : 0.45;
+  }
+  class Agent {
+    constructor() { this.reset(); this.color = PALETTE[Math.floor(Math.random() * PALETTE.length)]; }
+    reset() {
+      this.x = Math.floor(Math.random() * (width / GRID_SIZE)) * GRID_SIZE;
+      this.y = Math.floor(Math.random() * (height / GRID_SIZE)) * GRID_SIZE;
+      this.pickDirection(); this.radius = 3;
+    }
+    pickDirection() {
+      const s = 0.5;
+      if (Math.random() > 0.5) { this.vx = Math.random() > 0.5 ? s : -s; this.vy = 0; }
+      else { this.vx = 0; this.vy = Math.random() > 0.5 ? s : -s; }
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
+      if (Math.abs(this.x % GRID_SIZE) < 0.5 && Math.abs(this.y % GRID_SIZE) < 0.5) {
+        if (Math.random() < 0.08) {
+          const s = 0.5;
+          if (this.vx !== 0) { this.vx = 0; this.vy = Math.random() > 0.5 ? s : -s; }
+          else { this.vx = Math.random() > 0.5 ? s : -s; this.vy = 0; }
+        }
+      }
+    }
+    draw() {
+      ctx.globalAlpha = getAgentOpacity(); ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color; ctx.fill(); ctx.globalAlpha = 1;
+    }
+  }
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr); width = rect.width; height = rect.height;
+    agents.length = 0; for (let i = 0; i < agentCount; i++) agents.push(new Agent());
+  }
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = getGridColor(); ctx.lineWidth = 1; ctx.beginPath();
+    for (let x = 0; x <= width; x += GRID_SIZE) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
+    for (let y = 0; y <= height; y += GRID_SIZE) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
+    ctx.stroke();
+    for (const agent of agents) { agent.update(); agent.draw(); }
+    requestAnimationFrame(animate);
+  }
+  resize(); window.addEventListener('resize', resize); animate();
+})();
+</script>
+</body>
+</html>

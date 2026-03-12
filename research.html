@@ -1,455 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <script>
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.documentElement.style.display = 'none';
-            window.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.add('light-theme');
-                document.documentElement.style.display = '';
-            });
-        }
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Projects - Bharath Muppasani</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
-    <style>
-        .project-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research — Bharath Muppasani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:          #faf7f7;
+      --surface:     #f2eded;
+      --border:      #e4dcdc;
+      --text:        #2a2020;
+      --muted:       #6b5b5b;
+      --accent:      #b76e79;
+      --accent-faint: rgba(183,110,121,0.08);
+      --accent-border: rgba(183,110,121,0.25);
+      --ff-sans:     'Instrument Sans', system-ui, sans-serif;
+      --ff-serif:    'Lora', Georgia, serif;
+      --code-bg:     rgba(42,32,32,0.07);
+      --code-color:  #7a3540;
+      --max-prose:   52rem;
+    }
+    [data-theme="dark"] {
+      --bg:          #1a1616;
+      --surface:     #231e1e;
+      --border:      #3a3030;
+      --text:        #ede5e5;
+      --muted:       #a08888;
+      --accent:      #cf838e;
+      --accent-faint: rgba(207,131,142,0.08);
+      --accent-border: rgba(207,131,142,0.28);
+      --code-bg:     rgba(237,229,229,0.09);
+      --code-color:  #e89fa8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body { font-family: var(--ff-sans); background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; }
 
-        .project-header {
-            cursor: pointer;
-            position: relative;
-            padding-right: 2.5rem;
-        }
+    /* nav */
+    .site-nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; gap: 1rem; }
+    .site-nav a { color: var(--text); text-decoration: none; font-size: 0.875rem; font-weight: 500; opacity: 0.75; transition: opacity 0.15s; }
+    .site-nav a:hover, .site-nav a.active { opacity: 1; }
+    .site-nav a.brand { font-weight: 600; opacity: 1; font-size: 0.95rem; font-family: var(--ff-serif); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .theme-btn { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.8rem; color: var(--muted); transition: border-color 0.2s, color 0.2s; }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-        .project-header::after {
-            content: '+';
-            position: absolute;
-            right: 1rem;
-            top: 1.5rem;
-            font-size: 1.5rem;
-            color: var(--dark-accent);
-            transition: transform 0.3s ease;
-        }
+    /* page header */
+    .page-header { max-width: var(--max-prose); margin: 3.5rem auto 0; padding: 0 1.5rem; }
+    .page-header h1 { font-family: var(--ff-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
+    .page-header p { color: var(--muted); font-size: 0.93rem; margin-top: 0.5rem; }
 
-        body.light-theme .project-header::after {
-            color: var(--light-accent);
-        }
+    /* divider */
+    .section-divider { max-width: var(--max-prose); margin: 2.5rem auto 0; padding: 0 1.5rem; border: none; border-top: 1px solid var(--border); }
 
-        .project.active .project-header::after {
-            transform: rotate(45deg);
-        }
+    /* entry */
+    .entry { max-width: var(--max-prose); margin: 0 auto; padding: 2.5rem 1.5rem 0; }
+    .entry-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+    .entry-year { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+    .entry-tag { font-size: 0.72rem; font-weight: 500; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 999px; padding: 0.1rem 0.55rem; }
+    .entry-title { font-family: var(--ff-serif); font-size: clamp(1.15rem, 2.2vw, 1.4rem); font-weight: 600; line-height: 1.3; color: var(--text); margin-bottom: 0.75rem; }
+    .entry-desc { font-size: 0.93rem; color: var(--text); opacity: 0.85; margin-bottom: 1rem; line-height: 1.8; }
+    .entry-desc p + p { margin-top: 0.65em; }
 
-        .project.active .project-content {
-            max-height: 2000px;
-            transition: max-height 0.5s ease-in;
-        }
-    </style>
+    code.hl { font-family: var(--ff-sans); font-size: 0.85em; background: var(--code-bg); color: var(--code-color); padding: 0.1em 0.38em; border-radius: 0.25rem; font-weight: 500; }
+
+    /* result chips */
+    .result-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.1rem; }
+    .chip { font-size: 0.78rem; font-weight: 500; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 0.375rem; padding: 0.3rem 0.7rem; display: inline-flex; align-items: center; gap: 0.3rem; }
+
+    /* image */
+    .entry-img { margin: 1rem 0 1.1rem; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+    .entry-img img { width: 100%; height: auto; display: block; max-height: 280px; object-fit: contain; padding: 0.5rem; }
+    .entry-img figcaption { font-size: 0.75rem; color: var(--muted); text-align: center; padding: 0.25rem 0.75rem 0.5rem; border-top: 1px solid var(--border); }
+
+    /* pub list */
+    .pub-list { list-style: none; margin-bottom: 1rem; }
+    .pub-list li { font-size: 0.83rem; color: var(--muted); padding: 0.55rem 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.5rem; }
+    .pub-list li:last-child { border-bottom: 1px solid var(--border); }
+    .pub-row { display: contents; }
+    .venue-badge { order: 3; margin-left: auto; flex-shrink: 0; font-size: 0.68rem; font-weight: 700; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 0.2rem; padding: 0.05rem 0.4rem; white-space: nowrap; }
+    .pub-title { order: 1; width: 100%; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .pub-authors { order: 2; flex: 1; font-size: 0.76rem; color: var(--muted); }
+    .pub-authors strong { color: var(--text); font-weight: 600; }
+    .pub-links { order: 4; width: 100%; display: flex; gap: 0.35rem; margin-top: 0.2rem; flex-wrap: wrap; }
+    .pub-link { font-size: 0.7rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.05rem 0.45rem; }
+    .pub-link:hover { background: var(--accent-faint); }
+
+    /* entry footer */
+    .entry-footer { margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .project-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; font-weight: 500; color: var(--accent); border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.3rem 0.9rem; text-decoration: none; transition: background 0.15s; }
+    .project-btn:hover { background: var(--accent-faint); }
+
+    /* inline sections */
+    .entry-inline { max-width: var(--max-prose); margin: 0 auto; padding: 2rem 1.5rem 0; opacity: 0.9; }
+    .inline-divider-label { max-width: var(--max-prose); margin: 2.5rem auto 0; padding: 0 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+    .inline-divider-label::before, .inline-divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .inline-divider-label span { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+    .page-end { height: 5rem; }
+    .site-footer { text-align: center; padding: 1.5rem 1.5rem 2rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
+<body>
 
-<body class="theme-bg">
-    <!-- Navigation Bar -->
-    <nav class="fixed top-0 w-full z-50 theme-surface fixed-nav">
-        <div class="max-w-screen-xl mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="./index.html" class="back-link">
-                    <span class="text-lg font-semibold">← Back to Portfolio</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<nav class="site-nav">
+  <a href="index.html" class="brand">Bharath Muppasani</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="research.html" class="active">Research</a>
+    <a href="publications.html">Publications</a>
+    <a href="index.html#experience">Experience</a>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☽</button>
+  </div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="min-h-screen pt-20">
-        <div class="max-w-4xl mx-auto px-6 py-12">
-            <!-- Header Section -->
-            <header class="text-center mb-16">
-                <h1 class="text-5xl font-bold tracking-tight theme-text mb-6">Research Projects</h1>
-                <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <span class="skill-tag">Opinion Dynamics</span>
-                    <span class="skill-tag">Ontology</span>
-                    <span class="skill-tag">MAPF</span>
-                    <span class="skill-tag">LLMs</span>
-                    <span class="skill-tag">SafeChat</span>
-                </div>
-            </header>
+<header class="page-header">
+  <h1>Research</h1>
+  <p>Planning &amp; learning for dynamic multi-agent systems — robot coordination, opinion networks, and knowledge representation.</p>
+</header>
 
-            <!-- Projects Section -->
-            <div class="space-y-12">
+<hr class="section-divider">
 
-                <!-- Theme 1: Opinion Dynamics -->
-                <section class="project theme-surface rounded-lg p-6">
-                    <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">Opinion Dynamics & Information Spread in Networks
-                        </h2>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2023 - Present</span>
-                            <span class="skill-tag">Opinion Networks</span>
-                            <span class="skill-tag">Automated Planning</span>
-                            <span class="skill-tag">RL</span>
-                        </div>
-                        <div class="theme-text-secondary mb-4">
-                            <p>Research on modeling, simulating, and controlling opinion dynamics in social networks
-                                using automated planning, learning, and reinforcement learning. Focuses on
-                                misinformation control, intervention strategies, and interactive visual tools.</p>
-                        </div>
+<!-- ══════════════════════════════════════
+     1. HI-MAPF  (2024 – Present, newest)
+══════════════════════════════════════ -->
+<article class="entry">
+  <div class="entry-meta">
+    <span class="entry-year">2024 – Present</span>
+    <span class="entry-tag">Multi-Agent Path Finding</span>
+    <span class="entry-tag">Robotics</span>
+  </div>
+  <h2 class="entry-title">HI-MAPF: Resource-Efficient Multi-Robot Coordination</h2>
+  <div class="entry-desc">
+    <p>
+      Classical MAPF solvers assume perfect centralized control, but real robot deployments face
+      <code class="hl">partial observability</code>, communication latency, and human-in-the-loop
+      needs. HI-MAPF introduces a <code class="hl">tiered conflict-repair</code> architecture:
+      robots resolve local collisions decentrally while a lightweight human interface handles
+      higher-level replanning when needed.
+    </p>
+    <p>
+      We quantify coordination overhead via a novel <code class="hl">Information Units (IU)</code> metric
+      and validate the full system on <code class="hl">TurtleBot4</code> hardware — one of the first
+      MAPF works with an end-to-end physical robot deployment study across benchmark environments.
+    </p>
+  </div>
+  <div class="result-chips">
+    <span class="chip">↓ 2× to 510× reduction in information sharing vs. centralized</span>
+    <span class="chip">✓ Validated on TurtleBot4 hardware</span>
+    <span class="chip">↗ Novel IU metric for communication overhead</span>
+  </div>
+  <figure class="entry-img">
+    <img src="assets/mapf_example.png" alt="HI-MAPF example paths">
+    <figcaption>HI-MAPF: multi-agent paths with tiered conflict resolution and minimal communication</figcaption>
+  </figure>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge" style="background:rgba(107,91,91,0.07);border-color:rgba(107,91,91,0.2);color:#6b5b5b;font-style:italic;">Under Review</span><span class="pub-title">HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment with Minimal Inter-Agent Information Sharing</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Risha Patel, Biplav Srivastava, Vignesh Narayanan</div>
+    </li>
+  </ul>
+  <div class="entry-footer">
+    <a href="projects/himapf/index.html" class="project-btn">View Project Page →</a>
+  </div>
+</article>
 
-                        <!-- Related Publications (Always visible) -->
-                        <section>
-                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Towards Effective Planning Strategies
-                                        for Dynamic Opinion Networks</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">NeurIPS 2024</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Expressive and Flexible Simulation of
-                                        Information Spread Strategies</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">AAAI 2024 Demo</span>
-                                        <span class="award-tag">
-                                            <svg class="award-icon" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            Best Demo Award
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+<hr class="section-divider">
 
-                    <!-- Expandable Content -->
-                    <div class="project-content mt-4">
-                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <!-- Project 1.1 -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Planning Strategies for Dynamic Opinion
-                                    Networks</h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">Models information propagation and opinion change as a numerical
-                                        planning problem over network states. Proposes a ranking-based labeling method
-                                        to identify influential nodes and target them for interventions. Introduces a
-                                        reinforcement learning planner (GCN-based) that learns when and where to
-                                        intervene by balancing infection rate, susceptible populations, and budget
-                                        constraints.</p>
-                                    <div class="rounded-lg">
-                                        <img src="./assets/inference_general_neurips.png" alt="System Architecture"
-                                            class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text">Learning-based framework enabling
-                                            strategic interventions in opinion networks.</p>
-                                    </div>
-                                </div>
-                            </div>
+<!-- ══════════════════════════════════════
+     2. Opinion Dynamics (2023 – Present)
+══════════════════════════════════════ -->
+<article class="entry">
+  <div class="entry-meta">
+    <span class="entry-year">2023 – Present</span>
+    <span class="entry-tag">Opinion Networks</span>
+    <span class="entry-tag">Generalized Planning</span>
+  </div>
+  <h2 class="entry-title">Opinion Dynamics &amp; Information Spread Control</h2>
+  <div class="entry-desc">
+    <p>
+      Controlling how opinions propagate through large social networks is inherently a
+      <code class="hl">planning problem</code> — given a network state, which nodes to intervene on
+      and in what sequence? We model this as generalized planning over graph-structured belief states,
+      enabling a single policy to transfer across network topologies without retraining.
+    </p>
+    <p>
+      The <code class="hl">InfoSpread</code> framework trains Graph Convolutional Networks on PDDL-derived
+      plan traces and packages the result as an interactive tool: upload any social network, configure
+      spread parameters, and visualize optimal intervention strategies step by step.
+    </p>
+  </div>
+  <div class="result-chips">
+    <span class="chip">↓ 86% infection rate reduction on Cora (2000 nodes)</span>
+    <span class="chip">★ AAAI 2024 Best Demo Award</span>
+    <span class="chip">↗ Generalizes to unseen network topologies</span>
+  </div>
+  <figure class="entry-img">
+    <img src="assets/InfoSpreadDemo.png" alt="InfoSpread interactive demo">
+    <figcaption>InfoSpread: interactive opinion-network intervention demo</figcaption>
+  </figure>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Workshop · AAAI '25</span><span class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Conference · NeurIPS '24</span><span class="pub-title">Towards Effective Planning Strategies for Dynamic Opinion Networks</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</div>
+      <div class="pub-links"><a href="https://openreview.net/pdf?id=LYivxMp5es" class="pub-link" target="_blank">Paper</a></div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Demo · AAAI '24</span><span class="pub-title">Expressive and Flexible Simulation of Information Spread Strategies in Social Networks Using Planning</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</div>
+    </li>
+  </ul>
+  <div class="entry-footer">
+    <a href="projects/infospread/index.html" class="project-btn">View Project Page →</a>
+  </div>
+</article>
 
-                            <!-- Project 1.2 -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Simulation of Information Spread Strategies
-                                </h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">An interactive simulator that uses planning models to explore
-                                        "what-if" information spread strategies over networks. Users can visualize
-                                        opinion evolution under different interventions, analyze trade-offs, and
-                                        understand how targeted actions affect long-term outcomes. Recognized with the
-                                        <span class="award-tag"
-                                            style="display: inline-flex; font-size: 0.75em; padding: 0.1em 0.5em; vertical-align: middle;">
-                                            <svg class="award-icon" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="currentColor"
-                                                style="width: 0.8em; height: 0.8em;">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            Best Demo Award
-                                        </span> at AAAI 2024.
-                                    </p>
-                                    <div class="rounded-lg">
-                                        <img src="./assets/InfoSpreadDemo.png" alt="Project Architecture"
-                                            class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text">Interactive simulation tool for
-                                            opinion dynamics.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+<hr class="section-divider">
 
-                <!-- Theme 2: Planning Ontologies -->
-                <section class="project theme-surface rounded-lg p-6">
-                    <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">Planning Ontologies & Multi-Agent Explanations
-                        </h2>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2022 - Present</span>
-                            <span class="skill-tag">Ontology</span>
-                            <span class="skill-tag">MAPF</span>
-                            <span class="skill-tag">Explanations</span>
-                        </div>
-                        <div class="theme-text-secondary mb-4">
-                            <p>Developing ontologies to capture planning knowledge for both single-agent and multi-agent
-                                systems. This work bridges the gap between raw planner logs and human-understandable
-                                explanations, enabling semantic queries and performance improvements.</p>
-                        </div>
+<!-- ══════════════════════════════════════
+     3. Planning Ontology (2022 – Present)
+══════════════════════════════════════ -->
+<article class="entry">
+  <div class="entry-meta">
+    <span class="entry-year">2022 – Present</span>
+    <span class="entry-tag">Ontology</span>
+    <span class="entry-tag">Explainability</span>
+  </div>
+  <h2 class="entry-title">Planning Ontology &amp; Explainable AI (PO, maPO, OMEGA)</h2>
+  <div class="entry-desc">
+    <p>
+      Automated planning lacks a shared vocabulary for communicating <em>why</em> a plan was chosen.
+      We built <code class="hl">PO (Planning Ontology)</code> — an OWL 2 ontology covering planners,
+      plan structures, domain models, and PROV-O provenance — so agents can annotate plans with
+      SPARQL-queryable explanations. A web-based PO tool lets users explore competency questions
+      interactively.
+    </p>
+    <p>
+      <code class="hl">maPO</code> extends PO to multi-agent settings, capturing agent roles, shared
+      resource conflicts, and inter-agent dependencies. The <code class="hl">OMEGA</code> platform
+      demonstrates this live: given any MAPF execution, OMEGA generates structured natural-language
+      explanations grounded in the maPO ontology.
+    </p>
+  </div>
+  <div class="result-chips">
+    <span class="chip">↑ 95.2% user preference over baseline explanations</span>
+    <span class="chip">★ 4.40/5 user clarity rating</span>
+    <span class="chip">↑ 94.39% competency-question coverage</span>
+  </div>
+  <figure class="entry-img">
+    <img src="assets/planning_ontology.png" alt="Planning Ontology diagram">
+    <figcaption>PO: OWL 2 planning ontology with PROV-O provenance and SPARQL query support</figcaption>
+  </figure>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Demo · AAAI '26</span><span class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Ritirupa Dey, Biplav Srivastava, Vignesh Narayanan</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Workshop · AAAI '26</span><span class="pub-title">maPO: A Multi-Agent Planning Ontology</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Biplav Srivastava, Vignesh Narayanan</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Journal · Discover Data '25</span><span class="pub-title">Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Michael N. Huhns, Vignesh Narayanan</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Workshop · ICAPS '23</span><span class="pub-title">Building and Using a Planning Ontology from Past Data for Performance Efficiency</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Vignesh Narayanan</div>
+    </li>
+  </ul>
+  <div class="entry-footer">
+    <a href="projects/ontology/index.html" class="project-btn">View Project Page →</a>
+  </div>
+</article>
 
-                        <section>
-                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">OMEGA: An Ontology-Driven Tool for
-                                        Explaining Multi-Agent Path Finding</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">AAAI 2026 Demo</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Building a Plan Ontology to Represent
-                                        and Exploit Planning Knowledge</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">CODS-COMAD 2024</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+<!-- ══════════════════════════════════════
+     Other Projects separator
+══════════════════════════════════════ -->
+<div class="inline-divider-label">
+  <span>Other Projects</span>
+</div>
 
-                    <div class="project-content mt-4">
-                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Planning Ontology & maPO</h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">Designed a planning ontology to capture domains, problems, plans,
-                                        and performance metadata. Extended this to multi-agent planning with maPO, a
-                                        schema that models agents, conflicts, and joint plans. This enables semantic
-                                        queries (SPARQL) to answer questions about planner performance and generate
-                                        natural language explanations.</p>
-                                    <div class="rounded-lg">
-                                        <img src="./assets/planning_ontology.png" alt="Planning Ontology"
-                                            class="w-full rounded" />
-                                        <p class="text-sm text-center mt-2 theme-text">Overview of the planning ontology
-                                            structure.</p>
-                                    </div>
-                                </div>
-                            </div>
+<!-- ══════════════════════════════════════
+     4. LLMs for Planning (2022 – 2024)
+══════════════════════════════════════ -->
+<article class="entry-inline">
+  <div class="entry-meta">
+    <span class="entry-year">2022 – 2024</span>
+    <span class="entry-tag">LLMs</span>
+    <span class="entry-tag">PDDL</span>
+  </div>
+  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">LLMs for Automated Planning</h2>
+  <div class="entry-desc">
+    <p>
+      <code class="hl">Plansformer</code> fine-tunes transformer models to generate valid PDDL plans
+      from natural-language task descriptions, bypassing classical search. A companion survey (IJCAI '23)
+      reviewed how LLMs are applied across planning sub-tasks — plan generation, heuristic learning,
+      constraint extraction, and explanation.
+    </p>
+  </div>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Conference · ICAPS '24</span><span class="pub-title">On the Prospects of Incorporating Large Language Models (LLMs) in Automated Planning and Scheduling (APS)</span></div>
+      <div class="pub-authors">Vishal Pallagani, <strong>Bharath Muppasani</strong>, Kaushik Roy, Francesco Fabiano, Andrea Loreggia, Keerthiram Murugesan, Biplav Srivastava, Francesca Rossi, Lior Horesh, Amit Sheth</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Demo · IJCAI '23</span><span class="pub-title">Plansformer: Demonstrating Generation of Symbolic Plans With Transformers</span></div>
+      <div class="pub-authors">Vishal Pallagani, <strong>Bharath Muppasani</strong>, Biplav Srivastava, Francesca Rossi, Lior Horesh, Keerthiram Murugesan, Andrea Loreggia, Francesco Fabiano, Rony Joseph, Yathin Kethepalli</div>
+    </li>
+  </ul>
+</article>
 
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">OMEGA: Explanations for MAPF</h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">OMEGA is an ontology-driven tool that uses maPO to provide
-                                        explanations for Multi-Agent Path Finding (MAPF). It explains why collisions
-                                        occur, how agents are rerouted, and what trade-offs are made, in
-                                        human-understandable language.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+<hr class="section-divider" style="margin-top:2rem;">
 
-                <!-- Theme 3: MAPF & Algorithms -->
-                <section class="project theme-surface rounded-lg p-6">
-                    <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">Multi-Agent Path Finding & Planning Algorithms
-                        </h2>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2023 - 2024</span>
-                            <span class="skill-tag">MAPF</span>
-                            <span class="skill-tag">Rubik's Cube</span>
-                            <span class="skill-tag">Search</span>
-                        </div>
-                        <div class="theme-text-secondary mb-4">
-                            <p>Work on path finding and search in multi-agent settings: MAPF with hybrid learning,
-                                ontology-based explanations, and benchmarking domain-independent planners on challenging
-                                combinatorial puzzles like the Rubik's Cube.</p>
-                        </div>
+<!-- ══════════════════════════════════════
+     5. SafeChat (2023)
+══════════════════════════════════════ -->
+<article class="entry-inline">
+  <div class="entry-meta">
+    <span class="entry-year">2023</span>
+    <span class="entry-tag">Safety</span>
+    <span class="entry-tag">Conversational AI</span>
+  </div>
+  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">SafeChat: Guardrails for Conversational LLMs</h2>
+  <div class="entry-desc">
+    <p>
+      SafeChat is a lightweight moderation layer for conversational AI that intercepts policy-violating
+      outputs using <code class="hl">intent classification</code> and <code class="hl">semantic similarity</code>
+      against a curated violation taxonomy, flagging and rewriting harmful completions in real time.
+    </p>
+  </div>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Journal · AI Magazine '23</span><span class="pub-title">On Safe and Usable Chatbots for Promoting Voter Participation</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Kausik Lakkaraju, Shuge Lei, Biplav Srivastava, Brett Robertson, Andrea Hickerson, Vignesh Narayanan</div>
+    </li>
+  </ul>
+</article>
 
-                        <section>
-                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Scalable Multi-Agent Path Finding using
-                                        Collision-Aware Dynamic Alert Mask and a Hybrid Execution Strategy</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">arXiv 2025</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Solving the Rubik’s Cube With a PDDL
-                                        Planner</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">ICAPS 2024 Demo</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Comparing Rubik’s Cube Solvability in
-                                        Domain-Independent Planners</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">HSDIP Workshop @ ICAPS 2024</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+<div class="page-end"></div>
 
-                    <div class="project-content mt-4">
-                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Hybrid Learning Framework for MAPF</h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">Proposes a hybrid framework combining decentralized reinforcement
-                                        learning with lightweight centralized coordination to enable scalable,
-                                        privacy-preserving, and collision-free MAPF. Achieves significant reduction in
-                                        information sharing compared to traditional distributed methods.</p>
-                                </div>
-                            </div>
+<footer class="site-footer">
+  <p>© 2025 Bharath Muppasani · <a href="https://github.com/BharathMuppasani" target="_blank">GitHub</a> · <a href="https://scholar.google.com/citations?user=4jmlBaYAAAAJ&hl=en" target="_blank">Google Scholar</a></p>
+</footer>
 
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Rubik’s Cube Planning</h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">Explores how classical planners handle the Rubik’s Cube using
-                                        standard PDDL representations. Benchmarks multiple planners, analyzing search
-                                        behavior and scalability, connecting these insights to future learning-based
-                                        methods.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+<script>
+  const btn = document.getElementById('themeBtn');
+  function applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.textContent = dark ? '☀' : '☽';
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('theme') === 'dark');
+  btn.addEventListener('click', () => {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+</script>
 
-                <!-- Theme 4: LLMs for Planning -->
-                <section class="project theme-surface rounded-lg p-6">
-                    <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">Large Language Models for Planning</h2>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2022 - 2024</span>
-                            <span class="skill-tag">LLMs</span>
-                            <span class="skill-tag">Automated Planning</span>
-                            <span class="skill-tag">Decision Support</span>
-                        </div>
-                        <div class="theme-text-secondary mb-4">
-                            <p>Investigates how LLMs can support or perform planning, how they compare to classical
-                                planners, and how they can be used for decision support (e.g., financial advising).</p>
-                        </div>
-
-                        <section>
-                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">On the Prospects of Incorporating LLMs
-                                        in Automated Planning and Scheduling</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">ICAPS 2024</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">Plansformer: Demonstrating Generation
-                                        of Symbolic Plans With Transformers</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">IJCAI 2023 Demo</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="project-content mt-4">
-                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-bold theme-text">Solving Planning Problems with LLMs</h3>
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">Develops datasets and benchmarks for using LLMs in planning tasks.
-                                        Analyzes various architectures and introduces models like Plansformer for
-                                        generating symbolic plans from text/structured inputs.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Theme 5: SafeChat -->
-                <section class="project theme-surface rounded-lg p-6">
-                    <div class="project-header">
-                        <h2 class="text-2xl font-bold theme-text mb-3">SafeChat</h2>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="skill-tag">2023</span>
-                            <span class="skill-tag">SafeChat</span>
-                            <span class="skill-tag">Chatbots</span>
-                        </div>
-                        <div class="theme-text-secondary mb-4">
-                            <p>Designs and evaluates conversational agents aimed at promoting voter participation in a
-                                safe, usable, and trustworthy manner. Explores design choices that avoid misinformation,
-                                bias, and confusion while aiding voter education.</p>
-                        </div>
-
-                        <section>
-                            <h3 class="text-xl font-bold section-heading mb-1">Related Publications</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <h4 class="font-medium theme-text text-base">On Safe and Usable Chatbots for
-                                        Promoting Voter Participation</h4>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="paper-venue-tag">AI Magazine 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="project-content mt-4">
-                        <div class="space-y-8 pl-6 border-l-2 border-opacity-20 border-gray-500">
-                            <div class="space-y-4">
-                                <div class="theme-text-secondary">
-                                    <p class="mb-4">Focused on designing conversational agents that can effectively and
-                                        safely assist users with voter registration and information, ensuring
-                                        trustworthiness and usability in civic contexts.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-            </div>
-        </div>
-    </div>
-
-    <script src="js/main.js"></script>
-    <script src="js/navigation.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const projects = document.querySelectorAll('.project');
-
-            projects.forEach(project => {
-                const header = project.querySelector('.project-header');
-
-                header.addEventListener('click', () => {
-                    project.classList.toggle('active');
-
-                    // Close other projects
-                    projects.forEach(otherProject => {
-                        if (otherProject !== project) {
-                            otherProject.classList.remove('active');
-                        }
-                    });
-                });
-            });
-        });
-    </script>
-    <script src="js/confetti.browser.min.js"></script>
-    <script src="js/award.js"></script>
 </body>
-
 </html>

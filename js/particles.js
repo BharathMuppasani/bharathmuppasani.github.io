@@ -73,7 +73,7 @@ class Particle {
     }
 
     draw() {
-        const isLightTheme = document.body.classList.contains('light-theme');
+        const isLightTheme = !(document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark-theme'));
         const color = isLightTheme ? '#9a5961' : '#ad656d';
         
         this.ctx.beginPath();
@@ -95,7 +95,7 @@ function initParticles() {
 
     function init() {
         particles = [];
-        const particleCount = Particle.isMobile() ? 40 : 80;
+        const particleCount = Particle.isMobile() ? 25 : 50;
         for (let i = 0; i < particleCount; i++) {
             particles.push(new Particle(canvas));
         }
@@ -107,10 +107,10 @@ function initParticles() {
                 const dx = p1.x - p2.x;
                 const dy = p1.y - p2.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
-                const maxDistance = Particle.isMobile() ? 50 : 100;
+                const maxDistance = Particle.isMobile() ? 40 : 75;
 
                 if (distance < maxDistance) {
-                    const isLightTheme = document.body.classList.contains('light-theme');
+                    const isLightTheme = !(document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark-theme'));
                     const baseOpacity = Particle.isMobile() ? 0.1 : 0.2;
                     const opacity = (1 - (distance / maxDistance)) * baseOpacity;
                     const color = isLightTheme ? '#9a5961' : '#ad656d';

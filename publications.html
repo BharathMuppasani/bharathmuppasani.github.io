@@ -1,429 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <script>
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.documentElement.style.display = 'none';
-            window.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.add('light-theme');
-                document.documentElement.style.display = '';
-            });
-        }
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publications - Bharath Muppasani</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
-    <style>
-        .filter-btn {
-            transition: all 0.3s ease;
-        }
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publications — Bharath Muppasani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f7; --surface: #f2eded; --border: #e4dcdc;
+      --text: #2a2020; --muted: #6b5b5b;
+      --accent: #b76e79; --accent-faint: rgba(183,110,121,0.08); --accent-border: rgba(183,110,121,0.25);
+      --ff-sans: 'Instrument Sans', system-ui, sans-serif;
+      --ff-serif: 'Lora', Georgia, serif;
+      --max: 52rem;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1616; --surface: #231e1e; --border: #3a3030;
+      --text: #ede5e5; --muted: #a08888;
+      --accent: #cf838e; --accent-faint: rgba(207,131,142,0.08); --accent-border: rgba(207,131,142,0.28);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--ff-sans); background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; }
 
-        .filter-btn.active {
-            background-color: var(--accent);
-            color: var(--bg);
-            border-color: var(--accent);
-        }
+    /* Nav - matches research page */
+    .site-nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; gap: 1rem; }
+    .site-nav a { color: var(--text); text-decoration: none; font-size: 0.875rem; font-weight: 500; opacity: 0.75; transition: opacity 0.15s; }
+    .site-nav a:hover, .site-nav a.active { opacity: 1; }
+    .site-nav a.brand { font-weight: 600; opacity: 1; font-size: 0.95rem; font-family: var(--ff-serif); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .theme-btn { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.8rem; color: var(--muted); transition: border-color 0.2s, color 0.2s; }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-        body.dark-theme .filter-btn.active {
-            background-color: var(--dark-accent);
-            color: var(--dark-bg);
-            border-color: var(--dark-accent);
-        }
-    </style>
+    /* Page header */
+    .page-header { max-width: var(--max); margin: 3rem auto 0; padding: 0 1.5rem; }
+    .page-header h1 { font-family: var(--ff-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; color: var(--text); }
+    .page-header p { color: var(--muted); font-size: 0.93rem; margin-top: 0.5rem; }
+
+    /* Filter section */
+    .filter-section { max-width: var(--max); margin: 1.5rem auto 0; padding: 0 1.5rem; }
+    .filter-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem; display: block;
+    }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.6rem; }
+    .filter-btn {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.03em;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 0.375rem;
+      padding: 0.25rem 0.7rem; cursor: pointer; color: var(--muted);
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--accent-border); color: var(--accent); background: var(--accent-faint); }
+    .filter-btn.active { background: var(--accent-faint); color: var(--accent); border-color: var(--accent-border); font-weight: 600; }
+
+    /* Divider */
+    .section-divider { max-width: var(--max); margin: 1.5rem auto 0; padding: 0 1.5rem; border: none; border-top: 1px solid var(--border); }
+
+    /* Year sections */
+    .year-section { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+    .year-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.5rem 0 0.5rem;
+    }
+    .year-label { font-family: var(--ff-serif); font-size: 1.1rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .year-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* Publication entry */
+    .pub-entry {
+      padding: 0.85rem 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+    }
+    .pub-entry:last-child { border-bottom: none; }
+
+    .pub-title {
+      font-size: 0.93rem; font-weight: 600; line-height: 1.4;
+      color: var(--text); margin-bottom: 0.2rem;
+    }
+    .pub-authors { font-size: 0.78rem; color: var(--muted); line-height: 1.45; margin-bottom: 0.45rem; }
+    .pub-authors strong { color: var(--text); font-weight: 600; }
+
+    .pub-meta { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+    .pub-meta .spacer { flex: 1; }
+
+    /* Type badges */
+    .type-badge {
+      font-size: 0.63rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.1rem 0.4rem; border-radius: 0.2rem; border: 1px solid; white-space: nowrap;
+    }
+    .type-badge.conference { color: #3b5bdb; background: rgba(59,91,219,0.07); border-color: rgba(59,91,219,0.22); }
+    .type-badge.journal    { color: #2f9e44; background: rgba(47,158,68,0.07); border-color: rgba(47,158,68,0.22); }
+    .type-badge.workshop   { color: #c96000; background: rgba(201,96,0,0.07); border-color: rgba(201,96,0,0.22); }
+    .type-badge.demo       { color: var(--accent); background: var(--accent-faint); border-color: var(--accent-border); }
+    .type-badge.patent     { color: var(--muted); background: color-mix(in srgb, var(--surface) 80%, transparent); border-color: var(--border); }
+    [data-theme="dark"] .type-badge.conference { color: #748ffc; background: rgba(116,143,252,0.09); border-color: rgba(116,143,252,0.22); }
+    [data-theme="dark"] .type-badge.journal    { color: #69db7c; background: rgba(105,219,124,0.09); border-color: rgba(105,219,124,0.22); }
+    [data-theme="dark"] .type-badge.workshop   { color: #ffa94d; background: rgba(255,169,77,0.09); border-color: rgba(255,169,77,0.22); }
+
+    /* Venue chip - styled like venue-badge */
+    .venue-chip {
+      font-size: 0.68rem; font-weight: 700;
+      background: var(--accent-faint); border: 1px solid var(--accent-border);
+      color: var(--accent); border-radius: 0.2rem;
+      padding: 0.05rem 0.4rem; white-space: nowrap;
+    }
+
+    /* Skill tags */
+    .skill-tag {
+      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase;
+      background: rgba(150,120,100,0.08); border: 1px solid rgba(150,120,100,0.2);
+      color: #8a7060; border-radius: 999px; padding: 0.1rem 0.5rem;
+    }
+    [data-theme="dark"] .skill-tag {
+      background: rgba(190,160,140,0.1); border-color: rgba(190,160,140,0.22);
+      color: #bea08a;
+    }
+
+    /* Award tag */
+    .award-tag {
+      font-size: 0.66rem; font-weight: 700;
+      background: rgba(215,175,55,0.1); border: 1px solid rgba(215,175,55,0.35);
+      color: #9a7a00; border-radius: 999px; padding: 0.1rem 0.5rem;
+    }
+    [data-theme="dark"] .award-tag { color: #d4aa30; background: rgba(215,175,55,0.15); border-color: rgba(215,175,55,0.4); }
+
+    /* Gold text shine */
+    @keyframes gold-shine { 0% { background-position: -100% 50%; } 100% { background-position: 200% 50%; } }
+    .gold-text-shine { position: relative; display: inline-block; }
+    .gold-text-shine::after {
+      content: attr(data-text); position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      z-index: 1; pointer-events: none; background-size: 200% auto; color: transparent;
+      -webkit-background-clip: text; background-clip: text;
+      animation: gold-shine 2.5s ease-in-out forwards;
+      background-image: linear-gradient(120deg, transparent 0%, transparent 30%, #a07c26 40%, #ffd700 48%, #ffffff 50%, #ffd700 52%, #a07c26 60%, transparent 70%, transparent 100%);
+    }
+    [data-theme="dark"] .gold-text-shine::after {
+      background-image: linear-gradient(120deg, transparent 0%, transparent 30%, #fde68a 40%, #fbbf24 48%, #ffffff 50%, #fbbf24 52%, #fde68a 60%, transparent 70%, transparent 100%);
+    }
+    .twinkle-star {
+      position: absolute; width: 16px; height: 16px; background: #FFD700;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      animation: twinkle-fade 0.8s ease-in-out forwards; pointer-events: none; z-index: 50;
+    }
+    @keyframes twinkle-fade {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      50% { transform: scale(1) rotate(180deg); opacity: 1; }
+      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+
+    /* Pub links */
+    .pub-links { display: flex; gap: 0.35rem; }
+    .pub-link-btn {
+      font-size: 0.68rem; color: var(--accent); text-decoration: none;
+      border: 1px solid var(--accent-border); border-radius: 999px;
+      padding: 0.08rem 0.45rem; font-weight: 500;
+    }
+    .pub-link-btn:hover { background: var(--accent-faint); }
+
+    .site-footer { text-align: center; padding: 1.5rem 1.5rem 2rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; max-width: var(--max); margin-left: auto; margin-right: auto; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
+<body>
 
-<body class="theme-bg">
-    <!-- Navigation Bar -->
-    <nav class="fixed top-0 w-full z-50 theme-surface fixed-nav">
-        <div class="max-w-screen-xl mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <a href="./index.html" class="back-link">
-                    <span class="text-lg font-semibold">← Back to Portfolio</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<nav class="site-nav">
+  <a href="index.html" class="brand">Bharath Muppasani</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="publications.html" class="active">Publications</a>
+    <a href="index.html#experience">Experience</a>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☽</button>
+  </div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="min-h-screen pt-20">
-        <div class="max-w-4xl mx-auto px-6 py-12">
-            <!-- Header Section -->
-            <header class="text-center mb-12">
-                <h1 class="text-5xl font-bold tracking-tight theme-text mb-6">Publications</h1>
-                <p class="theme-text-secondary max-w-2xl mx-auto">
-                    A comprehensive list of my research publications, covering topics in Automated Planning, Opinion
-                    Dynamics, Multi-Agent Systems, and Large Language Models.
-                </p>
-            </header>
+<header class="page-header">
+  <h1>Publications</h1>
+  <p>Automated Planning · Opinion Dynamics · Multi-Agent Systems · Ontology · LLMs</p>
+</header>
 
-            <!-- Filters -->
-            <div class="mb-12 space-y-4">
-                <!-- Theme Filters -->
-                <div class="flex flex-wrap justify-center gap-2">
-                    <button class="filter-btn active border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="all" data-group="theme">All Themes</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="opinion" data-group="theme">Opinion Dynamics</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="ontology" data-group="theme">Ontology & Explanations</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="mapf" data-group="theme">MAPF & Algorithms</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="llm" data-group="theme">LLMs for Planning</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="civic" data-group="theme">SafeChat</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="timeseries" data-group="theme">Time Series</button>
-                </div>
+<!-- Filters -->
+<div class="filter-section">
+  <span class="filter-label">Research Area</span>
+  <div class="filter-row" id="theme-filters">
+    <button class="filter-btn active" data-filter="all" data-group="theme">All</button>
+    <button class="filter-btn" data-filter="opinion" data-group="theme">Opinion Networks</button>
+    <button class="filter-btn" data-filter="planning" data-group="theme">Planning</button>
+    <button class="filter-btn" data-filter="ontology" data-group="theme">Ontology</button>
+    <button class="filter-btn" data-filter="llm" data-group="theme">LLMs</button>
+    <button class="filter-btn" data-filter="others" data-group="theme">Others</button>
+  </div>
+  <span class="filter-label">Publication Type</span>
+  <div class="filter-row" id="type-filters">
+    <button class="filter-btn active" data-filter="all" data-group="type">All Types</button>
+    <button class="filter-btn" data-filter="conference" data-group="type">Conference</button>
+    <button class="filter-btn" data-filter="journal" data-group="type">Journal</button>
+    <button class="filter-btn" data-filter="workshop" data-group="type">Workshop</button>
+    <button class="filter-btn" data-filter="demo" data-group="type">Demo</button>
+    <button class="filter-btn" data-filter="patent" data-group="type">Patent</button>
+  </div>
+</div>
 
-                <!-- Type Filters -->
-                <div class="flex flex-wrap justify-center gap-2">
-                    <button class="filter-btn active border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="all" data-group="type">All Types</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="conference" data-group="type">Conference</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="journal" data-group="type">Journal</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="workshop" data-group="type">Workshop</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="demo" data-group="type">Demo</button>
-                    <button class="filter-btn border border-gray-500 rounded-full px-4 py-1 text-sm theme-text"
-                        data-filter="patent" data-group="type">Patent</button>
-                </div>
-            </div>
+<hr class="section-divider">
 
-            <!-- Publications List -->
-            <div class="space-y-8" id="publications-list">
+<div id="publications-list">
 
-                <!-- 2026 -->
-                <div class="publication-item group" data-theme="ontology mapf" data-type="demo">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0">
-                            <span class="text-sm font-bold theme-text-secondary">2026</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">OMEGA: An Ontology-Driven Tool for Explaining
-                                Multi-Agent Path Finding</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Ritirupa Dey, Biplav
-                                Srivastava, Vignesh Narayanan</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">AAAI 2026 Demo</span>
-                                <span class="skill-tag">Ontology</span>
-                                <span class="skill-tag">MAPF</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <!-- 2026 -->
+  <div class="year-section">
+    <div class="year-header"><span class="year-label">2026</span></div>
 
-                <!-- 2025 -->
-                <div class="publication-item group" data-theme="mapf" data-type="journal">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0">
-                            <span class="text-sm font-bold theme-text-secondary">2025</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Scalable Multi-Agent Path Finding using
-                                Collision-Aware Dynamic Alert Mask and a Hybrid Execution Strategy</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Ritirupa Dey, Biplav
-                                Srivastava, Vignesh Narayanan</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">arXiv 2025</span>
-                                <span class="skill-tag">MAPF</span>
-                                <span class="skill-tag">RL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="publication-item group" data-theme="opinion" data-type="workshop">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0">
-                            <span class="text-sm font-bold theme-text-secondary">2025</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">On Generalized Planning for Controlling Opinion
-                                Networks: Interpreting Human-AI Dialog States and Beliefs</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Protik Nag, Biplav
-                                Srivastava, Vignesh Narayanan</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">GenPlan Workshop @ AAAI 2025</span>
-                                <span class="skill-tag">Opinion Dynamics</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2024 -->
-                <div class="publication-item group" data-theme="opinion" data-type="conference">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0">
-                            <span class="text-sm font-bold theme-text-secondary">2024</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Towards Effective Planning Strategies for Dynamic
-                                Opinion Networks</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Protik Nag, Vignesh
-                                Narayanan, Biplav Srivastava, Michael N. Huhns</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">NeurIPS 2024</span>
-                                <span class="skill-tag">Opinion Dynamics</span>
-                                <span class="skill-tag">RL</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="opinion" data-type="demo">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Expressive and Flexible Simulation of Information
-                                Spread Strategies in Social Networks Using Planning</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Vignesh Narayanan, Biplav
-                                Srivastava, Michael N. Huhns</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">AAAI 2024 Demo Track</span>
-                                <span class="award-tag">
-                                    <svg class="award-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Best Demo Award
-                                </span>
-                                <span class="skill-tag">Opinion Dynamics</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="ontology" data-type="conference">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Building a Plan Ontology to Represent and Exploit
-                                Planning Knowledge and Its Applications</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Nitin Gupta, Vishal
-                                Pallagani, Biplav Srivastava, Raghava Mutharaju, Michael N. Huhns, Vignesh Narayanan</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">CODS-COMAD 2024</span>
-                                <span class="skill-tag">Ontology</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="llm" data-type="conference">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">On the Prospects of Incorporating Large Language
-                                Models (LLMs) in Automated Planning and Scheduling (APS)</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Vishal Pallagani, Bharath Muppasani, Kaushik
-                                Roy, Francesco Fabiano, Andrea Loreggia, Keerthiram Murugesan, Biplav Srivastava,
-                                Francesca Rossi, Lior Horesh, Amit Sheth</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">ICAPS 2024</span>
-                                <span class="skill-tag">LLMs</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="mapf" data-type="demo">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Solving the Rubik’s Cube With a PDDL Planner</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Vishal Pallagani, Biplav
-                                Srivastava</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">ICAPS 2024 System Demo</span>
-                                <span class="skill-tag">Planning</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="mapf" data-type="workshop">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Comparing Rubik’s Cube Solvability in
-                                Domain-Independent Planners Using Standard Planning Representations</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Vishal Pallagani, Biplav
-                                Srivastava, Forest Agostinelli</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">HSDIP Workshop @ ICAPS 2024</span>
-                                <span class="skill-tag">Planning</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2023 -->
-                <div class="publication-item group" data-theme="timeseries" data-type="conference">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0">
-                            <span class="text-sm font-bold theme-text-secondary">2023</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">A Dataset and Baseline Approach for Identifying
-                                Usage States from Non-intrusive Power Sensing with MiDAS IoT-Based Sensors</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Cheyyur Jaya Anand, Chinmayi
-                                Appajigowda, Biplav Srivastava, Lokesh Johri</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">AAAI 2023 IAAI</span>
-                                <span class="skill-tag">Time Series</span>
-                                <span class="skill-tag">IoT</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="publication-item group" data-theme="civic" data-type="journal">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0">
-                            <span class="text-sm font-bold theme-text-secondary">2023</span>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">On Safe and Usable Chatbots for Promoting Voter
-                                Participation</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Vishal Pallagani, Kausik
-                                Lakkaraju, Shuge Lei, Biplav Srivastava, Brett Robertson, Andrea Hickerson, Vignesh
-                                Narayanan</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">AI Magazine 44(3)</span>
-                                <span class="skill-tag">SafeChat</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="llm" data-type="demo">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Plansformer: Demonstrating Generation of Symbolic
-                                Plans With Transformers</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Vishal Pallagani, Bharath Muppasani, Biplav
-                                Srivastava, Francesca Rossi, Lior Horesh, Keerthiram Murugesan, Andrea Loreggia,
-                                Francesco Fabiano, Rony Joseph, Yathin Kethepalli</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">IJCAI 2023 Demo</span>
-                                <span class="skill-tag">LLMs</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="publication-item group" data-theme="ontology" data-type="workshop">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Building and Using a Planning Ontology from Past
-                                Data for Performance Efficiency</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Bharath Muppasani, Vishal Pallagani, Biplav
-                                Srivastava, Raghava Mutharaju, Vignesh Narayanan</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">PLATO Workshop @ ICAPS 2023</span>
-                                <span class="skill-tag">Ontology</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="llm" data-type="workshop">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Can LLMs be Good Financial Advisors?: An Initial
-                                Study in Personal Decision Making for Optimized Outcomes</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Kausik Lakkaraju, Sai Krishna Revanth Vuruma,
-                                Vishal Pallagani, Bharath Muppasani, Biplav Srivastava</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">FinPlan Workshop @ ICAPS 2023</span>
-                                <span class="skill-tag">LLMs</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="publication-item group" data-theme="ontology" data-type="patent">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="sm:w-24 flex-shrink-0"></div>
-                        <div class="flex-grow">
-                            <h3 class="text-lg font-bold theme-text">Improving Planner Performance by Learning and Using
-                                Metadata of Experiences</h3>
-                            <p class="theme-text-secondary text-sm mt-1">Vishal Pallagani, Bharath Muppasani, Biplav
-                                Srivastava</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="paper-venue-tag">US Patent (Accepted 2023)</span>
-                                <span class="skill-tag">Ontology</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <div class="publication-item pub-entry" data-theme="planning ontology" data-type="demo">
+      <p class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Ritirupa Dey, Biplav Srivastava, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge demo">Demo</span>
+        <span class="venue-chip">AAAI 2026 Demo</span>
+        <span class="skill-tag">Ontology</span>
+        <span class="skill-tag">MAPF</span>
+      </div>
     </div>
 
-    <script src="js/main.js"></script>
-    <script src="js/navigation.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const themeBtns = document.querySelectorAll('[data-group="theme"]');
-            const typeBtns = document.querySelectorAll('[data-group="type"]');
-            const items = document.querySelectorAll('.publication-item');
+    <div class="publication-item pub-entry" data-theme="ontology" data-type="workshop">
+      <p class="pub-title">maPO: A Multi-Agent Planning Ontology</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Biplav Srivastava, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge workshop">Workshop</span>
+        <span class="venue-chip">MAKE @ AAAI 2026</span>
+        <span class="skill-tag">Ontology</span>
+      </div>
+    </div>
+  </div>
 
-            let currentTheme = 'all';
-            let currentType = 'all';
+  <!-- 2025 -->
+  <div class="year-section">
+    <div class="year-header"><span class="year-label">2025</span></div>
 
-            function filterItems() {
-                items.forEach(item => {
-                    const themes = item.dataset.theme.split(' ');
-                    const type = item.dataset.type;
+    <div class="publication-item pub-entry" data-theme="opinion" data-type="workshop">
+      <p class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava</p>
+      <div class="pub-meta">
+        <span class="type-badge workshop">Workshop</span>
+        <span class="venue-chip">GenPlan @ AAAI 2025</span>
+        <span class="skill-tag">Opinion Dynamics</span>
+      </div>
+    </div>
 
-                    const themeMatch = currentTheme === 'all' || themes.includes(currentTheme);
-                    const typeMatch = currentType === 'all' || type === currentType;
+    <div class="publication-item pub-entry" data-theme="ontology" data-type="journal">
+      <p class="pub-title">Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Michael N. Huhns, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge journal">Journal</span>
+        <span class="venue-chip">Discover Data 2025</span>
+        <span class="skill-tag">Ontology</span>
+      </div>
+    </div>
+  </div>
 
-                    if (themeMatch && typeMatch) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            }
+  <!-- 2024 -->
+  <div class="year-section">
+    <div class="year-header"><span class="year-label">2024</span></div>
 
-            themeBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    themeBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentTheme = btn.dataset.filter;
-                    filterItems();
-                });
-            });
+    <div class="publication-item pub-entry" data-theme="opinion" data-type="conference">
+      <p class="pub-title">Towards Effective Planning Strategies for Dynamic Opinion Networks</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
+      <div class="pub-meta">
+        <span class="type-badge conference">Conference</span>
+        <span class="venue-chip">NeurIPS 2024</span>
+        <span class="skill-tag">Opinion Dynamics</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="https://openreview.net/pdf?id=LYivxMp5es" class="pub-link-btn" target="_blank">Paper</a>
+        </div>
+      </div>
+    </div>
 
-            typeBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    typeBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentType = btn.dataset.filter;
-                    filterItems();
-                });
-            });
-        });
-    </script>
-    <script src="js/confetti.browser.min.js"></script>
-    <script src="js/award.js"></script>
+    <div class="publication-item pub-entry" data-theme="opinion" data-type="demo">
+      <p class="pub-title">Expressive and Flexible Simulation of Information Spread Strategies in Social Networks Using Planning</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
+      <div class="pub-meta">
+        <span class="type-badge demo">Demo</span>
+        <span class="venue-chip">AAAI 2024 Demo</span>
+        <span class="award-tag">★ Best Demo Award</span>
+        <span class="skill-tag">Opinion Dynamics</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="llm planning" data-type="conference">
+      <p class="pub-title">On the Prospects of Incorporating Large Language Models (LLMs) in Automated Planning and Scheduling (APS)</p>
+      <p class="pub-authors">Vishal Pallagani, <strong>Bharath Muppasani</strong>, Kaushik Roy, Francesco Fabiano, Andrea Loreggia, Keerthiram Murugesan, Biplav Srivastava, Francesca Rossi, Lior Horesh, Amit Sheth</p>
+      <div class="pub-meta">
+        <span class="type-badge conference">Conference</span>
+        <span class="venue-chip">ICAPS 2024</span>
+        <span class="skill-tag">LLMs</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="planning" data-type="demo">
+      <p class="pub-title">Solving the Rubik's Cube With a PDDL Planner</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava</p>
+      <div class="pub-meta">
+        <span class="type-badge demo">Demo</span>
+        <span class="venue-chip">ICAPS 2024 System Demo</span>
+        <span class="skill-tag">Planning</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="planning" data-type="workshop">
+      <p class="pub-title">Comparing Rubik's Cube Solvability in Domain-Independent Planners Using Standard Planning Representations</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava, Forest Agostinelli</p>
+      <div class="pub-meta">
+        <span class="type-badge workshop">Workshop</span>
+        <span class="venue-chip">HSDIP @ ICAPS 2024</span>
+        <span class="skill-tag">Planning</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2023 -->
+  <div class="year-section">
+    <div class="year-header"><span class="year-label">2023</span></div>
+
+    <div class="publication-item pub-entry" data-theme="others" data-type="conference">
+      <p class="pub-title">A Dataset and Baseline Approach for Identifying Usage States from Non-intrusive Power Sensing with MiDAS IoT-Based Sensors</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Cheyyur Jaya Anand, Chinmayi Appajigowda, Biplav Srivastava, Lokesh Johri</p>
+      <div class="pub-meta">
+        <span class="type-badge conference">Conference</span>
+        <span class="venue-chip">AAAI/IAAI 2023</span>
+        <span class="skill-tag">Time Series</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="others" data-type="journal">
+      <p class="pub-title">On Safe and Usable Chatbots for Promoting Voter Participation</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Kausik Lakkaraju, Shuge Lei, Biplav Srivastava, Brett Robertson, Andrea Hickerson, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge journal">Journal</span>
+        <span class="venue-chip">AI Magazine 44(3)</span>
+        <span class="skill-tag">SafeChat</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="llm" data-type="demo">
+      <p class="pub-title">Plansformer: Demonstrating Generation of Symbolic Plans With Transformers</p>
+      <p class="pub-authors">Vishal Pallagani, <strong>Bharath Muppasani</strong>, Biplav Srivastava, Francesca Rossi, Lior Horesh, Keerthiram Murugesan, Andrea Loreggia, Francesco Fabiano, Rony Joseph, Yathin Kethepalli</p>
+      <div class="pub-meta">
+        <span class="type-badge demo">Demo</span>
+        <span class="venue-chip">IJCAI 2023 Demo</span>
+        <span class="skill-tag">LLMs</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="ontology" data-type="workshop">
+      <p class="pub-title">Building and Using a Planning Ontology from Past Data for Performance Efficiency</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge workshop">Workshop</span>
+        <span class="venue-chip">PLATO @ ICAPS 2023</span>
+        <span class="skill-tag">Ontology</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="llm others" data-type="workshop">
+      <p class="pub-title">Can LLMs be Good Financial Advisors?: An Initial Study in Personal Decision Making for Optimized Outcomes</p>
+      <p class="pub-authors">Kausik Lakkaraju, Sai Krishna Revanth Vuruma, Vishal Pallagani, <strong>Bharath Muppasani</strong>, Biplav Srivastava</p>
+      <div class="pub-meta">
+        <span class="type-badge workshop">Workshop</span>
+        <span class="venue-chip">FinPlan @ ICAPS 2023</span>
+        <span class="skill-tag">LLMs</span>
+      </div>
+    </div>
+
+    <div class="publication-item pub-entry" data-theme="ontology" data-type="patent">
+      <p class="pub-title">Improving Planner Performance by Learning and Using Metadata of Experiences</p>
+      <p class="pub-authors">Vishal Pallagani, <strong>Bharath Muppasani</strong>, Biplav Srivastava</p>
+      <div class="pub-meta">
+        <span class="type-badge patent">Patent</span>
+        <span class="venue-chip">US Patent · 2023</span>
+        <span class="skill-tag">Ontology</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <p>© 2025 Bharath Muppasani · <a href="https://github.com/BharathMuppasani" target="_blank">GitHub</a> · <a href="https://scholar.google.com/citations?user=4jmlBaYAAAAJ&hl=en" target="_blank">Google Scholar</a></p>
+</footer>
+
+<script>
+  // Theme toggle
+  const btn = document.getElementById('themeBtn');
+  function applyTheme(dark) {
+    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    btn.textContent = dark ? '☀' : '☽';
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('theme') === 'dark');
+  btn.addEventListener('click', () => {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+
+  // Filters
+  const themeBtns = document.querySelectorAll('[data-group="theme"]');
+  const typeBtns = document.querySelectorAll('[data-group="type"]');
+  const items = document.querySelectorAll('.publication-item');
+  let currentTheme = 'all', currentType = 'all';
+
+  function filterItems() {
+    document.querySelectorAll('.year-section').forEach(section => {
+      const visible = Array.from(section.querySelectorAll('.publication-item')).some(item => {
+        const themes = item.dataset.theme.split(' ');
+        const themeMatch = currentTheme === 'all' || themes.includes(currentTheme);
+        const typeMatch = currentType === 'all' || item.dataset.type === currentType;
+        return themeMatch && typeMatch;
+      });
+      section.style.display = visible ? '' : 'none';
+    });
+    items.forEach(item => {
+      const themeMatch = currentTheme === 'all' || item.dataset.theme.split(' ').includes(currentTheme);
+      const typeMatch = currentType === 'all' || item.dataset.type === currentType;
+      item.style.display = (themeMatch && typeMatch) ? '' : 'none';
+    });
+  }
+
+  themeBtns.forEach(btn => btn.addEventListener('click', () => {
+    themeBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTheme = btn.dataset.filter;
+    filterItems();
+  }));
+  typeBtns.forEach(btn => btn.addEventListener('click', () => {
+    typeBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentType = btn.dataset.filter;
+    filterItems();
+  }));
+</script>
+<script src="js/confetti.browser.min.js"></script>
+<script src="js/award.js"></script>
 </body>
-
 </html>

@@ -115,13 +115,17 @@ const themeToggle = {
             button.addEventListener('click', () => this.toggleTheme());
         }
 
-        // Handle page loads and navigation
+        // Handle page loads and navigation — light is the default
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-theme');
-                this.updateThemeUI();
+            } else {
+                document.body.classList.remove('dark-theme');
+                // Ensure light is stored as explicit default
+                if (!savedTheme) localStorage.setItem('theme', 'light');
             }
+            this.updateThemeUI();
         });
 
         // Handle back/forward navigation

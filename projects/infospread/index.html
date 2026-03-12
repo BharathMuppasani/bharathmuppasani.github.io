@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoSpread — Bharath Muppasani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f7; --surface: #f2eded; --border: #e4dcdc; --text: #2a2020; --muted: #6b5b5b;
+      --accent: #b76e79; --accent-faint: rgba(183,110,121,0.08); --accent-border: rgba(183,110,121,0.25);
+      --ff-sans: 'Instrument Sans', system-ui, sans-serif; --ff-serif: 'Lora', Georgia, serif;
+      --code-bg: rgba(42,32,32,0.07); --code-color: #7a3540; --max: 56rem;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1616; --surface: #231e1e; --border: #3a3030; --text: #ede5e5; --muted: #a08888;
+      --accent: #cf838e; --accent-faint: rgba(207,131,142,0.08); --accent-border: rgba(207,131,142,0.28);
+      --code-bg: rgba(237,229,229,0.09); --code-color: #e89fa8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--ff-sans); background: var(--bg); color: var(--text); line-height: 1.75; }
+    #network-background, #network-background-br {
+      position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+    }
+    #network-background {
+      top: 0; left: 0;
+      opacity: 0.9;
+      mask-image: radial-gradient(ellipse at top left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at top left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+    }
+    #network-background-br {
+      bottom: 0; right: 0;
+      opacity: 0.9;
+      mask-image: radial-gradient(ellipse at bottom right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at bottom right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.2) 55%, transparent 75%);
+    }
+
+    .site-nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; gap: 1rem; }
+    .site-nav a { color: var(--text); text-decoration: none; font-size: 0.875rem; font-weight: 500; opacity: 0.75; transition: opacity 0.15s; }
+    .site-nav a:hover { opacity: 1; }
+    .site-nav a.brand { font-weight: 600; opacity: 1; font-size: 0.95rem; font-family: var(--ff-serif); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .back-link { color: var(--accent) !important; opacity: 1 !important; font-size: 0.82rem; }
+    .theme-btn { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.8rem; color: var(--muted); }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .prose { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* header */
+    .proj-header { max-width: var(--max); margin: 3rem auto 0; padding: 0 1.5rem 0 1.75rem; border-left: 3px solid var(--accent); }
+    .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+    .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 999px; padding: 0.15rem 0.6rem; }
+    .proj-header h1 { font-family: var(--ff-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; line-height: 1.25; color: var(--text); margin-bottom: 0.45rem; }
+    .byline { font-size: 0.84rem; color: var(--muted); }
+    .byline a { color: var(--accent); text-decoration: none; }
+    .award-badge { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem; font-size: 0.78rem; font-weight: 600; color: #b8860b; background: rgba(184,134,11,0.08); border: 1px solid rgba(184,134,11,0.28); border-radius: 999px; padding: 0.25rem 0.7rem; }
+
+    /* quick links */
+    .links-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .link-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; font-weight: 500; color: var(--accent); border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.35rem 1rem; text-decoration: none; transition: background 0.15s; }
+    .link-btn:hover { background: var(--accent-faint); }
+    .link-btn.filled { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .link-btn.filled:hover { opacity: 0.9; background: var(--accent); }
+
+    /* stats */
+    .stat-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .stat-chip { flex: 1; min-width: 9rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.75rem 1rem; text-align: center; }
+    .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--accent); display: block; font-family: var(--ff-serif); }
+    .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+    hr.d { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    h2.sh { font-family: var(--ff-serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin: 2rem 0 0.75rem; }
+    h3.ssh { font-family: var(--ff-serif); font-size: 1.05rem; font-weight: 600; color: var(--text); margin: 1.5rem 0 0.5rem; }
+
+    p.bt { font-size: 0.93rem; color: var(--text); opacity: 0.87; margin-bottom: 0.75rem; line-height: 1.85; }
+    ul.bt-list { font-size: 0.93rem; color: var(--text); opacity: 0.87; margin: 0.5rem 0 0.75rem 1.25rem; line-height: 1.8; }
+    ul.bt-list li { margin-bottom: 0.3rem; }
+
+    code.hl { font-family: var(--ff-sans); font-size: 0.85em; background: var(--code-bg); color: var(--code-color); padding: 0.1em 0.38em; border-radius: 0.25rem; font-weight: 500; }
+
+    /* key idea */
+    .key-idea { margin: 2rem 0; padding: 1.1rem 1.3rem; border: 1.5px solid var(--accent-border); border-left: 4px solid var(--accent); border-radius: 0.5rem; background: var(--accent-faint); font-size: 0.93rem; line-height: 1.75; }
+    .key-idea strong { color: var(--accent); font-weight: 600; }
+
+    /* figures */
+    .fig { margin: 1.5rem 0; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+    .fig img { width: 100%; height: auto; display: block; max-height: 340px; object-fit: contain; padding: 0.75rem; }
+    .fig figcaption { font-size: 0.75rem; color: var(--muted); text-align: center; padding: 0.3rem 1rem 0.6rem; border-top: 1px solid var(--border); }
+
+    /* pub list */
+    .pub-list { list-style: none; margin-top: 0.5rem; }
+    .pub-list li { font-size: 0.84rem; color: var(--muted); padding: 0.55rem 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.5rem; }
+    .pub-list li:last-child { border-bottom: 1px solid var(--border); }
+    .pub-row { display: contents; }
+    .venue-badge { order: 3; margin-left: auto; flex-shrink: 0; font-size: 0.68rem; font-weight: 700; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 0.2rem; padding: 0.05rem 0.4rem; white-space: nowrap; }
+    .pub-title { order: 1; width: 100%; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .pub-authors { order: 2; flex: 1; font-size: 0.76rem; color: var(--muted); }
+    .pub-authors strong { color: var(--text); font-weight: 600; }
+    .pub-links { order: 4; width: 100%; display: flex; gap: 0.35rem; margin-top: 0.2rem; }
+    .pub-link { font-size: 0.7rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.05rem 0.45rem; }
+    .pub-link:hover { background: var(--accent-faint); }
+
+    .site-footer { text-align: center; padding: 1.5rem 1.5rem 2.5rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+<canvas id="network-background"></canvas>
+<canvas id="network-background-br"></canvas>
+
+<nav class="site-nav">
+  <a href="../../index.html" class="brand">Bharath Muppasani</a>
+  <div class="nav-links">
+    <a href="../../research.html" class="back-link">← Research</a>
+    <a href="../../publications.html">Publications</a>
+    <button class="theme-btn" id="themeBtn">☽</button>
+  </div>
+</nav>
+
+<!-- header -->
+<header class="proj-header">
+  <div class="tag-row">
+    <span class="tag">Opinion Networks</span>
+    <span class="tag">Generalized Planning</span>
+    <span class="tag">Graph Learning</span>
+  </div>
+  <h1>InfoSpread: Controlling Information Spread via Generalized Planning</h1>
+  <p class="byline">
+    <a href="../../index.html">Bharath Muppasani</a>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns ·
+    University of South Carolina
+  </p>
+  <div class="award-badge">★ AAAI 2024 Best Demo Award</div>
+</header>
+
+<div class="prose">
+
+  <!-- quick links -->
+  <div class="links-row">
+    <a href="#" class="link-btn filled">Interactive Demo</a>
+    <a href="https://openreview.net/pdf?id=LYivxMp5es" class="link-btn" target="_blank">NeurIPS '24 Paper</a>
+    <a href="#" class="link-btn">Code</a>
+    <a href="#" class="link-btn">AAAI '24 Demo Paper</a>
+  </div>
+
+  <!-- stats -->
+  <div class="stat-row">
+    <div class="stat-chip"><span class="stat-num">86%</span><span class="stat-label">Infection rate reduction</span></div>
+    <div class="stat-chip"><span class="stat-num">2000</span><span class="stat-label">Node Cora graph</span></div>
+    <div class="stat-chip"><span class="stat-num">★ Best</span><span class="stat-label">Demo · AAAI 2024</span></div>
+  </div>
+
+  <hr class="d">
+
+  <!-- WHAT -->
+  <h2 class="sh">What</h2>
+  <p class="bt">
+    Misinformation spreads rapidly through social networks — polarizing opinion, eroding trust, and
+    influencing real-world decisions. Stopping it requires deciding <em>which</em> nodes to intervene on
+    and in <em>what order</em>, given limited resources and uncertainty about future spread.
+  </p>
+  <p class="bt">
+    <strong>InfoSpread</strong> is a framework that frames this as a <code class="hl">generalized planning problem</code>:
+    the network is a symbolic state, node beliefs are fluents, and interventions are actions with
+    preconditions and effects. This lets us leverage decades of AI planning research — search, heuristics,
+    abstraction — to compute principled intervention policies.
+  </p>
+
+  <hr class="d">
+
+  <!-- WHY -->
+  <h2 class="sh">Why</h2>
+  <p class="bt">
+    Prior approaches treat spread control as a simulation or optimization problem, training separate
+    models per network. This breaks down for three reasons:
+  </p>
+  <ul class="bt-list">
+    <li><strong>Generalization:</strong> A model trained on one network topology fails on another — but real social networks are constantly evolving.</li>
+    <li><strong>Scalability:</strong> Classical planners struggle with large graphs; learned policies struggle to generalize across graph sizes.</li>
+    <li><strong>Interpretability:</strong> Simulation-based methods offer no explanation for why a particular intervention is chosen.</li>
+  </ul>
+  <p class="bt">
+    Planning-based formulations naturally handle all three: PDDL models are graph-size-agnostic, policies
+    trained on plan traces transfer across topologies, and plan traces are inherently interpretable.
+  </p>
+
+  <hr class="d">
+
+  <!-- HOW -->
+  <h2 class="sh">How</h2>
+  <h3 class="ssh">Generalized PDDL Formulation</h3>
+  <p class="bt">
+    We model a social network as a PDDL domain: nodes are objects, opinions are predicates
+    (e.g., <code class="hl">infected(v)</code>), and interventions are actions
+    (e.g., <code class="hl">inoculate(v, neighbor)</code>). A planner generates traces across
+    diverse synthetic graphs, producing a dataset of (state, action) pairs.
+  </p>
+
+  <h3 class="ssh">GCN Policy Learning</h3>
+  <p class="bt">
+    A <code class="hl">Graph Convolutional Network (GCN)</code> is trained on these plan traces to
+    predict the next intervention given the current network state. Because the GCN operates on graph
+    structure directly, the learned policy generalizes to unseen topologies — including real-world
+    networks like Cora — without retraining.
+  </p>
+
+  <figure class="fig">
+    <img src="../../assets/inference_general_neurips.png" alt="Generalization results across topologies">
+    <figcaption>GCN policy generalization across diverse network topologies — NeurIPS 2024</figcaption>
+  </figure>
+
+  <h3 class="ssh">InfoSpread Tool</h3>
+  <p class="bt">
+    The companion <strong>InfoSpread</strong> web tool lets users upload any social network (CSV/edge-list),
+    configure spread dynamics (infection rate, recovery rate), and run the learned policy interactively.
+    The visualization shows intervention choices step by step with opinion color overlays.
+  </p>
+
+  <figure class="fig">
+    <img src="../../assets/InfoSpreadDemo.png" alt="InfoSpread demo interface">
+    <figcaption>InfoSpread: upload a network, configure spread, visualize intervention strategy</figcaption>
+  </figure>
+
+  <hr class="d">
+
+  <!-- RESULTS -->
+  <h2 class="sh">Results</h2>
+  <p class="bt">
+    On the Cora citation network (2000 nodes, real-world social graph), InfoSpread achieves an
+    <strong>86% reduction in infection rate</strong> compared to a no-intervention baseline, outperforming
+    greedy heuristics and standard influence-maximization approaches. The policy transfers across
+    Erdős–Rényi, Barabási–Albert, and small-world graph families without retraining.
+  </p>
+  <p class="bt">
+    The interactive demo received the <strong>AAAI 2024 Best Demo Award</strong>, recognizing both
+    the research contribution and the tool's accessibility for practitioners studying misinformation dynamics.
+  </p>
+
+  <hr class="d">
+
+  <!-- Dialog Extension -->
+  <h2 class="sh">Extension: Human-AI Dialog &amp; Belief Modeling</h2>
+  <p class="bt">
+    A natural extension is modeling belief evolution across a multi-turn human-AI conversation —
+    where each turn corresponds to an "intervention" that shifts user beliefs. In follow-up work
+    (GenPlan @ AAAI '25), we interpret dialog states as opinion-network snapshots and use the same
+    generalized planning framework to guide conversations toward constructive outcomes.
+  </p>
+
+  <hr class="d">
+
+  <h2 class="sh">Publications</h2>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Workshop · AAAI '25</span><span class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Conference · NeurIPS '24</span><span class="pub-title">Towards Effective Planning Strategies for Dynamic Opinion Networks</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</div>
+      <div class="pub-links"><a href="https://openreview.net/pdf?id=LYivxMp5es" class="pub-link" target="_blank">Paper</a></div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Demo · AAAI '24</span><span class="pub-title">Expressive and Flexible Simulation of Information Spread Strategies in Social Networks Using Planning</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</div>
+    </li>
+  </ul>
+
+  <div style="height:1rem;"></div>
+</div>
+
+<footer class="site-footer">
+  <p>© 2025 Bharath Muppasani · <a href="https://github.com/BharathMuppasani" target="_blank">GitHub</a> · <a href="../../index.html">Home</a></p>
+</footer>
+
+<script>
+  const btn = document.getElementById('themeBtn');
+  function applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.textContent = dark ? '☀' : '☽';
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('theme') === 'dark');
+  btn.addEventListener('click', () => {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+</script>
+
+<script src="../../js/network-bg.js"></script>
+<script>
+// Second network background for bottom-right corner
+(function() {
+  const canvas = document.getElementById('network-background-br');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  const nodes = [];
+  const NODE_COUNT = 35;
+  const CONNECTION_DIST = 85;
+  function getColors() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      node: isDark ? 'rgba(207,131,142,0.35)' : 'rgba(183,110,121,0.3)',
+      edge: isDark ? 'rgba(207,131,142,0.1)' : 'rgba(183,110,121,0.07)',
+      infected: isDark ? 'rgba(170,100,110,0.4)' : 'rgba(150,80,90,0.3)',
+    };
+  }
+  class Node {
+    constructor() {
+      this.x = Math.random() * width; this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3;
+      this.radius = Math.random() * 2.5 + 1.5; this.infected = Math.random() < 0.15;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+      if (Math.random() < 0.001) this.infected = !this.infected;
+    }
+    draw(colors) {
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.infected ? colors.infected : colors.node; ctx.fill();
+    }
+  }
+  function resize() {
+    const rect = canvas.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr); width = rect.width; height = rect.height;
+    nodes.length = 0; for (let i = 0; i < NODE_COUNT; i++) nodes.push(new Node());
+  }
+  function animate() {
+    ctx.clearRect(0, 0, width, height); const colors = getColors();
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECTION_DIST) {
+          ctx.globalAlpha = 1 - dist / CONNECTION_DIST; ctx.strokeStyle = colors.edge;
+          ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    for (const node of nodes) { node.update(); node.draw(colors); }
+    requestAnimationFrame(animate);
+  }
+  resize(); window.addEventListener('resize', resize); animate();
+})();
+</script>
+</body>
+</html>

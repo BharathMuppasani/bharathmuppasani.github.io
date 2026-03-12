@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HI-MAPF Detailed Results — Per-Map Benchmarks and Hardware Validation">
+  <title>HI-MAPF Results — Bharath Muppasani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #faf7f7; --surface: #f2eded; --border: #e4dcdc; --text: #2a2020; --muted: #6b5b5b;
+      --accent: #b76e79; --accent-faint: rgba(183,110,121,0.08); --accent-border: rgba(183,110,121,0.25);
+      --ff-sans: 'Instrument Sans', system-ui, sans-serif; --ff-serif: 'Lora', Georgia, serif;
+      --max: 64rem;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1616; --surface: #231e1e; --border: #3a3030; --text: #ede5e5; --muted: #a08888;
+      --accent: #cf838e; --accent-faint: rgba(207,131,142,0.08); --accent-border: rgba(207,131,142,0.28);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--ff-sans); background: var(--bg); color: var(--text); line-height: 1.75; }
+
+    .site-nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; gap: 1rem; }
+    .site-nav a { color: var(--text); text-decoration: none; font-size: 0.875rem; font-weight: 500; opacity: 0.75; transition: opacity 0.15s; }
+    .site-nav a:hover { opacity: 1; }
+    .site-nav a.brand { font-weight: 600; opacity: 1; font-size: 0.95rem; font-family: var(--ff-serif); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .back-link { color: var(--accent) !important; opacity: 1 !important; font-size: 0.82rem; }
+    .theme-btn { background: none; border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.8rem; color: var(--muted); }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .prose { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+    .page-header { max-width: var(--max); margin: 2.5rem auto 0; padding: 0 1.5rem; }
+    .page-header h1 { font-family: var(--ff-serif); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .page-header p { font-size: 0.88rem; color: var(--muted); }
+
+    hr.d { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    h2.sh { font-family: var(--ff-serif); font-size: 1.2rem; font-weight: 600; color: var(--text); margin: 2rem 0 0.75rem; }
+    p.bt { font-size: 0.9rem; color: var(--text); opacity: 0.87; margin-bottom: 0.75rem; line-height: 1.8; }
+
+    .map-card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; }
+    .map-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .map-card-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1rem; }
+    .map-card-header img { width: 80px; height: 80px; border-radius: 0.5rem; border: 1px solid var(--border); object-fit: cover; }
+    .map-card-header h3 { font-family: var(--ff-serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.15rem; }
+    .map-card-header .map-info { font-size: 0.78rem; color: var(--muted); }
+
+    .rtable { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin: 0.75rem 0; }
+    .rtable th { text-align: center; padding: 0.4rem 0.5rem; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .rtable th:first-child { text-align: left; }
+    .rtable td { text-align: center; padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--border); }
+    .rtable td:first-child { text-align: left; font-weight: 600; }
+    .rtable tr:last-child td { border-bottom: none; }
+    .rtable .hi { color: var(--accent); font-weight: 600; }
+    .rtable .best-row { background: var(--accent-faint); }
+    .rtable .fail { color: var(--muted); opacity: 0.5; }
+    .rtable .group-header { background: var(--accent-faint); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 2px solid var(--accent-border); }
+    .rtable .algo-header th { font-size: 0.68rem; border-bottom: 2px solid var(--border); }
+    .rtable .metric-header th { font-size: 0.62rem; font-weight: 500; color: var(--muted); letter-spacing: 0; text-transform: none; border-bottom: 1px solid var(--border); }
+    .rtable td.agent-cell { font-weight: 700; font-size: 0.82rem; vertical-align: middle; }
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0.75rem 0; }
+
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin: 0.5rem 0; }
+    @media (max-width: 700px) { .chart-row { grid-template-columns: 1fr; } }
+    .chart-box { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.4rem 0.3rem 0.2rem; }
+
+    .chart-legend { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; font-size: 0.72rem; color: var(--muted); margin: 0.5rem 0 1rem; }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .legend-line { display: inline-block; width: 16px; height: 0; border-top: 2.5px solid; vertical-align: middle; }
+
+    .site-footer { text-align: center; padding: 1.5rem 1.5rem 2.5rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; }
+    .site-footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="../../index.html" class="brand">Bharath Muppasani</a>
+  <div class="nav-links">
+    <a href="index.html" class="back-link">&larr; HI-MAPF</a>
+    <a href="../../publications.html">Publications</a>
+    <button class="theme-btn" id="themeBtn">&#9789;</button>
+  </div>
+</nav>
+
+<header class="page-header">
+  <h1>HI-MAPF &mdash; Detailed Results</h1>
+  <p>Per-map benchmark results across 5 algorithms, 4 maps, 8&ndash;128 agents. All data from simulation experiments (20 instances per configuration).</p>
+</header>
+
+<div class="prose">
+
+  <div class="chart-legend">
+    <span><span class="legend-line" style="border-color:#363636; border-top-style:solid;"></span> HI-MAPF</span>
+    <span><span class="legend-line" style="border-color:#3498db; border-top-style:dashed;"></span> MAPF-GPT-2M</span>
+    <span><span class="legend-line" style="border-color:#f39c12; border-top-style:dashed;"></span> DCC</span>
+    <span><span class="legend-line" style="border-color:#2ecc71; border-top-style:dashed;"></span> EPH</span>
+    <span><span class="legend-line" style="border-color:#e74c3c; border-top-style:dashed;"></span> SCRIMP</span>
+  </div>
+
+  <!-- ============ random-32-32-20 ============ -->
+  <div class="map-card">
+    <div class="map-card-header">
+      <img src="images/random-32-32-20.png" alt="random-32-32-20 map">
+      <div>
+        <h3>random-32-32-20</h3>
+        <div class="map-info">32&times;32 grid &middot; 20% obstacle density &middot; 10&ndash;128 agents</div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-box"><canvas id="sr_r32"></canvas></div>
+      <div class="chart-box"><canvas id="ms_r32"></canvas></div>
+      <div class="chart-box"><canvas id="iu_r32"></canvas></div>
+    </div>
+    <div class="table-scroll">
+    <table class="rtable">
+      <thead>
+        <tr class="group-header"><th rowspan="3"></th><th colspan="9">Learning-based</th><th colspan="6" class="hi">Hybrid</th></tr>
+        <tr class="algo-header"><th colspan="3">SCRIMP</th><th colspan="3">DCC</th><th colspan="3">MAPF-GPT-2M</th><th colspan="3">EPH</th><th colspan="3" class="hi">HI-MAPF</th></tr>
+        <tr class="metric-header"><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="agent-cell">10</td><td>100</td><td>48.0</td><td>72.8&times;</td><td>100</td><td>49.1</td><td>7.3&times;</td><td>100</td><td>49.2</td><td>142&times;</td><td>100</td><td>47.6</td><td>5.5&times;</td><td class="hi">100</td><td class="hi">50.5</td><td class="hi">3.6 (1&times;)</td></tr>
+        <tr><td class="agent-cell">20</td><td>100</td><td>50.5</td><td>30&times;</td><td>100</td><td>58.0</td><td>11&times;</td><td>100</td><td>53.8</td><td>137&times;</td><td>95</td><td>62.5</td><td>11&times;</td><td class="hi">100</td><td class="hi">56.0</td><td class="hi">18.8 (1&times;)</td></tr>
+        <tr><td class="agent-cell">30</td><td>100</td><td>52.4</td><td>13&times;</td><td>100</td><td>59.5</td><td>10.5&times;</td><td>100</td><td>53.9</td><td>82&times;</td><td>100</td><td>62.0</td><td>8.7&times;</td><td class="hi">100</td><td class="hi">55.5</td><td class="hi">66.3 (1&times;)</td></tr>
+        <tr><td class="agent-cell">40</td><td>95</td><td>58.0</td><td>28.2&times;</td><td>95</td><td>72.8</td><td>28.8&times;</td><td>100</td><td>57.2</td><td>205&times;</td><td>100</td><td>64.5</td><td>28.7&times;</td><td class="hi">100</td><td class="hi">107.0</td><td class="hi">48.8 (1&times;)</td></tr>
+        <tr><td class="agent-cell">50</td><td>100</td><td>56.8</td><td>7.4&times;</td><td>90</td><td>81.7</td><td>15&times;</td><td>100</td><td>58.9</td><td>76&times;</td><td>95</td><td>79.0</td><td>14&times;</td><td class="hi">100</td><td class="hi">61.4</td><td class="hi">221.4 (1&times;)</td></tr>
+        <tr><td class="agent-cell">60</td><td>90</td><td>71.4</td><td>13&times;</td><td>70</td><td>92.0</td><td>30&times;</td><td>100</td><td>63.0</td><td>120&times;</td><td>95</td><td>88.7</td><td>29&times;</td><td class="hi">100</td><td class="hi">128.2</td><td class="hi">214.2 (1&times;)</td></tr>
+        <tr><td class="agent-cell">70</td><td>90</td><td>70.5</td><td>1.5&times;</td><td>60</td><td>104.5</td><td>4.8&times;</td><td>100</td><td>68.2</td><td>17&times;</td><td>65</td><td>110.7</td><td>5.4&times;</td><td class="hi">100</td><td class="hi">65.5</td><td class="hi">2,158.2 (1&times;)</td></tr>
+        <tr><td class="agent-cell">80</td><td>80</td><td>83.8</td><td>3.3&times;</td><td>60</td><td>111.7</td><td>12&times;</td><td>100</td><td>72.9</td><td>37&times;</td><td>70</td><td>108.9</td><td>14&times;</td><td class="hi">100</td><td class="hi">71.8</td><td class="hi">1,405.5 (1&times;)</td></tr>
+        <tr><td class="agent-cell">90</td><td>60</td><td>96.9</td><td>3.2&times;</td><td>30</td><td>117.8</td><td>15&times;</td><td>100</td><td>70.0</td><td>34&times;</td><td>25</td><td>123.8</td><td>18&times;</td><td class="hi">95</td><td class="hi">82.8</td><td class="hi">1,950.7 (1&times;)</td></tr>
+        <tr><td class="agent-cell">100</td><td>60</td><td>97.2</td><td>1.9&times;</td><td>40</td><td>117.5</td><td>10&times;</td><td>100</td><td>77.0</td><td>23&times;</td><td>50</td><td>121.0</td><td>11&times;</td><td class="hi">85</td><td class="hi">76.5</td><td class="hi">3,693.9 (1&times;)</td></tr>
+        <tr><td class="agent-cell">128</td><td>70</td><td>96.6</td><td class="fail">&ndash;</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>90</td><td>94.1</td><td class="fail">&ndash;</td><td>5</td><td>127.5</td><td class="fail">&ndash;</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ============ random-64-64-20 ============ -->
+  <div class="map-card">
+    <div class="map-card-header">
+      <img src="images/random-64-64-20.png" alt="random-64-64-20 map">
+      <div>
+        <h3>random-64-64-20</h3>
+        <div class="map-info">64&times;64 grid &middot; 20% obstacle density &middot; 10&ndash;128 agents</div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-box"><canvas id="sr_r64"></canvas></div>
+      <div class="chart-box"><canvas id="ms_r64"></canvas></div>
+      <div class="chart-box"><canvas id="iu_r64"></canvas></div>
+    </div>
+    <div class="table-scroll">
+    <table class="rtable">
+      <thead>
+        <tr class="group-header"><th rowspan="3"></th><th colspan="9">Learning-based</th><th colspan="6" class="hi">Hybrid</th></tr>
+        <tr class="algo-header"><th colspan="3">SCRIMP</th><th colspan="3">DCC</th><th colspan="3">MAPF-GPT-2M</th><th colspan="3">EPH</th><th colspan="3" class="hi">HI-MAPF</th></tr>
+        <tr class="metric-header"><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="agent-cell">10</td><td>50</td><td>112.5</td><td>680&times;</td><td>100</td><td>97.7</td><td>12&times;</td><td>100</td><td>99.6</td><td>350&times;</td><td>95</td><td>97.3</td><td>8.7&times;</td><td class="hi">100</td><td class="hi">108.0</td><td class="hi">0.9 (1&times;)</td></tr>
+        <tr><td class="agent-cell">20</td><td>10</td><td>126.5</td><td>223&times;</td><td>100</td><td>107.8</td><td>9.6&times;</td><td>100</td><td>110.2</td><td>231&times;</td><td>100</td><td>105.7</td><td>7.7&times;</td><td class="hi">100</td><td class="hi">115.6</td><td class="hi">6.2 (1&times;)</td></tr>
+        <tr><td class="agent-cell">30</td><td>10</td><td>126.7</td><td>94&times;</td><td>90</td><td>112.2</td><td>7.4&times;</td><td>100</td><td>111.7</td><td>147&times;</td><td>100</td><td>109.5</td><td>6.1&times;</td><td class="hi">100</td><td class="hi">118.2</td><td class="hi">23.4 (1&times;)</td></tr>
+        <tr><td class="agent-cell">40</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>100</td><td>112.8</td><td>8.5&times;</td><td>100</td><td>112.7</td><td>137&times;</td><td>100</td><td>112.3</td><td>7.3&times;</td><td class="hi">100</td><td class="hi">122.6</td><td class="hi">45.0 (1&times;)</td></tr>
+        <tr><td class="agent-cell">50</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>85</td><td>116.8</td><td>8.1&times;</td><td>100</td><td>115.2</td><td>90&times;</td><td>100</td><td>113.8</td><td>5.8&times;</td><td class="hi">100</td><td class="hi">124.0</td><td class="hi">109.8 (1&times;)</td></tr>
+        <tr><td class="agent-cell">60</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>65</td><td>120.8</td><td>11&times;</td><td>85</td><td>117.7</td><td>130&times;</td><td>95</td><td>116.1</td><td>8.7&times;</td><td class="hi">100</td><td class="hi">130.2</td><td class="hi">110.8 (1&times;)</td></tr>
+        <tr><td class="agent-cell">70</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>50</td><td>123.5</td><td>10&times;</td><td>95</td><td>118.7</td><td>112&times;</td><td>85</td><td>120.8</td><td>9.0&times;</td><td class="hi">100</td><td class="hi">128.2</td><td class="hi">183.0 (1&times;)</td></tr>
+        <tr><td class="agent-cell">80</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>20</td><td>126.8</td><td>14&times;</td><td>95</td><td>121.0</td><td>125&times;</td><td>90</td><td>120.2</td><td>12&times;</td><td class="hi">100</td><td class="hi">128.7</td><td class="hi">211.9 (1&times;)</td></tr>
+        <tr><td class="agent-cell">90</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>60</td><td>124.6</td><td>17&times;</td><td>75</td><td>121.3</td><td>140&times;</td><td>80</td><td>122.2</td><td>13&times;</td><td class="hi">95</td><td class="hi">130.4</td><td class="hi">243.6 (1&times;)</td></tr>
+        <tr><td class="agent-cell">100</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>25</td><td>127.2</td><td>13&times;</td><td>75</td><td>123.8</td><td>89&times;</td><td>45</td><td>125.3</td><td>11&times;</td><td class="hi">90</td><td class="hi">130.1</td><td class="hi">472.9 (1&times;)</td></tr>
+        <tr><td class="agent-cell">128</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>55</td><td>126.2</td><td>132&times;</td><td>15</td><td>127.7</td><td>23&times;</td><td>5</td><td>132.0</td><td>530.0 (1&times;)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ============ den312d ============ -->
+  <div class="map-card">
+    <div class="map-card-header">
+      <img src="images/den312d.png" alt="den312d map">
+      <div>
+        <h3>den312d</h3>
+        <div class="map-info">65&times;81 game map &middot; structured layout &middot; 8&ndash;128 agents</div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-box"><canvas id="sr_den"></canvas></div>
+      <div class="chart-box"><canvas id="ms_den"></canvas></div>
+      <div class="chart-box"><canvas id="iu_den"></canvas></div>
+    </div>
+    <div class="table-scroll">
+    <table class="rtable">
+      <thead>
+        <tr class="group-header"><th rowspan="3"></th><th colspan="9">Learning-based</th><th colspan="6" class="hi">Hybrid</th></tr>
+        <tr class="algo-header"><th colspan="3">SCRIMP</th><th colspan="3">DCC</th><th colspan="3">MAPF-GPT-2M</th><th colspan="3">EPH</th><th colspan="3" class="hi">HI-MAPF</th></tr>
+        <tr class="metric-header"><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="agent-cell">8</td><td>20</td><td>226.2</td><td>321&times;</td><td>100</td><td>114.2</td><td>6.3&times;</td><td>100</td><td>114.0</td><td>83&times;</td><td>100</td><td>111.9</td><td>3.6&times;</td><td class="hi">100</td><td class="hi">115.3</td><td class="hi">3.6 (1&times;)</td></tr>
+        <tr><td class="agent-cell">16</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>100</td><td>130.7</td><td>8.8&times;</td><td>100</td><td>120.9</td><td>67&times;</td><td>100</td><td>122.2</td><td>5.9&times;</td><td class="hi">100</td><td class="hi">124.0</td><td class="hi">21.8 (1&times;)</td></tr>
+        <tr><td class="agent-cell">32</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>85</td><td>163.5</td><td>11&times;</td><td>100</td><td>126.4</td><td>61&times;</td><td>100</td><td>127.0</td><td>6.0&times;</td><td class="hi">100</td><td class="hi">136.7</td><td class="hi">105.2 (1&times;)</td></tr>
+        <tr><td class="agent-cell">64</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>90</td><td>190.7</td><td>11&times;</td><td>100</td><td>137.8</td><td>36&times;</td><td>100</td><td>146.1</td><td>8.8&times;</td><td class="hi">100</td><td class="hi">153.1</td><td class="hi">759.9 (1&times;)</td></tr>
+        <tr><td class="agent-cell">128</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>5</td><td>254.8</td><td class="fail">&ndash;</td><td>35</td><td>234.0</td><td class="fail">&ndash;</td><td>90</td><td>207.7</td><td class="fail">&ndash;</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ============ warehouse ============ -->
+  <div class="map-card">
+    <div class="map-card-header">
+      <img src="images/warehouse.png" alt="warehouse map">
+      <div>
+        <h3>warehouse</h3>
+        <div class="map-info">161&times;63 structured warehouse &middot; 8&ndash;128 agents</div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-box"><canvas id="sr_wh"></canvas></div>
+      <div class="chart-box"><canvas id="ms_wh"></canvas></div>
+      <div class="chart-box"><canvas id="iu_wh"></canvas></div>
+    </div>
+    <div class="table-scroll">
+    <table class="rtable">
+      <thead>
+        <tr class="group-header"><th rowspan="3"></th><th colspan="9">Learning-based</th><th colspan="6" class="hi">Hybrid</th></tr>
+        <tr class="algo-header"><th colspan="3">SCRIMP</th><th colspan="3">DCC</th><th colspan="3">MAPF-GPT-2M</th><th colspan="3">EPH</th><th colspan="3" class="hi">HI-MAPF</th></tr>
+        <tr class="metric-header"><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th><th>SR&uarr;</th><th>MS&darr;</th><th>IU&darr;</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="agent-cell">8</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>100</td><td>191.8</td><td>5.4&times;</td><td>100</td><td>193.6</td><td>134&times;</td><td>100</td><td>191.6</td><td>2.1&times;</td><td class="hi">100</td><td class="hi">192.8</td><td class="hi">0.8 (1&times;)</td></tr>
+        <tr><td class="agent-cell">16</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>100</td><td>213.3</td><td>16&times;</td><td>100</td><td>214.0</td><td>510&times;</td><td>100</td><td>212.9</td><td>11&times;</td><td class="hi">100</td><td class="hi">215.1</td><td class="hi">1.0 (1&times;)</td></tr>
+        <tr><td class="agent-cell">32</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>100</td><td>219.2</td><td>8.3&times;</td><td>100</td><td>221.8</td><td>215&times;</td><td>100</td><td>218.1</td><td>5.4&times;</td><td class="hi">100</td><td class="hi">220.3</td><td class="hi">10.7 (1&times;)</td></tr>
+        <tr><td class="agent-cell">64</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>100</td><td>227.6</td><td>15&times;</td><td>100</td><td>229.3</td><td>401&times;</td><td>100</td><td>227.8</td><td>11&times;</td><td class="hi">100</td><td class="hi">227.6</td><td class="hi">23.6 (1&times;)</td></tr>
+        <tr><td class="agent-cell">128</td><td class="fail">0</td><td class="fail">&ndash;</td><td class="fail">&ndash;</td><td>95</td><td>236.8</td><td>14.5&times;</td><td>95</td><td>237.2</td><td>277&times;</td><td>90</td><td>239.1</td><td>10.8&times;</td><td class="hi">100</td><td class="hi">234.7</td><td class="hi">139.1 (1&times;)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <hr class="d">
+
+  <h2 class="sh">Hardware Validation</h2>
+  <p class="bt">5 TurtleBot4 robots in a 6&times;6 physical grid, ROS 2, distributed deployment. Results averaged across 5 problem instances.</p>
+  <table class="rtable" style="max-width: 48rem;">
+    <thead><tr><th>Metric</th><th>SCRIMP</th><th>DCC</th><th>MAPF-GPT</th><th>EPH</th><th style="color:var(--accent);">HI-MAPF</th></tr></thead>
+    <tbody>
+      <tr><td>Success Rate (%)</td><td>100</td><td>100</td><td>100</td><td>100</td><td class="hi"><strong>100</strong></td></tr>
+      <tr><td>Avg. Makespan</td><td>16.4</td><td>19.4</td><td>13.6</td><td>21.8</td><td class="hi"><strong>12.2</strong></td></tr>
+      <tr><td>Avg. Total IU</td><td>42,413</td><td>596</td><td>588</td><td>623</td><td class="hi"><strong>199</strong></td></tr>
+      <tr><td>IU vs HI-MAPF</td><td>213&times;</td><td>3.0&times;</td><td>3.0&times;</td><td>3.1&times;</td><td class="hi"><strong>1&times;</strong></td></tr>
+      <tr><td>Avg. Comm. Freq.</td><td>180</td><td>116</td><td>82</td><td>131</td><td class="hi"><strong>10</strong></td></tr>
+      <tr><td>Avg. Exec Time (s)</td><td>211.2</td><td>235.0</td><td><strong>176.2</strong></td><td>234.9</td><td>181.5</td></tr>
+      <tr><td>Avg. Exec Msgs</td><td>169</td><td>199</td><td>141</td><td>223</td><td class="hi"><strong>127</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sh" style="font-size:1rem; margin-top:1.5rem;">Per-Instance Hardware Results</h3>
+  <p class="bt">Individual results for each of the 5 problem instances on a 6&times;6 grid with 5 TurtleBot4 robots.</p>
+
+  <div class="table-scroll">
+  <table class="rtable">
+    <thead>
+      <tr class="group-header"><th rowspan="3"></th><th colspan="9">Learning-based</th><th colspan="6" class="hi">Hybrid</th></tr>
+      <tr class="algo-header"><th colspan="3">SCRIMP</th><th colspan="3">DCC</th><th colspan="3">MAPF-GPT-2M</th><th colspan="3">EPH</th><th colspan="3" class="hi">HI-MAPF</th></tr>
+      <tr class="metric-header"><th>MS</th><th>IU</th><th>Exec(s)</th><th>MS</th><th>IU</th><th>Exec(s)</th><th>MS</th><th>IU</th><th>Exec(s)</th><th>MS</th><th>IU</th><th>Exec(s)</th><th>MS</th><th>IU</th><th>Exec(s)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="agent-cell">Prob 1</td><td>14</td><td>37,128</td><td>185.4</td><td>18</td><td>540</td><td>214.8</td><td>12</td><td>504</td><td>162.3</td><td>20</td><td>560</td><td>218.7</td><td class="hi">11</td><td class="hi">180</td><td class="hi">168.2</td></tr>
+      <tr><td class="agent-cell">Prob 2</td><td>18</td><td>45,720</td><td>225.6</td><td>20</td><td>620</td><td>241.5</td><td>14</td><td>612</td><td>182.4</td><td>22</td><td>648</td><td>240.1</td><td class="hi">13</td><td class="hi">210</td><td class="hi">190.5</td></tr>
+      <tr><td class="agent-cell">Prob 3</td><td>15</td><td>39,840</td><td>198.2</td><td>19</td><td>580</td><td>228.6</td><td>13</td><td>556</td><td>170.8</td><td>21</td><td>602</td><td>228.4</td><td class="hi">12</td><td class="hi">195</td><td class="hi">175.3</td></tr>
+      <tr><td class="agent-cell">Prob 4</td><td>17</td><td>44,256</td><td>218.9</td><td>21</td><td>640</td><td>248.2</td><td>15</td><td>624</td><td>185.6</td><td>23</td><td>670</td><td>245.8</td><td class="hi">13</td><td class="hi">208</td><td class="hi">188.7</td></tr>
+      <tr><td class="agent-cell">Prob 5</td><td>18</td><td>45,121</td><td>228.1</td><td>19</td><td>600</td><td>241.8</td><td>14</td><td>644</td><td>180.0</td><td>23</td><td>635</td><td>241.5</td><td class="hi">12</td><td class="hi">202</td><td class="hi">184.6</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div style="height:1rem;"></div>
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2025 Bharath Muppasani &middot; <a href="index.html">Back to HI-MAPF</a> &middot; <a href="../../index.html">Home</a></p>
+</footer>
+
+<script>
+  const btn = document.getElementById('themeBtn');
+  function applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.textContent = dark ? '\u2600' : '\u263D';
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+  applyTheme(localStorage.getItem('theme') === 'dark');
+  btn.addEventListener('click', () => {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
+  function txtC() { return isDark() ? '#a08888' : '#6b5b5b'; }
+  function gridC() { return isDark() ? 'rgba(160,136,136,0.15)' : 'rgba(107,91,91,0.12)'; }
+
+  const S = {
+    'HI-MAPF':     { color: function(){ return isDark()?'#ccc':'#363636'; }, w: 3, d: [] },
+    'MAPF-GPT-2M': { color: function(){ return '#3498db'; }, w: 2, d: [5,5] },
+    'DCC':         { color: function(){ return '#f39c12'; }, w: 2, d: [5,5] },
+    'EPH':         { color: function(){ return '#2ecc71'; }, w: 2, d: [5,5] },
+    'SCRIMP':      { color: function(){ return '#e74c3c'; }, w: 2, d: [5,5] }
+  };
+
+  const MAPS = {
+    r32: {
+      labels: [10,20,30,40,50,60,70,80,90,100,128],
+      sr: { 'HI-MAPF':[100,100,100,100,100,100,100,100,95,85,0], 'MAPF-GPT-2M':[100,100,100,100,100,100,100,100,100,100,90], 'DCC':[100,100,100,95,90,70,60,60,30,40,0], 'EPH':[100,95,100,100,95,95,65,70,25,50,5], 'SCRIMP':[100,100,100,95,100,90,90,80,60,60,70] },
+      ms: { 'HI-MAPF':[50.5,56,55.5,107,61.4,128.2,65.5,71.8,82.8,76.5,null], 'MAPF-GPT-2M':[49.2,53.8,53.9,57.2,58.9,63,68.2,72.9,70,77,94.1], 'DCC':[49.1,58,59.5,72.8,81.7,92,104.5,111.7,117.8,117.5,127], 'EPH':[47.6,62.5,62,64.5,79,88.7,110.7,108.9,123.8,121,127.5], 'SCRIMP':[48,50.5,52.4,58,56.8,71.4,70.5,83.8,96.9,97.2,96.6] },
+      iu: { 'HI-MAPF':[3.6,18.8,66.3,48.8,221.4,214.2,2158.2,1405.5,1950.7,3693.9,null], 'MAPF-GPT-2M':[510.8,2571.8,5410.6,10023.4,16817.5,25789.6,37317.4,52094.2,65378,84993.4,167878.4], 'DCC':[26.1,211.2,696.2,1407,3356.1,6337.2,10385,17196.1,29474.4,37877.7,94612.2], 'EPH':[19.7,204.2,576.8,1403,3183.2,6155.1,11735.3,20330.8,36040.6,41383.7,129548.7], 'SCRIMP':[262.2,565.2,884.8,1377.7,1645.2,2822.8,3158.8,4660.8,6292.6,6982.9,8615.5] }
+    },
+    r64: {
+      labels: [10,20,30,40,50,60,70,80,90,100,128],
+      sr: { 'HI-MAPF':[100,100,100,100,100,100,100,100,95,90,5], 'MAPF-GPT-2M':[100,100,100,100,100,85,95,95,75,75,55], 'DCC':[100,100,90,100,85,65,50,20,60,25,0], 'EPH':[95,100,100,100,100,95,85,90,80,45,15], 'SCRIMP':[50,10,10,0,0,0,0,0,0,0,0] },
+      ms: { 'HI-MAPF':[108,115.6,118.2,122.6,124,130.2,128.2,128.7,130.4,130.1,132], 'MAPF-GPT-2M':[99.6,110.2,111.7,112.7,115.2,117.7,118.7,121,121.3,123.8,126.2], 'DCC':[97.7,107.8,112.2,112.8,116.8,120.8,123.5,126.8,124.6,127.2,128], 'EPH':[97.3,105.7,109.5,112.3,113.8,116.1,120.8,120.2,122.2,125.3,127.7], 'SCRIMP':[112.5,126.5,126.7,128,128,128,128,128,128,128,128] },
+      iu: { 'HI-MAPF':[0.9,6.2,23.4,45,109.8,110.8,183,211.9,243.6,472.9,530], 'MAPF-GPT-2M':[314.8,1432.2,3440.9,6165.6,9882.4,14413.4,20501.5,26414.2,34021.6,42306.8,70208.3], 'DCC':[10.6,59.4,172.2,382.4,889.7,1258,1823.1,2947.4,4095.8,6134.2,13053], 'EPH':[7.8,47.8,141.8,328.9,638,964.6,1640.2,2520.7,3187.4,5290,12250.5], 'SCRIMP':[612.1,1382,2190.3,2912.6,3668.7,4454.6,5275.4,5860.5,6649.9,7296.5,9213.7] }
+    },
+    den: {
+      labels: [8,16,32,64,128],
+      sr: { 'HI-MAPF':[100,100,100,100,0], 'MAPF-GPT-2M':[100,100,100,100,35], 'DCC':[100,100,85,90,5], 'EPH':[100,100,100,100,90], 'SCRIMP':[20,0,0,0,0] },
+      ms: { 'HI-MAPF':[115.3,124,136.7,153.1,null], 'MAPF-GPT-2M':[114,120.9,126.4,137.8,234], 'DCC':[114.2,130.7,163.5,190.7,254.8], 'EPH':[111.9,122.2,127,146.1,207.7], 'SCRIMP':[226.2,256,256,256,256] },
+      iu: { 'HI-MAPF':[3.6,21.8,105.2,759.9,null], 'MAPF-GPT-2M':[300,1464.8,6425.6,27326.8,320115.9], 'DCC':[22.6,191.3,1195.6,8180.1,112519.4], 'EPH':[13,128.4,627.5,6722.3,77108.9], 'SCRIMP':[1156.7,2629.9,5292.6,10960.8,14090.8] }
+    },
+    wh: {
+      labels: [8,16,32,64,128],
+      sr: { 'HI-MAPF':[100,100,100,100,100], 'MAPF-GPT-2M':[100,100,100,100,95], 'DCC':[100,100,100,100,95], 'EPH':[100,100,100,100,90], 'SCRIMP':[0,0,0,0,0] },
+      ms: { 'HI-MAPF':[192.8,215.1,220.3,227.6,234.7], 'MAPF-GPT-2M':[193.6,214,221.8,229.3,237.2], 'DCC':[191.8,213.3,219.2,227.6,236.8], 'EPH':[191.6,212.9,218.1,227.8,239.1], 'SCRIMP':[256,256,256,256,256] },
+      iu: { 'HI-MAPF':[0.8,1.0,10.7,23.6,139.1], 'MAPF-GPT-2M':[107,509.6,2303.8,9468.8,38508.6], 'DCC':[4.3,15.6,89,356.9,2016.5], 'EPH':[1.7,11.1,57.7,265.1,1502.4], 'SCRIMP':[997.6,1729.3,3575.1,7262.5,9408.9] }
+    }
+  };
+
+  const allCharts = [];
+
+  function makeChart(canvasId, mapKey, metric, yLabel, yOpts) {
+    const map = MAPS[mapKey];
+    const datasets = Object.keys(map[metric]).map(algo => ({
+      label: algo, data: map[metric][algo],
+      borderColor: S[algo].color(), borderWidth: S[algo].w, borderDash: S[algo].d,
+      tension: 0.1, pointRadius: 3, spanGaps: false
+    }));
+    const c = new Chart(document.getElementById(canvasId).getContext('2d'), {
+      type: 'line',
+      data: { labels: map.labels, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: true, aspectRatio: 1.6,
+        layout: { padding: { left: 2, right: 6, top: 4, bottom: 2 } },
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { title: { display: true, text: 'Agents', color: txtC(), font: { size: 11 } }, ticks: { color: txtC(), font: { size: 10 } }, grid: { color: gridC() } },
+          y: { ...yOpts, title: { display: true, text: yLabel, color: txtC(), font: { size: 11 } }, ticks: { ...(yOpts.ticks||{}), color: txtC(), font: { size: 10 }, maxTicksLimit: 6 }, grid: { color: gridC() } }
+        }
+      }
+    });
+    allCharts.push({ chart: c, canvasId, mapKey, metric, yLabel, yOpts });
+  }
+
+  ['r32','r64','den','wh'].forEach(mk => {
+    makeChart('sr_'+mk, mk, 'sr', 'SR (%)', { min: 0, max: 100 });
+    makeChart('ms_'+mk, mk, 'ms', 'Makespan', {});
+    makeChart('iu_'+mk, mk, 'iu', 'IU (log)', { type: 'logarithmic', ticks: { callback: function(val) { if (val === 0) return '0'; var exp = Math.round(Math.log10(val)); if (Math.abs(val - Math.pow(10, exp)) < 0.01) { var sup = {'0':'\u2070','1':'\u00B9','2':'\u00B2','3':'\u00B3','4':'\u2074','5':'\u2075','6':'\u2076'}; return '10' + String(exp).split('').map(function(c){return sup[c]||c;}).join(''); } return ''; } } });
+  });
+
+  const observer = new MutationObserver(() => {
+    allCharts.forEach(({ chart, canvasId, mapKey, metric, yLabel, yOpts }) => {
+      chart.destroy();
+      const map = MAPS[mapKey];
+      const datasets = Object.keys(map[metric]).map(algo => ({
+        label: algo, data: map[metric][algo],
+        borderColor: S[algo].color(), borderWidth: S[algo].w, borderDash: S[algo].d,
+        tension: 0.1, pointRadius: 3, spanGaps: false
+      }));
+      const nc = new Chart(document.getElementById(canvasId).getContext('2d'), {
+        type: 'line', data: { labels: map.labels, datasets },
+        options: { responsive: true, maintainAspectRatio: true, aspectRatio: 1.6, layout: { padding: { left: 2, right: 6, top: 4, bottom: 2 } }, plugins: { legend: { display: false } }, scales: {
+          x: { title: { display: true, text: 'Agents', color: txtC(), font: { size: 11 } }, ticks: { color: txtC(), font: { size: 10 } }, grid: { color: gridC() } },
+          y: { ...yOpts, title: { display: true, text: yLabel, color: txtC(), font: { size: 11 } }, ticks: { ...(yOpts.ticks||{}), color: txtC(), font: { size: 10 }, maxTicksLimit: 6 }, grid: { color: gridC() } }
+        } }
+      });
+      allCharts.find(x => x.canvasId === canvasId).chart = nc;
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+});
+</script>
+
+</body>
+</html>
