@@ -91,14 +91,30 @@
     .pub-title { order: 1; width: 100%; color: var(--text); font-weight: 500; line-height: 1.4; }
     .pub-authors { order: 2; flex: 1; font-size: 0.76rem; color: var(--muted); }
     .pub-authors strong { color: var(--text); font-weight: 600; }
-    .pub-links { order: 4; width: 100%; display: flex; gap: 0.35rem; margin-top: 0.2rem; flex-wrap: wrap; }
-    .pub-link { font-size: 0.7rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.05rem 0.45rem; }
-    .pub-link:hover { background: var(--accent-faint); }
+    .pub-links { order: 4; width: 100%; display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+    .pub-link-btn { 
+      font-size: 0.68rem; color: var(--accent); text-decoration: none; 
+      border: 1px solid var(--accent-border); border-radius: 999px; 
+      padding: 0.12rem 0.65rem; font-weight: 500; transition: all 0.2s ease; 
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02); display: inline-flex; align-items: center; gap: 0.25rem;
+    }
+    .pub-link-btn:hover { 
+      background: var(--accent); color: var(--bg); 
+      box-shadow: 0 3px 6px rgba(183,110,121,0.15); transform: translateY(-1px); 
+    }
 
     /* entry footer */
     .entry-footer { margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    .project-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; font-weight: 500; color: var(--accent); border: 1px solid var(--accent-border); border-radius: 999px; padding: 0.3rem 0.9rem; text-decoration: none; transition: background 0.15s; }
-    .project-btn:hover { background: var(--accent-faint); }
+    .project-btn { 
+      display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; 
+      font-weight: 500; color: var(--accent); border: 1px solid var(--accent-border); 
+      border-radius: 999px; padding: 0.3rem 0.9rem; text-decoration: none; 
+      transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .project-btn:hover { 
+      background: var(--accent); color: var(--bg); 
+      box-shadow: 0 3px 6px rgba(183,110,121,0.15); transform: translateY(-1px); 
+    }
 
     /* inline sections */
     .entry-inline { max-width: var(--max-prose); margin: 0 auto; padding: 2rem 1.5rem 0; opacity: 0.9; }
@@ -211,17 +227,29 @@
   </figure>
   <ul class="pub-list">
     <li>
-      <div class="pub-row"><span class="venue-badge">Workshop · AAAI '25</span><span class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</span></div>
+      <div class="pub-row"><span class="venue-badge">Workshop · AAAI-GenPlan '25</span><span class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava</div>
+      <div class="pub-links">
+        <a href="projects/infospread/papers/CR_AAAI_25_Opinion_Dynamics_formulation_for_Dialog_Management.pdf" class="pub-link-btn" target="_blank">PDF</a>
+        <a href="projects/infospread/images/genplan.jpg" class="pub-link-btn" target="_blank">Poster</a>
+      </div>
     </li>
     <li>
       <div class="pub-row"><span class="venue-badge">Conference · NeurIPS '24</span><span class="pub-title">Towards Effective Planning Strategies for Dynamic Opinion Networks</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</div>
-      <div class="pub-links"><a href="https://openreview.net/pdf?id=LYivxMp5es" class="pub-link" target="_blank">Paper</a></div>
+      <div class="pub-links">
+        <a href="projects/infospread/papers/Neurips_2024_camera_ready_version.pdf" class="pub-link-btn" target="_blank">PDF</a>
+        <a href="https://openreview.net/forum?id=LYivxMp5es" class="pub-link-btn" target="_blank">Link</a>
+        <a href="projects/infospread/images/NeurIPS-24-Poster.png" class="pub-link-btn" target="_blank">Poster</a>
+      </div>
     </li>
     <li>
       <div class="pub-row"><span class="venue-badge">Demo · AAAI '24</span><span class="pub-title">Expressive and Flexible Simulation of Information Spread Strategies in Social Networks Using Planning</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</div>
+      <div class="pub-links">
+        <a href="projects/infospread/papers/InfoSpread_AAAI_Demo.pdf" class="pub-link-btn" target="_blank">PDF</a>
+        <a href="projects/infospread/posters/AAAI-24_Demo_Poster.pdf" class="pub-link-btn" target="_blank">Poster</a>
+      </div>
     </li>
   </ul>
   <div class="entry-footer">
@@ -240,7 +268,7 @@
     <span class="entry-tag">Ontology</span>
     <span class="entry-tag">Explainability</span>
   </div>
-  <h2 class="entry-title">Planning Ontology &amp; Explainable AI (PO, maPO, OMEGA)</h2>
+  <h2 class="entry-title">Planning Ontology &amp; Explainability (PO, maPO, OMEGA)</h2>
   <div class="entry-desc">
     <p>
       Automated planning lacks a shared vocabulary for communicating <em>why</em> a plan was chosen.
@@ -267,16 +295,22 @@
   </figure>
   <ul class="pub-list">
     <li>
-      <div class="pub-row"><span class="venue-badge">Demo · AAAI '26</span><span class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</span></div>
+      <div class="pub-row"><span class="venue-badge">AAAI '26 Demonstration</span><span class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Ritirupa Dey, Biplav Srivastava, Vignesh Narayanan</div>
+      <div class="pub-links">
+        <a href="projects/ontology/papers/AAAI_26_Demo_MAPF_Ontology.pdf" class="pub-link-btn" target="_blank">PDF</a>
+        <a href="projects/ontology/posters/omega_poster_AAAI-2026.pdf" class="pub-link-btn" target="_blank">Poster</a>
+      </div>
     </li>
     <li>
-      <div class="pub-row"><span class="venue-badge">Workshop · AAAI '26</span><span class="pub-title">maPO: A Multi-Agent Planning Ontology</span></div>
+      <div class="pub-row"><span class="venue-badge">Workshop · AAAI-MAKE '26</span><span class="pub-title">maPO: An Ontology for Multi-Agent Path Finding and Its Usage for Explaining Planner Behaviour</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Biplav Srivastava, Vignesh Narayanan</div>
+      <div class="pub-links"><a href="projects/ontology/papers/MAPF_Ontology.pdf" class="pub-link-btn" target="_blank">PDF</a></div>
     </li>
     <li>
       <div class="pub-row"><span class="venue-badge">Journal · Discover Data '25</span><span class="pub-title">Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Michael N. Huhns, Vignesh Narayanan</div>
+      <div class="pub-links"><a href="projects/ontology/papers/AI Planning Ontology - CODS - Discover Data Journal.pdf" class="pub-link-btn" target="_blank">PDF</a></div>
     </li>
     <li>
       <div class="pub-row"><span class="venue-badge">Workshop · ICAPS '23</span><span class="pub-title">Building and Using a Planning Ontology from Past Data for Performance Efficiency</span></div>
@@ -348,6 +382,63 @@
     <li>
       <div class="pub-row"><span class="venue-badge">Journal · AI Magazine '23</span><span class="pub-title">On Safe and Usable Chatbots for Promoting Voter Participation</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Kausik Lakkaraju, Shuge Lei, Biplav Srivastava, Brett Robertson, Andrea Hickerson, Vignesh Narayanan</div>
+    </li>
+  </ul>
+</article>
+
+<hr class="section-divider" style="margin-top:2rem;">
+
+<!-- ══════════════════════════════════════
+     6. Rubik's Cube (2024)
+══════════════════════════════════════ -->
+<article class="entry-inline">
+  <div class="entry-meta">
+    <span class="entry-year">2024</span>
+    <span class="entry-tag">Planning</span>
+    <span class="entry-tag">PDDL</span>
+    <a href="https://ai4society.github.io/projects/rubiks_cube/index.html" class="entry-tag" target="_blank" style="background: var(--accent); color: var(--bg); text-decoration: none; border-color: var(--accent); margin-left: auto;">Lab Project Page &nearr;</a>
+  </div>
+  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">Solving the Rubik's Cube With a PDDL Planner</h2>
+  <div class="entry-desc">
+    <p>
+      An interactive system that explores spatial logic constraints mapping the Rubik's Cube into PDDL logic constructs. 
+      We compared solvability factors across multiple domain-independent classical planners focusing on standard representations.
+    </p>
+  </div>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Demo · ICAPS '24</span><span class="pub-title">Solving the Rubik's Cube With a PDDL Planner</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava</div>
+    </li>
+    <li>
+      <div class="pub-row"><span class="venue-badge">Workshop · ICAPS '24</span><span class="pub-title">Comparing Rubik's Cube Solvability in Domain-Independent Planners Using Standard Planning Representations</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava, Forest Agostinelli</div>
+    </li>
+  </ul>
+</article>
+
+<hr class="section-divider" style="margin-top:2rem;">
+
+<!-- ══════════════════════════════════════
+     7. Power Sensing (2023)
+══════════════════════════════════════ -->
+<article class="entry-inline">
+  <div class="entry-meta">
+    <span class="entry-year">2023</span>
+    <span class="entry-tag">Time Series</span>
+    <span class="entry-tag">IoT Sensing</span>
+    <a href="https://ai4society.github.io/projects/power_page/index.html" class="entry-tag" target="_blank" style="background: var(--accent); color: var(--bg); text-decoration: none; border-color: var(--accent); margin-left: auto;">Lab Project Page &nearr;</a>
+  </div>
+  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">Identifying Usage States from Non-intrusive Power Sensing</h2>
+  <div class="entry-desc">
+    <p>
+      A baseline evaluation and dataset release focused on isolating appliance usage footprints through continuous non-intrusive power monitoring with IoT sensors.
+    </p>
+  </div>
+  <ul class="pub-list">
+    <li>
+      <div class="pub-row"><span class="venue-badge">Conference · AAAI '23</span><span class="pub-title">A Dataset and Baseline Approach for Identifying Usage States from Non-intrusive Power Sensing with MiDAS IoT-Based Sensors</span></div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Cheyyur Jaya Anand, Chinmayi Appajigowda, Biplav Srivastava, Lokesh Johri</div>
     </li>
   </ul>
 </article>

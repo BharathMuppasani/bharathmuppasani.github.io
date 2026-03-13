@@ -155,13 +155,17 @@
     }
 
     /* Pub links */
-    .pub-links { display: flex; gap: 0.35rem; }
-    .pub-link-btn {
-      font-size: 0.68rem; color: var(--accent); text-decoration: none;
-      border: 1px solid var(--accent-border); border-radius: 999px;
-      padding: 0.08rem 0.45rem; font-weight: 500;
+    .pub-links { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .pub-link-btn { 
+      font-size: 0.68rem; color: var(--accent); text-decoration: none; 
+      border: 1px solid var(--accent-border); border-radius: 999px; 
+      padding: 0.12rem 0.65rem; font-weight: 500; transition: all 0.2s ease; 
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02); display: inline-flex; align-items: center; gap: 0.25rem;
     }
-    .pub-link-btn:hover { background: var(--accent-faint); }
+    .pub-link-btn:hover { 
+      background: var(--accent); color: var(--bg); 
+      box-shadow: 0 3px 6px rgba(183,110,121,0.15); transform: translateY(-1px); 
+    }
 
     .site-footer { text-align: center; padding: 1.5rem 1.5rem 2rem; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; max-width: var(--max); margin-left: auto; margin-right: auto; }
     .site-footer a { color: var(--accent); text-decoration: none; }
@@ -223,16 +227,25 @@
         <span class="venue-chip">AAAI 2026 Demo</span>
         <span class="skill-tag">Ontology</span>
         <span class="skill-tag">MAPF</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="projects/ontology/papers/AAAI_26_Demo_MAPF_Ontology.pdf" class="pub-link-btn" target="_blank">PDF</a>
+          <a href="projects/ontology/posters/omega_poster_AAAI-2026.pdf" class="pub-link-btn" target="_blank">Poster</a>
+        </div>
       </div>
     </div>
 
     <div class="publication-item pub-entry" data-theme="ontology" data-type="workshop">
-      <p class="pub-title">maPO: A Multi-Agent Planning Ontology</p>
+      <p class="pub-title">maPO: An Ontology for Multi-Agent Path Finding and Its Usage for Explaining Planner Behaviour</p>
       <p class="pub-authors"><strong>Bharath Muppasani</strong>, Biplav Srivastava, Vignesh Narayanan</p>
       <div class="pub-meta">
         <span class="type-badge workshop">Workshop</span>
-        <span class="venue-chip">MAKE @ AAAI 2026</span>
+        <span class="venue-chip">AAAI-MAKE 2026</span>
         <span class="skill-tag">Ontology</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="projects/ontology/papers/MAPF_Ontology.pdf" class="pub-link-btn" target="_blank">PDF</a>
+        </div>
       </div>
     </div>
   </div>
@@ -241,6 +254,21 @@
   <div class="year-section">
     <div class="year-header"><span class="year-label">2025</span></div>
 
+    <div class="publication-item pub-entry" data-theme="planning" data-type="conference">
+      <p class="pub-title">HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment with Minimal Inter-Agent Information Sharing</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Risha Patel, Biplav Srivastava, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge conference" style="background:rgba(107,91,91,0.07);border-color:rgba(107,91,91,0.2);color:var(--muted);font-style:italic;">Under Review</span>
+        <span class="venue-chip">Under Review</span>
+        <span class="skill-tag">MAPF</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="projects/himapf/index.html" class="pub-link-btn" target="_blank">Project Page</a>
+        </div>
+      </div>
+    </div>
+
+
     <div class="publication-item pub-entry" data-theme="opinion" data-type="workshop">
       <p class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</p>
       <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava</p>
@@ -248,6 +276,11 @@
         <span class="type-badge workshop">Workshop</span>
         <span class="venue-chip">GenPlan @ AAAI 2025</span>
         <span class="skill-tag">Opinion Dynamics</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="projects/infospread/papers/CR_AAAI_25_Opinion_Dynamics_formulation_for_Dialog_Management.pdf" class="pub-link-btn" target="_blank">PDF</a>
+          <a href="projects/infospread/images/genplan.jpg" class="pub-link-btn" target="_blank">Poster</a>
+        </div>
       </div>
     </div>
 
@@ -258,8 +291,11 @@
         <span class="type-badge journal">Journal</span>
         <span class="venue-chip">Discover Data 2025</span>
         <span class="skill-tag">Ontology</span>
+        <div class="spacer"></div>
+        <div class="pub-links"><a href="projects/ontology/papers/AI Planning Ontology - CODS - Discover Data Journal.pdf" class="pub-link-btn" target="_blank">PDF</a></div>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- 2024 -->
@@ -275,10 +311,27 @@
         <span class="skill-tag">Opinion Dynamics</span>
         <div class="spacer"></div>
         <div class="pub-links">
-          <a href="https://openreview.net/pdf?id=LYivxMp5es" class="pub-link-btn" target="_blank">Paper</a>
+          <a href="projects/infospread/papers/Neurips_2024_camera_ready_version.pdf" class="pub-link-btn" target="_blank">PDF</a>
+          <a href="https://openreview.net/forum?id=LYivxMp5es" class="pub-link-btn" target="_blank">Link</a>
+          <a href="projects/infospread/images/NeurIPS-24-Poster.png" class="pub-link-btn" target="_blank">Poster</a>
         </div>
       </div>
     </div>
+
+    <div class="publication-item pub-entry" data-theme="ontology" data-type="conference">
+      <p class="pub-title">Building a Plan Ontology to Represent and Exploit Planning Knowledge</p>
+      <p class="pub-authors"><strong>Bharath Muppasani</strong>, Nitin Gupta, Vishal Pallagani, Biplav Srivastava, Raghava Mutharaju, Michael N. Huhns, Vignesh Narayanan</p>
+      <div class="pub-meta">
+        <span class="type-badge conference">Conference</span>
+        <span class="venue-chip">CODS 2024</span>
+        <span class="skill-tag">Ontology</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="projects/ontology/papers/CODS_24_AI_Planning_Ontology.pdf" class="pub-link-btn" target="_blank">PDF</a>
+        </div>
+      </div>
+    </div>
+
 
     <div class="publication-item pub-entry" data-theme="opinion" data-type="demo">
       <p class="pub-title">Expressive and Flexible Simulation of Information Spread Strategies in Social Networks Using Planning</p>
@@ -288,6 +341,11 @@
         <span class="venue-chip">AAAI 2024 Demo</span>
         <span class="award-tag">★ Best Demo Award</span>
         <span class="skill-tag">Opinion Dynamics</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="projects/infospread/papers/InfoSpread_AAAI_Demo.pdf" class="pub-link-btn" target="_blank">PDF</a>
+          <a href="projects/infospread/posters/AAAI-24_Demo_Poster.pdf" class="pub-link-btn" target="_blank">Poster</a>
+        </div>
       </div>
     </div>
 
@@ -306,20 +364,30 @@
       <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava</p>
       <div class="pub-meta">
         <span class="type-badge demo">Demo</span>
-        <span class="venue-chip">ICAPS 2024 System Demo</span>
+        <span class="venue-chip">ICAPS 2024 Demo</span>
         <span class="skill-tag">Planning</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="https://ai4society.github.io/projects/rubiks_cube/index.html" class="pub-link-btn" target="_blank">Link</a>
+        </div>
       </div>
     </div>
+
 
     <div class="publication-item pub-entry" data-theme="planning" data-type="workshop">
       <p class="pub-title">Comparing Rubik's Cube Solvability in Domain-Independent Planners Using Standard Planning Representations</p>
       <p class="pub-authors"><strong>Bharath Muppasani</strong>, Vishal Pallagani, Biplav Srivastava, Forest Agostinelli</p>
       <div class="pub-meta">
         <span class="type-badge workshop">Workshop</span>
-        <span class="venue-chip">HSDIP @ ICAPS 2024</span>
+        <span class="venue-chip">ICAPS 2024</span>
         <span class="skill-tag">Planning</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="https://ai4society.github.io/projects/rubiks_cube/index.html" class="pub-link-btn" target="_blank">Link</a>
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- 2023 -->
@@ -331,10 +399,15 @@
       <p class="pub-authors"><strong>Bharath Muppasani</strong>, Cheyyur Jaya Anand, Chinmayi Appajigowda, Biplav Srivastava, Lokesh Johri</p>
       <div class="pub-meta">
         <span class="type-badge conference">Conference</span>
-        <span class="venue-chip">AAAI/IAAI 2023</span>
+        <span class="venue-chip">AAAI 2023</span>
         <span class="skill-tag">Time Series</span>
+        <div class="spacer"></div>
+        <div class="pub-links">
+          <a href="https://ai4society.github.io/projects/power_page/index.html" class="pub-link-btn" target="_blank">Link</a>
+        </div>
       </div>
     </div>
+
 
     <div class="publication-item pub-entry" data-theme="others" data-type="journal">
       <p class="pub-title">On Safe and Usable Chatbots for Promoting Voter Participation</p>
