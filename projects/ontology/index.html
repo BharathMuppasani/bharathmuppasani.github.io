@@ -54,6 +54,7 @@
     
     .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; color: #6b5b5b; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.28rem 0.8rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .status-badge.venue { color: var(--accent); border-color: var(--accent-border); background: var(--accent-faint); }
+    .status-row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
     [data-theme="dark"] .status-badge.venue { color: var(--accent); }
     
     .links-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.5rem 0; }
@@ -70,6 +71,19 @@
     hr.d { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
     h2.sh { font-family: var(--ff-serif); font-size: 1.25rem; font-weight: 600; color: var(--text); margin: 2rem 0 0.75rem; }
     h3.ssh { font-family: var(--ff-serif); font-size: 1.05rem; font-weight: 600; color: var(--text); margin: 1.5rem 0 0.5rem; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin: 2rem 0 0.75rem; }
+    .section-head .sh { margin: 0; }
+    .section-link {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent-border);
+      border-radius: 999px;
+      padding: 0.18rem 0.68rem;
+      background: var(--accent-faint);
+    }
+    .section-link:hover { background: var(--accent); color: var(--bg); }
 
     p.bt { font-size: 0.93rem; color: var(--text); opacity: 0.87; margin-bottom: 0.75rem; line-height: 1.85; text-align: justify; }
     ul.bt-list { font-size: 0.93rem; color: var(--text); opacity: 0.87; margin: 0.5rem 0 0.75rem 1.25rem; line-height: 1.8; }
@@ -81,11 +95,20 @@
     .key-idea strong { color: var(--accent); font-weight: 600; }
 
     /* Cards */
-    .iu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0; }
+    .iu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width: 900px) { .iu-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .iu-grid { grid-template-columns: 1fr; } }
     .iu-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 0.5rem; padding: 0.85rem 1rem; }
     .iu-card .iu-name { font-weight: 700; color: var(--text); margin-bottom: 0.3rem; font-size: 0.9rem; }
     .iu-card .iu-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    .phase-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width: 900px) { .phase-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .phase-grid { grid-template-columns: 1fr; } }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 0.5rem; padding: 0.85rem 1rem; }
+    .phase-meta { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+    .phase-title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; line-height: 1.45; }
+    .phase-copy { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
 
     .fig { margin: 1.5rem 0; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
     .fig img { width: 100%; height: auto; display: block; object-fit: contain; padding: 0.75rem; }
@@ -94,6 +117,14 @@
     .media-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; align-items: start; }
     @media (max-width: 600px) { .media-row { grid-template-columns: 1fr; } }
     .media-row img { width: 100%; border-radius: 0.5rem; border: 1px solid var(--border); }
+    .media-caption { font-size: 0.75rem; text-align: center; margin-top: 0.5rem; color: var(--muted); }
+    .demo-link { display: block; position: relative; text-decoration: none; }
+    .play-pill {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.65); color: #fff; padding: 0.5rem 1.2rem; border-radius: 999px;
+      font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+    }
+    .spacer { height: 2rem; }
 
     .pub-list { list-style: none; margin-top: 0.5rem; }
     .pub-list li { font-size: 0.84rem; color: var(--muted); padding: 0.55rem 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.5rem; }
@@ -158,16 +189,18 @@
   <div class="tag-row">
     <span class="tag">Ontology</span>
     <span class="tag">Explainable AI</span>
+    <span class="tag">Knowledge Graphs</span>
     <span class="tag">Multi-Agent Path Finding</span>
   </div>
   <h1>Planning Ontology &amp; Explainability (PO, maPO, OMEGA)</h1>
   <p class="byline">
     <a href="../../index.html">Bharath Muppasani</a>, Vishal Pallagani, Ritirupa Dey, Nitin Gupta, Raghava Mutharaju, Biplav Srivastava, Vignesh Narayanan
   </p>
-  <div class="status-row" style="display:flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
+  <div class="status-row">
+    <span class="status-badge venue">CODS 2024</span>
     <span class="status-badge venue">Discover Data 2025</span>
-    <span class="status-badge venue">AAAI 2026</span>
     <span class="status-badge venue">AAAI-MAKE 2026</span>
+    <span class="status-badge venue">AAAI 2026 Demo</span>
   </div>
 </header>
 
@@ -175,74 +208,117 @@
 
   <div class="links-row">
     <a href="https://ai4society.github.io/planning-ontology/" class="link-btn filled" target="_blank">Planning Ontology Portal</a>
-    <a href="https://ai4society.github.io/ma-planning-ontology/" class="link-btn filled" target="_blank">maPO &amp; OMEGA Portal</a>
+    <a href="https://ai4society.github.io/ma-planning-ontology/" class="link-btn" target="_blank">maPO &amp; OMEGA Portal</a>
     <a href="https://editor.planning.domains" class="link-btn" target="_blank">Editor Plugin</a>
+    <a href="#po" class="link-btn">PO</a>
+    <a href="#mapo" class="link-btn">maPO &amp; OMEGA</a>
+    <a href="#publications" class="link-btn">Publications</a>
   </div>
 
   <div class="stat-row">
     <div class="stat-chip"><span class="stat-num">95.2%</span><span class="stat-label">User Preference (OMEGA vs Logs)</span></div>
     <div class="stat-chip"><span class="stat-num">4.40/5</span><span class="stat-label">Explainability Clarity Rating</span></div>
     <div class="stat-chip"><span class="stat-num">94.39%</span><span class="stat-label">Competency Question Coverage</span></div>
+    <div class="stat-chip"><span class="stat-num">4</span><span class="stat-label">Published Milestones (2024-2026)</span></div>
   </div>
 
   <hr class="d">
 
-  <!-- MOTIVATION -->
-  <h2 class="sh">Motivation</h2>
+  <h2 class="sh">Abstract</h2>
   <p class="bt">
-    The field of Automated Planning has produced a staggering array of domain models and solving algorithms, historically standardized using the Planning Domain Definition Language (PDDL). However, planning frameworks structurally lack a shared vocabulary for communicating <em>why</em> a plan was chosen—the metadata, problem properties, and algorithm behaviors remain heavily implicit.
+    This research line builds ontological infrastructure for automated planning and explainability. It starts with a general planning ontology (PO) for planner behavior, expands into multi-agent execution semantics (maPO), and culminates in OMEGA, an explainability pipeline that converts raw MAPF traces into human-readable causal narratives.
   </p>
   <p class="bt">
-    Without this rich semantics, it is exceedingly difficult to retrospectively reason about planner selection, trace performance outcomes based on instance configurations, or explain multi-agent path-finding execution loops to human supervisors. 
+    The unifying goal is to make planning artifacts queryable and reusable: selecting planners from historical signals, extracting reusable macro patterns, and explaining behavior in robot-deployment settings where standard solver logs are hard to interpret.
   </p>
-  
-  <!-- PLANNING ONTOLOGY -->
-  <h2 class="sh">Planning Ontology (PO)</h2>
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-meta">CODS 2024</div>
+      <div class="phase-title">Planning Ontology Foundation</div>
+      <p class="phase-copy">Initial ontology schema for planning domains, planners, tasks, and performance properties.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-meta">Discover Data 2025</div>
+      <div class="phase-title">Expanded PO + Applications</div>
+      <p class="phase-copy">Extended ontology coverage and evidence on planner selection and planning knowledge reuse.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-meta">AAAI-MAKE 2026</div>
+      <div class="phase-title">maPO for MAPF</div>
+      <p class="phase-copy">Ontology extension for collision events, replanning causes, and multi-agent execution semantics.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-meta">AAAI 2026 Demo</div>
+      <div class="phase-title">OMEGA Explainability Tool</div>
+      <p class="phase-copy">Operational system that maps MAPF execution logs to contextual, user-facing explanations.</p>
+    </div>
+  </div>
   <div class="key-idea">
-    <strong>Key Idea:</strong> We construct <strong>PO</strong>—the most comprehensive OWL 2 ontology for automated planning to date—representing domains, properties, search topologies, performances, and <code class="hl">PROV-O</code> provenance metadata. By structuring data from the International Planning Competitions (IPC), PO transforms opaque logs into SPARQL-queryable knowledge graphs.
+    <strong>Core Thesis:</strong> planning ontologies are not just metadata repositories; they are decision-support layers that improve planner choice, execution understanding, and human trust.
+  </div>
+  
+  <div class="section-head" id="po">
+    <h2 class="sh">Planning Ontology (PO)</h2>
+    <a href="https://ai4society.github.io/planning-ontology/" class="section-link" target="_blank">PO Project ↗</a>
+  </div>
+  <div class="key-idea">
+    <strong>Key Idea:</strong> PO is an OWL 2 ontology that organizes planning domains, solver properties, run-time outcomes, and <code class="hl">PROV-O</code> provenance into a SPARQL-queryable knowledge graph.
   </div>
 
   <div class="iu-grid">
     <div class="iu-card">
       <div class="iu-name">Planner Performance &amp; Selection</div>
       <div class="iu-desc">
-        We utilize PO's logical inferences coupled with historical IPC benchmarks to pinpoint optimal planners given particular domains configurations statically prior to runtime execution.
+        Historical IPC traces become structured evidence for selecting planners that best match domain and instance characteristics before execution.
       </div>
     </div>
-    <div class="iu-card" style="border-left-color: #3b5bdb;">
-      <div class="iu-name" style="color:#3b5bdb;">Macro Actions Extraction</div>
+    <div class="iu-card">
+      <div class="iu-name">Macro Actions Extraction</div>
       <div class="iu-desc">
-        Leverage historical provenance traces saved into knowledge bases. The ontology can yield sequence macros that inherently bypass local search permutations when embedded alongside new domain tasks.
+        Provenance-rich action traces support mining reusable macro operators that reduce search burden in related planning tasks.
+      </div>
+    </div>
+    <div class="iu-card">
+      <div class="iu-name">Tooling Integration</div>
+      <div class="iu-desc">
+        A Planning.Domains plugin converts PDDL artifacts to RDF, enabling direct ontology-backed analysis in existing planning workflows.
       </div>
     </div>
   </div>
 
-  <div class="media-row" style="margin-top:2rem;">
+  <div class="media-row">
     <div>
-      <img src="images/planning_ontology.png" alt="Concept map for Planning Ontology" onclick="openModal(this.src)">
-      <p class="bt" style="font-size: 0.75rem; color: var(--muted); text-align: center; margin-top:0.25rem;">PO schema integrating planners, tasks, and plans.</p>
+      <figure class="fig" style="margin: 0;">
+        <img src="images/planning_ontology.png" alt="Concept map for Planning Ontology" onclick="openModal(this.src)">
+        <figcaption>PO schema linking planners, domains, tasks, and execution outcomes.</figcaption>
+      </figure>
     </div>
     <div>
-      <img src="images/po-tool.gif" alt="Planning Domains Plugin UI Animation" onclick="openModal(this.src)">
-      <p class="bt" style="font-size: 0.75rem; color: var(--muted); text-align: center; margin-top:0.25rem;">Translating PDDL to RDF directly in Planning.Domains.</p>
+      <figure class="fig" style="margin: 0;">
+        <img src="images/po-tool.gif" alt="Planning Domains Plugin UI Animation" onclick="openModal(this.src)">
+        <figcaption>Planning.Domains plugin for PDDL to RDF translation.</figcaption>
+      </figure>
     </div>
   </div>
 
-  <h2 class="sh">Multi-Agent Planning Ontology (maPO) &amp; OMEGA</h2>
+  <div class="section-head" id="mapo">
+    <h2 class="sh">Multi-Agent Planning Ontology (maPO) &amp; OMEGA</h2>
+    <a href="https://ai4society.github.io/ma-planning-ontology/" class="section-link" target="_blank">maPO Project ↗</a>
+  </div>
   <div class="key-idea">
-    <strong>maPO &amp; OMEGA:</strong> Extending from classical bounds into the continuous execution loops needed for robots, we present <strong>maPO (Multi-Agent Planning Ontology)</strong> alongside the <strong>OMEGA</strong> platform. When robotic agents encounter localized resource locks (like overlapping paths or collisions in MAPF), standard solvers emit complex coordinate logs.
+    <strong>maPO &amp; OMEGA:</strong> maPO models MAPF-specific execution semantics including agent conflicts, collision events, and replanning context. OMEGA uses this schema to convert low-level trace logs into causal, user-readable explanations.
   </div>
   
   <p class="bt">
-    maPO captures these nuances distinctly: <code class="hl">ma:Agent</code> (aligned with IoT SOSA specs), <code class="hl">ma:CollisionEvent</code>, <code class="hl">ma:ConflictAlert</code>, and the core causal chain embedded in <code class="hl">ma:ReplanningStrategy</code> via PROV-O logic.
+    Key entities include <code class="hl">ma:Agent</code>, <code class="hl">ma:CollisionEvent</code>, <code class="hl">ma:ConflictAlert</code>, and <code class="hl">ma:ReplanningStrategy</code>, connected through provenance links that preserve event causality.
   </p>
 
   <p class="bt">
-    <strong>OMEGA Framework</strong> works as an agnostic pipeline taking execution states $\rightarrow$ assembling an RDF graph against \textit{maPO} schema $\rightarrow$ executing predefined SPARQL templates resolving the behavioral logic $\rightarrow$ surfacing human-readable contextual explanations tied accurately to grid animations mapping agent movements. Look at our AAAI-26 findings showing overwhelmingly superior clarity vs standard output traces (<strong>95.2% preference</strong>).
+    <strong>OMEGA Framework:</strong> execution traces are transformed to RDF graphs over maPO, queried through SPARQL templates, and rendered as contextual explanations aligned with animation states. In user studies, participants preferred OMEGA explanations over raw logs (<strong>95.2%</strong> preference; <strong>4.40/5</strong> clarity).
   </p>
 
   <figure class="fig">
-    <img src="images/maPO_architecture.png" alt="The log-to-graph pipeline and interactive OMEGA explanations" style="max-width:700px; margin: 0 auto; display: block;" onclick="openModal(this.src)">
+    <img src="images/maPO_architecture.png" alt="The log-to-graph pipeline and interactive OMEGA explanations" onclick="openModal(this.src)">
     <figcaption>Log-to-graph pipeline and interactive OMEGA explanations.</figcaption>
   </figure>
 
@@ -250,24 +326,27 @@
   <div class="media-row">
     <div>
       <div class="fig" style="margin: 0; overflow: hidden; position: relative;">
-        <a href="https://drive.google.com/file/d/1FJ-Qm154FZXwJw94spUKh3PO3YzoqkcB/view" target="_blank" style="display: block; position: relative; text-decoration: none;">
-          <img src="images/maPO_architecture.png" alt="OMEGA Demo Video" style="width: 100%; display: block;">
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.65); color: white; padding: 0.5rem 1.2rem; border-radius: 999px; font-weight: 600; font-size: 0.85rem; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);">▶ Watch Demo</div>
+        <a href="https://drive.google.com/file/d/1FJ-Qm154FZXwJw94spUKh3PO3YzoqkcB/view" target="_blank" class="demo-link">
+          <img src="images/maPO_architecture.png" alt="OMEGA Demo Video">
+          <span class="play-pill">▶ Watch Demo</span>
         </a>
       </div>
-      <p class="bt" style="font-size: 0.75rem; text-align: center; margin-top: 0.5rem; color: var(--muted)">OMEGA: Explaining MAPF (Google Drive)</p>
+      <p class="media-caption">OMEGA demonstration video (Google Drive).</p>
     </div>
-    <div class="fig" style="margin:0;">
-      <p class="bt" style="padding: 1rem; font-size: 0.85rem;">
-        Our interactive walkthrough demonstrates OMEGA's ability to translate complex coordinate traces into human-readable causal explanations, helping users understand why agents collide or wait in dynamic environments.
-      </p>
+    <div>
+      <figure class="fig" style="margin: 0;">
+        <img src="images/maPO_architecture.png" alt="OMEGA architecture view" onclick="openModal(this.src)">
+        <figcaption>Architecture view used in the OMEGA walkthrough.</figcaption>
+      </figure>
     </div>
   </div>
+  <p class="bt">
+    The demo emphasizes practical explainability during MAPF execution, showing why collisions occur, how conflict alerts are triggered, and which replanning strategy resolves each issue.
+  </p>
   
   <hr class="d">
 
-  <!-- PUBLICATIONS -->
-  <h2 class="sh">Representative Publications</h2>
+  <h2 class="sh" id="publications">Representative Publications</h2>
   <ul class="pub-list">
     <li>
       <div class="pub-row"><span class="venue-badge">AAAI '26 Demonstration</span><span class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</span></div>
@@ -278,7 +357,7 @@
       </div>
     </li>
     <li>
-      <div class="pub-row"><span class="venue-badge">Workshop · AAAI-MAKE '26</span><span class="pub-title">maPO: A Multi-Agent Planning Ontology and Its Usage for Explaining Planner Behaviour</span></div>
+      <div class="pub-row"><span class="venue-badge">Workshop · AAAI-MAKE '26</span><span class="pub-title">maPO: An Ontology for Multi-Agent Path Finding and Its Usage for Explaining Planner Behaviour</span></div>
       <div class="pub-authors"><strong>Bharath Muppasani</strong>, Biplav Srivastava, Vignesh Narayanan</div>
       <div class="pub-links">
         <a href="papers/MAPF_Ontology.pdf" class="pub-link-btn" target="_blank">PDF</a>
@@ -300,7 +379,7 @@
     </li>
   </ul>
 
-  <div style="height:2rem;"></div>
+  <div class="spacer"></div>
 </div>
 
 <footer class="site-footer">

@@ -62,16 +62,62 @@
     /* divider */
     .section-divider { max-width: var(--max-prose); margin: 2.5rem auto 0; padding: 0 1.5rem; border: none; border-top: 1px solid var(--border); }
 
-    /* entry */
+    /* entries */
     .entry { max-width: var(--max-prose); margin: 0 auto; padding: 2.5rem 1.5rem 0; }
+    .entry-inline { max-width: var(--max-prose); margin: 0 auto; padding: 2rem 1.5rem 0; opacity: 0.9; }
     .entry-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
     .entry-year { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
     .entry-tag { font-size: 0.72rem; font-weight: 500; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 999px; padding: 0.1rem 0.55rem; }
-    .entry-title { font-family: var(--ff-serif); font-size: clamp(1.15rem, 2.2vw, 1.4rem); font-weight: 600; line-height: 1.3; color: var(--text); margin-bottom: 0.75rem; }
+    .entry-tag.link-tag { margin-left: auto; background: var(--accent); color: var(--bg); border-color: var(--accent); text-decoration: none; }
+    .entry-tag.link-tag:hover { opacity: 0.92; }
+    .entry-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.45rem;
+      position: relative;
+    }
+    .entry-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.75rem;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--accent);
+      opacity: 0.85;
+    }
+    .entry-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--border);
+    }
+    .entry-inline .entry-title { font-size: 1.15rem; }
     .entry-desc { font-size: 0.93rem; color: var(--text); opacity: 0.85; margin-bottom: 1rem; line-height: 1.8; }
     .entry-desc p + p { margin-top: 0.65em; }
 
     code.hl { font-family: var(--ff-sans); font-size: 0.85em; background: var(--code-bg); color: var(--code-color); padding: 0.1em 0.38em; border-radius: 0.25rem; font-weight: 500; }
+    .venue-hl {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      background: var(--accent-faint);
+      border: 1px solid var(--accent-border);
+      border-radius: 999px;
+      padding: 0.08rem 0.5rem;
+      vertical-align: baseline;
+    }
 
     /* result chips */
     .result-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.1rem; }
@@ -117,7 +163,6 @@
     }
 
     /* inline sections */
-    .entry-inline { max-width: var(--max-prose); margin: 0 auto; padding: 2rem 1.5rem 0; opacity: 0.9; }
     .inline-divider-label { max-width: var(--max-prose); margin: 2.5rem auto 0; padding: 0 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
     .inline-divider-label::before, .inline-divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .inline-divider-label span { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
@@ -214,6 +259,9 @@
       The <code class="hl">InfoSpread</code> framework trains Graph Convolutional Networks on PDDL-derived
       plan traces and packages the result as an interactive tool: upload any social network, configure
       spread parameters, and visualize optimal intervention strategies step by step.
+    </p>
+    <p>
+      Milestones include <span class="venue-hl">AAAI 2024 Demo</span>, <span class="venue-hl">NeurIPS 2024</span>, and <span class="venue-hl">AAAI-GenPlan 2025</span>.
     </p>
   </div>
   <div class="result-chips">
@@ -338,7 +386,7 @@
     <span class="entry-tag">LLMs</span>
     <span class="entry-tag">PDDL</span>
   </div>
-  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">LLMs for Automated Planning</h2>
+  <h2 class="entry-title">LLMs for Automated Planning</h2>
   <div class="entry-desc">
     <p>
       <code class="hl">Plansformer</code> fine-tunes transformer models to generate valid PDDL plans
@@ -370,7 +418,7 @@
     <span class="entry-tag">Safety</span>
     <span class="entry-tag">Conversational AI</span>
   </div>
-  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">SafeChat: Guardrails for Conversational LLMs</h2>
+  <h2 class="entry-title">SafeChat: Guardrails for Conversational LLMs</h2>
   <div class="entry-desc">
     <p>
       SafeChat is a lightweight moderation layer for conversational AI that intercepts policy-violating
@@ -396,9 +444,9 @@
     <span class="entry-year">2024</span>
     <span class="entry-tag">Planning</span>
     <span class="entry-tag">PDDL</span>
-    <a href="https://ai4society.github.io/projects/rubiks_cube/index.html" class="entry-tag" target="_blank" style="background: var(--accent); color: var(--bg); text-decoration: none; border-color: var(--accent); margin-left: auto;">Lab Project Page &nearr;</a>
+    <a href="https://ai4society.github.io/projects/rubiks_cube/index.html" class="entry-tag link-tag" target="_blank">Lab Project Page &nearr;</a>
   </div>
-  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">Solving the Rubik's Cube With a PDDL Planner</h2>
+  <h2 class="entry-title">Solving the Rubik's Cube With a PDDL Planner</h2>
   <div class="entry-desc">
     <p>
       An interactive system that explores spatial logic constraints mapping the Rubik's Cube into PDDL logic constructs. 
@@ -427,9 +475,9 @@
     <span class="entry-year">2023</span>
     <span class="entry-tag">Time Series</span>
     <span class="entry-tag">IoT Sensing</span>
-    <a href="https://ai4society.github.io/projects/power_page/index.html" class="entry-tag" target="_blank" style="background: var(--accent); color: var(--bg); text-decoration: none; border-color: var(--accent); margin-left: auto;">Lab Project Page &nearr;</a>
+    <a href="https://ai4society.github.io/projects/power_page/index.html" class="entry-tag link-tag" target="_blank">Lab Project Page &nearr;</a>
   </div>
-  <h2 class="entry-title" style="font-family:var(--ff-serif);font-size:1.15rem;font-weight:600;line-height:1.35;color:var(--text);margin-bottom:0.6rem;">Identifying Usage States from Non-intrusive Power Sensing</h2>
+  <h2 class="entry-title">Identifying Usage States from Non-intrusive Power Sensing</h2>
   <div class="entry-desc">
     <p>
       A baseline evaluation and dataset release focused on isolating appliance usage footprints through continuous non-intrusive power monitoring with IoT sensors.

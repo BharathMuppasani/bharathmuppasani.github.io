@@ -25,11 +25,17 @@
       --accent: #b76e79; --accent-faint: rgba(183,110,121,0.08); --accent-border: rgba(183,110,121,0.25);
       --ff-sans: 'Instrument Sans', system-ui, sans-serif; --ff-serif: 'Lora', Georgia, serif;
       --code-bg: rgba(42,32,32,0.07); --code-color: #7a3540; --max: 56rem;
+      --key-bg: rgba(183,110,121,0.11);
+      --panel-bg: #eee6e6;
+      --panel-border: rgba(183,110,121,0.34);
     }
     [data-theme="dark"] {
       --bg: #1a1616; --surface: #231e1e; --border: #3a3030; --text: #ede5e5; --muted: #a08888;
       --accent: #cf838e; --accent-faint: rgba(207,131,142,0.08); --accent-border: rgba(207,131,142,0.28);
       --code-bg: rgba(237,229,229,0.09); --code-color: #e89fa8;
+      --key-bg: rgba(207,131,142,0.13);
+      --panel-bg: #241f1f;
+      --panel-border: rgba(207,131,142,0.4);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: var(--ff-sans); background: var(--bg); color: var(--text); line-height: 1.75; }
@@ -48,13 +54,15 @@
     .proj-header { max-width: var(--max); margin: 3rem auto 0; padding: 0 1.5rem 0 1.75rem; border-left: 3px solid var(--accent); position: relative; z-index: 1; }
     .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
     .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; background: var(--accent-faint); border: 1px solid var(--accent-border); color: var(--accent); border-radius: 999px; padding: 0.15rem 0.6rem; }
-    .proj-header h1 { font-family: var(--ff-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; line-height: 1.25; color: var(--text); margin-bottom: 0; }
+    .proj-header h1 { font-family: var(--ff-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; line-height: 1.25; color: var(--text); margin-bottom: 0.45rem; }
     .byline { font-size: 0.84rem; color: var(--muted); }
     .byline a { color: var(--accent); text-decoration: none; }
     
     .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; color: #6b5b5b; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.28rem 0.8rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .status-badge.award { color: #9a7a00; border-color: rgba(215,175,55,0.35); background: rgba(215,175,55,0.1); }
     .status-badge.venue { color: var(--accent); border-color: var(--accent-border); background: var(--accent-faint); }
+    .status-row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-top: 0.9rem; }
+    .award-btn { cursor: pointer; font-size: 0.75rem; padding: 0.25rem 0.75rem; }
     [data-theme="dark"] .status-badge.award { color: #d4aa30; }
     [data-theme="dark"] .status-badge.venue { color: var(--accent); }
 
@@ -79,10 +87,11 @@
 
     code.hl { font-family: var(--ff-sans); font-size: 0.85em; background: var(--code-bg); color: var(--code-color); padding: 0.1em 0.38em; border-radius: 0.25rem; font-weight: 500; }
 
-    .key-idea { margin: 2rem 0; padding: 1.1rem 1.3rem; border: 1.5px solid var(--accent-border); border-left: 4px solid var(--accent); border-radius: 0.5rem; background: var(--accent-faint); font-size: 0.93rem; line-height: 1.75; }
+    .key-idea { margin: 2rem 0; padding: 1.1rem 1.3rem; border: 1.5px solid var(--accent-border); border-left: 4px solid var(--accent); border-radius: 0.5rem; background: var(--key-bg); font-size: 0.93rem; line-height: 1.75; }
     .key-idea strong { color: var(--accent); font-weight: 600; }
 
     .math-block { margin: 1.25rem 0; padding: 1rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; overflow-x: auto; font-size: 0.95rem; }
+    .eq-center { text-align: center; }
 
     .fig { margin: 1.5rem 0; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
     .fig img { width: 100%; height: auto; display: block; object-fit: contain; padding: 0.75rem; }
@@ -91,6 +100,22 @@
     .media-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; align-items: start; }
     @media (max-width: 600px) { .media-row { grid-template-columns: 1fr; } }
     .media-row img { width: 100%; border-radius: 0.5rem; border: 1px solid var(--border); }
+
+    .phase-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width: 760px) { .phase-grid { grid-template-columns: 1fr; } }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 0.5rem; padding: 0.85rem 1rem; }
+    .phase-meta { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+    .phase-title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; line-height: 1.45; }
+    .phase-copy { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+    .demo-link { display: block; position: relative; text-decoration: none; }
+    .play-pill {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.65); color: #fff; padding: 0.5rem 1.2rem; border-radius: 999px;
+      font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+    }
+    .media-caption { font-size: 0.75rem; text-align: center; margin-top: 0.5rem; color: var(--muted); }
+    .spacer { height: 2rem; }
 
     .pub-list { list-style: none; margin-top: 0.5rem; }
     .pub-list li { font-size: 0.84rem; color: var(--muted); padding: 0.55rem 0; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.5rem; }
@@ -143,6 +168,42 @@
       background: var(--accent-faint); padding: 0.1rem 0.45rem; 
       border-radius: 999px; margin-bottom: 0.4rem; letter-spacing: 0.02em;
     }
+    .notation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 0.9rem 0 1.5rem; }
+    @media (max-width: 700px) { .notation-grid { grid-template-columns: 1fr; } }
+    .notation-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 0.5rem; padding: 0.75rem 0.9rem; }
+    .notation-term { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.25rem; }
+    .notation-desc { font-size: 0.79rem; color: var(--muted); line-height: 1.55; }
+    .env-layout { display: grid; grid-template-columns: 1fr 13rem; gap: 0.85rem; align-items: start; margin-top: 0.55rem; }
+    @media (max-width: 700px) { .env-layout { grid-template-columns: 1fr; } }
+    .env-copy { font-size: 0.9rem; color: var(--text); opacity: 0.88; line-height: 1.72; }
+    .env-copy p + p { margin-top: 0.5rem; }
+    .env-figure {
+      margin: 0;
+      border: 1px solid var(--panel-border);
+      border-radius: 0.45rem;
+      overflow: hidden;
+      background: var(--panel-bg);
+      width: 100%;
+      max-width: 13rem;
+      justify-self: end;
+      box-shadow: 0 1px 4px rgba(42,32,32,0.05);
+    }
+    @media (max-width: 700px) { .env-figure { max-width: 100%; justify-self: stretch; } }
+    .env-figure img { width: 100%; height: auto; display: block; padding: 0.3rem; cursor: zoom-in; }
+    .env-figure figcaption {
+      font-size: 0.64rem;
+      color: var(--muted);
+      line-height: 1.4;
+      text-align: center;
+      padding: 0.15rem 0.42rem 0.3rem;
+      border-top: 1px solid var(--border);
+    }
+    .key-idea .math-block {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      box-shadow: 0 1px 4px rgba(42,32,32,0.04);
+      margin-top: 0.85rem;
+    }
   </style>
 </head>
 <body>
@@ -164,192 +225,224 @@
     <span class="tag">Opinion Networks</span>
     <span class="tag">Generalized Planning</span>
     <span class="tag">Intervention Planning</span>
-    <span class="tag">Safety</span>
+    <span class="tag">Dialog Management</span>
   </div>
-  <h1 style="margin-bottom: 0.5rem;">Opinion Dynamics &amp; Information Spread Control</h1>
-  <p class="byline" style="margin-bottom: 1rem;">
+  <h1>Opinion Dynamics &amp; Information Spread Control</h1>
+  <p class="byline">
     <a href="../../index.html">Bharath Muppasani</a>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns
   </p>
-  <div class="status-row" style="display:flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
+  <div class="status-row">
     <span class="status-badge venue">NeurIPS 2024</span>
-    <span class="status-badge venue">AAAI 2024</span>
+    <span class="status-badge venue">AAAI 2024 Demo</span>
     <span class="status-badge venue">GenPlan @ AAAI 2025</span>
-    <div class="status-badge award" style="cursor:pointer; font-size: 0.75rem; padding: 0.25rem 0.75rem;" onclick="openModal('images/AAAI-2024-BestDemo.jpg')">★ Best Demo</div>
+    <div class="status-badge award award-btn" onclick="openModal('images/AAAI-2024-BestDemo.jpg')">★ Best Demo Award</div>
   </div>
 </header>
 
 <div class="prose">
 
   <div class="links-row">
-    <a href="#demo" class="link-btn filled">Watch Demo</a>
-    <a href="../../publications.html" class="link-btn">Related Publications</a>
+    <a href="#abstract" class="link-btn filled">Abstract</a>
+    <a href="#modeling" class="link-btn">Modeling</a>
+    <a href="#strategies" class="link-btn">Strategies</a>
+    <a href="#system" class="link-btn">System</a>
+    <a href="#publications" class="link-btn">Publications</a>
   </div>
 
   <div class="stat-row">
     <div class="stat-chip"><span class="stat-num">86%</span><span class="stat-label">Infection Reduction (Cora)</span></div>
-    <div class="stat-chip"><span class="stat-num">Continuous</span><span class="stat-label">Dynamics Modeling</span></div>
-    <div class="stat-chip"><span class="stat-num">Multi-Topic</span><span class="stat-label">Dialog Management</span></div>
-    <div class="stat-chip"><span class="stat-num">Numeric PDDL</span><span class="stat-label">System Implementation</span></div>
+    <div class="stat-chip"><span class="stat-num">6</span><span class="stat-label">Reward Structures Studied</span></div>
+    <div class="stat-chip"><span class="stat-num">3</span><span class="stat-label">Published Project Milestones</span></div>
+    <div class="stat-chip"><span class="stat-num">Numeric PDDL</span><span class="stat-label">Executable Formulation</span></div>
   </div>
 
   <hr class="d">
 
-  <!-- MOTIVATION -->
-  <h2 class="sh">Motivation</h2>
+  <h2 class="sh" id="abstract">Abstract</h2>
   <p class="bt">
-    In the digital age, understanding and controlling how misinformation spreads across networks is paramount. 
-    Controlling how opinions propagate through large social networks is inherently a <strong>planning problem</strong> 
-    — given a network state, which nodes should receive an intervention (accurate information), and in what sequence, 
-    mitigate harmful beliefs and reduce the <strong>infection rate</strong> — the percentage of the network currently holding misinformation. 
+    This project studies how to control misinformation propagation in social graphs through <strong>sequential intervention planning</strong>. We model each person as an agent with continuous beliefs, capture trust-weighted interactions, and compute intervention actions under limited budget at each step.
   </p>
   <p class="bt">
-    As interactions continuously shape opinions, traditional approaches that model belief as static or binary lack realism. We propose frameworks that integrate generalized automated planning with opinion dynamics modeling, treating intervention as a sequential decision-making process constrained by an execution budget.
+    The work progresses from an interactive planning-based demo system (AAAI 2024) to generalized policy learning on graph families (NeurIPS 2024), then to human-AI dialog state control over connected beliefs (GenPlan @ AAAI 2025). All three stages share the same objective: reduce network infection while preserving transferability across unseen topologies.
   </p>
-
-  <hr class="d">
-
-  <h2 class="sh">Modeling Dynamic Opinion Networks</h2>
-  <p class="bt">
-    We model opinion networks as directed graphs $G = (V, E)$ where each node holds a continuous opinion $x_i(t) \in [-1, 1]$ and each edge carries a trust weight $\mu_{ik} \in [0, 1]$. An agent is considered "infected" if their opinion value falls below a specific threshold (e.g., $x_i < -0.95$). 
-  </p>
-  <div class="key-idea">
-    <strong>Infection Rate:</strong> A primary metric for network health, defined as the ratio of infected nodes to the total number of agents in the network:
-    <br><br>
-    <div style="text-align:center;">
-        $\text{Infection Rate}(t) = \frac{|\{v \in V : x_v(t) < -0.95\}|}{|V|}$
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-meta">AAAI 2024 Demo</div>
+      <div class="phase-title">InfoSpread System</div>
+      <p class="phase-copy">Interactive simulation, planning-backed intervention loops, and visual diagnostics for misinformation control. Received the Best Demo Award.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-meta">NeurIPS 2024</div>
+      <div class="phase-title">Generalized Planning Strategies</div>
+      <p class="phase-copy">Learned intervention policies that transfer from small training graphs to larger unseen networks using structural graph features.</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-meta">GenPlan @ AAAI 2025</div>
+      <div class="phase-title">Dialog-State Belief Planning</div>
+      <p class="phase-copy">Extended opinion-network control to dialog management where utterances influence interconnected user beliefs across topics.</p>
     </div>
   </div>
+
+  <hr class="d">
+
+  <h2 class="sh" id="modeling">Modeling Dynamic Opinion Networks</h2>
   <p class="bt">
-    We study cases ranging from simple binary models to fully continuous opinions and trust using linear adjustment mechanisms.
+    We represent the social system as a directed graph $G = (V, E)$ where each node has a continuous opinion value $x_i(t) \in [-1, 1]$ and each edge carries trust weight $\mu_{ik} \in [0,1]$. A node is considered infected when its belief crosses a misinformation threshold (for example, $x_i < -0.95$).
+  </p>
+  <p class="bt">
+    Opinion updates follow a linear adjustment process driven by trust-weighted interactions between connected agents.
+  </p>
+  <div class="math-block eq-center">
+    $$x_i(t+1)=x_i(t)+\mu_{ik}\bigl(x_k(t)-x_i(t)\bigr)$$
+  </div>
+  <p class="bt">
+    At each step, the planner selects a budget-constrained subset of target nodes for corrective intervention. This turns opinion control into a long-horizon sequential decision problem rather than a one-shot classification task.
   </p>
   <div class="key-idea">
-    <strong>Linear Adjustment Mechanism:</strong> Opinions evolve over time as individuals communicate. When agent $k$ shares information with agent $i$, the belief updates via:
-    <br><br>
-    <div style="text-align:center;">
-        $x_i(t+1) = x_i(t) + \mu_{ik}(x_k(t) - x_i(t))$
+    <strong>Environment and Intervention Model:</strong>
+    <div class="env-layout">
+      <div class="env-copy">
+        <p>At each timestep, infected nodes propagate misinformation to their immediate susceptible neighbors (candidate nodes). An intervention policy chooses a budget-constrained subset of nodes to receive authentic information from a trusted source.</p>
+        <p>The trusted source uses opinion value <strong>+1</strong>, and source-trust is configured from the settings used in experiments (<code class="hl">1.0</code>, <code class="hl">0.8</code>, <code class="hl">0.75</code>). Intervened nodes move toward positive belief, and once a node crosses the positive threshold it is treated as blocked from further misinformation spread. The episode ends when no candidate nodes remain.</p>
+      </div>
+      <figure class="env-figure">
+        <img src="images/our_model_neurips.png" alt="Propagation and intervention process schematic" onclick="openModal(this.src)">
+        <figcaption>Propagation and intervention dynamics in the simulation environment.</figcaption>
+      </figure>
     </div>
-    <br>
-    The goal of the planner is to intelligently select a budget-constrained subset of nodes at each step to inject with accurate information, countering misinformation spread.
+    <div style="height:0.45rem;"></div>
+    <strong>Infection Rate Metric:</strong> The planning objective is evaluated using the fraction of infected nodes at each timestep.
+    <div class="math-block eq-center">
+      $$\text{InfectionRate}(t)=\frac{|\{v\in V:x_v(t)<-0.95\}|}{|V|}$$
+    </div>
   </div>
 
   <hr class="d">
 
-  <!-- PLANNER FRAMEWORKS -->
-  <h2 class="sh">Intervention planning strategies for dynamic opinion networks</h2>
+  <h2 class="sh" id="strategies">Intervention Planning Strategies</h2>
   <p class="bt">
-    Combinatorial node selection on graphs quickly makes optimal search planning intractable. We leverage the structural properties of opinion networks to develop scalable, generalized strategies that transfer across different network topologies.
+    Combinatorial node selection quickly makes exact planning intractable. To preserve scale and transfer, we focus on generalized approaches that learn reusable strategies from graph structure.
   </p>
 
   <h3 class="ssh">Supervised Learning (SL) with GCNs</h3>
   <p class="bt">
-    The motivation for applying SL with <strong>Graph Convolutional Networks (GCNs)</strong> stems from the "generalized planning" challenge: how can a system learn to select nodes on a small 10-node network and have that strategy hold for a 10,000-node network? GCNs excel here by learning <em>structural features</em> (connectivity, local polarity, influence) rather than memorizing node IDs.
+    We use <strong>Graph Convolutional Networks (GCNs)</strong> to rank intervention candidates based on structural signals such as connectivity, local polarity, and influence flow. Ground-truth supervision is produced from search-derived solutions on small training graphs.
   </p>
   <p class="bt">
-    We formulate node selection as a ranking problem, using an optimal search algorithm to generate ground-truth labels for small topologies. The GCN learns to replicate these optimal choices by processing the network as a graph convolution layers, capturing the cascading effects of opinion spread.
+    This framing addresses the generalized planning question directly: learn a transferable intervention policy that is not tied to specific node identifiers.
   </p>
 
-  <h3 class="ssh">Reinforcement Learning (RL) & Reward Engineering</h3>
+  <h3 class="ssh">Reinforcement Learning (RL) &amp; Reward Engineering</h3>
   <p class="bt">
-    While SL is effective, it suffers from the <strong>labeling bottleneck</strong>: generating optimal labels for large-scale graphs requires solving NP-hard search problems. To eliminate this dependency, we introduced a Reinforcement Learning framework powered by a <strong>Deep Value Network (DVN)</strong>.
+    To remove expensive supervised labeling, we introduced a reinforcement learning pipeline with a <strong>Deep Value Network (DVN)</strong> that learns directly from simulation outcomes.
   </p>
-  
   <div class="key-idea">
-    <strong>The RL Advantage:</strong> Our framework eliminates the need for expensive supervised labels by learning directly from simulator feedback. This approach discovers robust strategies that generalize across diverse network topologies and scales.
+    <strong>RL Advantage:</strong> Learning from feedback avoids NP-hard label generation loops while retaining strong generalization across graph families and scales.
   </div>
 
-  <figure class="fig" style="max-width: 700px; margin: 1.5rem auto;">
+  <figure class="fig">
     <img src="images/inference_general_neurips.png" alt="GCN Inference Architecture" onclick="openModal(this.src)">
     <figcaption>Inference pipeline for GCN-based generalized planning strategy.</figcaption>
   </figure>
 
   <p class="bt">
-    A core contribution of our research (presented at NeurIPS 2024) is the analysis of <strong>6 distinct reward structures</strong>. These formations dictate how the agent balances global network health with local observable metrics:
+    A key <code class="hl">NeurIPS 2024</code> contribution is the study of <strong>six reward structures</strong> (Section 3.2.1) balancing infection control, susceptibility, and intervention speed:
   </p>
 
   <div class="reward-grid">
     <div class="reward-item">
-      <div class="reward-tag">Global Absolute</div>
-      <div class="reward-math">$R_0 = \sum_{v \in V} I(o_v = o_{tar})$</div>
+      <div class="reward-tag">Delta Infection</div>
+      <div class="reward-math">$R_0 = -\Delta I_t$</div>
     </div>
     <div class="reward-item">
-      <div class="reward-tag">Global Density</div>
-      <div class="reward-math">$R_1 = \frac{1}{|V|} \sum x_v$</div>
+      <div class="reward-tag">Candidate Suppression</div>
+      <div class="reward-math">$R_1 = -|C_t|$</div>
     </div>
     <div class="reward-item">
-      <div class="reward-tag">Step-wise Delta</div>
-      <div class="reward-math">$R_2 = R_1(t) - R_1(t-1)$</div>
+      <div class="reward-tag">Hybrid Local+Global</div>
+      <div class="reward-math">$R_2 = -|C_t|-\Delta I_t$</div>
     </div>
     <div class="reward-item">
-      <div class="reward-tag">Local Neighborhood</div>
-      <div class="reward-math">$R_3 = \sum_{v \in \mathcal{N}(L)} x_v$</div>
+      <div class="reward-tag">Episode Speed</div>
+      <div class="reward-math">$R_3 = 1-\frac{T_{\text{used}}}{T_{\max}}$</div>
     </div>
     <div class="reward-item">
-      <div class="reward-tag">Influence-Weighted</div>
-      <div class="reward-math">$R_4 = \sum \text{deg}(v) \cdot x_v$</div>
+      <div class="reward-tag">Current Infection</div>
+      <div class="reward-math">$R_4 = -I_t$</div>
     </div>
     <div class="reward-item">
-      <div class="reward-tag">Closeness Payoff</div>
-      <div class="reward-math">$R_5 = \sum \gamma^{d(v, L)} \cdot x_v$</div>
+      <div class="reward-tag">Mixed Episodic</div>
+      <div class="reward-math">$R_5 = -|C_t|-\frac{T_{\text{used}}}{T_{\max}}$</div>
+    </div>
+  </div>
+  <div class="notation-grid">
+    <div class="notation-card">
+      <div class="notation-term">$I_t$ and $\Delta I_t$</div>
+      <div class="notation-desc">$I_t$ is infection rate at time $t$. $\Delta I_t = I_{t+1} - I_t$ captures how infection changes after action $a_t$.</div>
+    </div>
+    <div class="notation-card">
+      <div class="notation-term">$C_t$ (candidate nodes)</div>
+      <div class="notation-desc">Immediate neighbors of infected nodes that are susceptible to infection in the next timestep.</div>
+    </div>
+    <div class="notation-card">
+      <div class="notation-term">$T_{\text{used}}$</div>
+      <div class="notation-desc">Number of steps consumed before misinformation is contained in an episode.</div>
+    </div>
+    <div class="notation-card">
+      <div class="notation-term">$T_{\max}$</div>
+      <div class="notation-desc">Maximum episode length (time-step budget) used to normalize speed-focused rewards.</div>
     </div>
   </div>
 
   <hr class="d">
 
-  <!-- SYSTEM IMPLEMENTATION -->
-  <h2 class="sh">InfoSpread: System Implementation</h2>
+  <h2 class="sh" id="system">InfoSpread System Implementation</h2>
   <p class="bt">
-    To transition our theoretical frameworks into practical tooling, we developed <strong>InfoSpread</strong>, a system bridging abstract planning formalisms with interactive visualization workflows.
+    We developed <strong>InfoSpread</strong> to connect theoretical planning models to practical experimentation and operator-facing analysis.
   </p>
   <div class="key-idea">
-    <strong>Numeric PDDL Formulation:</strong> We provide the first numeric PDDL representation strictly tailored to capture opinion dynamics. It utilizes conceptual types (\texttt{agent}, \texttt{source}, \texttt{topic}) and relies on fluents like \texttt{have-opinion} and \texttt{have-trust} alongside a foundational \texttt{spread-info-from} action to systematically drive propagation mathematically on off-the-shelf planners like Metric-FF.
+    <strong>Numeric PDDL Formulation:</strong> The system includes a numeric PDDL representation with explicit typed entities (<code class="hl">agent</code>, <code class="hl">source</code>, <code class="hl">topic</code>) and fluents such as <code class="hl">have-opinion</code> and <code class="hl">have-trust</code>, enabling direct execution on planners like Metric-FF.
   </div>
   
-  <div style="display: flex; gap: 1.5rem; margin: 1.5rem 0; align-items: flex-start;">
-    <div style="flex: 1;">
-      <p class="bt">
-        The platform translates configurations into PDDL problems, triggers back-end planners, and visualizes stepping plans. This fosters collaborative human-AI dynamics—providing strategists with visual feedback and manual override capabilities during sequence interventions against cyber threats.
-      </p>
-    </div>
-    <div class="fig" style="width: 60px; margin: 0; flex-shrink: 0; border: none; background: transparent;">
-      <img src="images/AAAI-2024-BestDemo.jpg" alt="AAAI 2024 Best Demo" onclick="openModal(this.src)" style="padding: 0; border: 1px solid var(--border); border-radius: 4px;">
-      <figcaption style="font-size: 0.48rem; padding: 0.1rem 0; line-height: 1; border: none;">Best Demo</figcaption>
-    </div>
-  </div>
+  <p class="bt">
+    The platform compiles network configurations into executable planning problems, launches planning/search backends, and visualizes intervention sequences for human-in-the-loop analysis and override.
+  </p>
 
   <div class="media-row" id="demo">
     <div>
       <div class="fig" style="margin: 0; overflow: hidden; position: relative;">
-        <a href="https://drive.google.com/file/d/19d65zjSoFBSngCIPrteT0_DOlymmkEiM/view?usp=drive_link" target="_blank" style="display: block; position: relative; text-decoration: none;">
-          <img src="images/InfoSpreadDemo.png" alt="InfoSpread Demo Video" style="width: 100%; display: block;">
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.65); color: white; padding: 0.5rem 1.2rem; border-radius: 999px; font-weight: 600; font-size: 0.85rem; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);">▶ Watch Demo</div>
+        <a href="https://drive.google.com/file/d/19d65zjSoFBSngCIPrteT0_DOlymmkEiM/view?usp=drive_link" target="_blank" class="demo-link">
+          <img src="images/InfoSpreadDemo.png" alt="InfoSpread Demo Video">
+          <span class="play-pill">▶ Watch Demo</span>
         </a>
       </div>
-      <p class="bt" style="font-size: 0.75rem; text-align: center; margin-top: 0.5rem; color: var(--muted)">InfoSpread System Walkthrough (Google Drive)</p>
+      <p class="media-caption">InfoSpread system walkthrough (Google Drive).</p>
     </div>
     <div>
       <div class="fig" style="margin:0;">
         <img src="images/InfoSpreadDemo.png" alt="InfoSpread UI" onclick="openModal(this.src)">
       </div>
-      <p class="bt" style="font-size: 0.75rem; text-align: center; margin-top: 0.5rem; color: var(--muted)">The InfoSpread interactive dashboard.</p>
+      <p class="media-caption">Interactive dashboard for inspection and intervention analysis.</p>
     </div>
   </div>
 
   <hr class="d">
 
-  <!-- FUTURE WORK / DIALOG -->
   <h2 class="sh">Extension to Dialog Management</h2>
   <p class="bt">
-    Recent work leverages these opinion propagation rules to drive <strong>Conversational Dialog Management</strong>. Rather than isolated nodes, we consider a user’s interrelated <em>beliefs across connected topics</em>. As chat agents emit utterances, persuasion alters an interconnected belief state modeled as an induced opinion network, creating intelligent guides towards holistic behavioral changes (e.g., civic participation or safe social media activity).
+    Recent work extends this formulation to <strong>conversational dialog management</strong>: a user state is represented as connected topic-beliefs, and utterances become interventions over that latent belief graph.
+  </p>
+  <p class="bt">
+    This links opinion dynamics with safer human-AI interaction design, where policies are optimized not just for one topic outcome but for coherent, multi-topic behavior change.
   </p>
 
   <hr class="d">
 
-  <!-- PUBLICATIONS -->
-  <h2 class="sh">Representative Publications</h2>
+  <h2 class="sh" id="publications">Representative Publications</h2>
   <ul class="pub-list">
     <li>
       <div class="pub-row"><span class="venue-badge">GenPlan @ AAAI 2025</span><span class="pub-title">On Generalized Planning for Controlling Opinion Networks: Interpreting Human-AI Dialog States and Beliefs</span></div>
-      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Biplav Srivastava, Vignesh Narayanan</div>
+      <div class="pub-authors"><strong>Bharath Muppasani</strong>, Vignesh Narayanan, Biplav Srivastava</div>
       <div class="pub-links">
         <a href="papers/CR_AAAI_25_Opinion_Dynamics_formulation_for_Dialog_Management.pdf" class="pub-link-btn" target="_blank">PDF</a>
         <a href="images/genplan.jpg" class="pub-link-btn" target="_blank">Poster</a>
@@ -374,7 +467,7 @@
     </li>
   </ul>
 
-  <div style="height:2rem;"></div>
+  <div class="spacer"></div>
 </div>
 
 <div id="imageModal" class="modal">
