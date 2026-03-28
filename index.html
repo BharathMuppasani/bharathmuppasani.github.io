@@ -322,6 +322,80 @@
     .proj-title { font-family: var(--ff-serif); font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.3; }
     .proj-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.75rem; }
     .proj-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .proj-footer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.75rem 1rem;
+    }
+    .proj-venues {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.35rem;
+      min-width: max-content;
+    }
+    .venue-pill {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent-faint) 88%, var(--surface));
+      border: 1px solid var(--accent-border);
+      border-radius: 999px;
+      padding: 0.18rem 0.62rem;
+      white-space: nowrap;
+      line-height: 1;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .venue-pill.has-count {
+      padding-right: 1.15rem;
+    }
+    .venue-pill-count {
+      position: absolute;
+      top: -0.36rem;
+      right: -0.12rem;
+      min-width: 1rem;
+      height: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.24rem;
+      font-size: 0.54rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--bg) 92%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--accent-border) 82%, var(--border));
+      border-radius: 999px;
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--bg) 92%, transparent);
+    }
+    .venue-pill.muted {
+      color: var(--muted);
+      background: color-mix(in srgb, var(--surface) 88%, transparent);
+      border-color: color-mix(in srgb, var(--border) 75%, transparent);
+      box-shadow: none;
+    }
+    .venue-pill.muted .venue-pill-count {
+      color: var(--muted);
+      background: color-mix(in srgb, var(--surface) 96%, var(--bg));
+      border-color: color-mix(in srgb, var(--border) 80%, transparent);
+    }
+    [data-theme="dark"] .venue-pill-count {
+      box-shadow: 0 0 0 2px rgba(26,22,22,0.92);
+    }
+    @media (max-width: 768px) {
+      .proj-footer { grid-template-columns: 1fr; align-items: flex-start; }
+      .proj-venues {
+        justify-content: flex-end;
+        min-width: 0;
+      }
+    }
 
     /* Publication entries - transparent with hover */
     .pub-entry {
@@ -529,11 +603,15 @@
               A hybrid decentralized planning framework for multi-agent path finding that minimizes inter-robot
               information sharing. Achieves 2–510× reduction in coordination overhead and tested on physical TurtleBot4 robots.
             </p>
-            <div class="proj-tags">
-              <span class="skill-tag">Multi-Agent Planning</span>
-              <span class="skill-tag">Robotics</span>
-              <span class="skill-tag">Reinforcement Learning</span>
-              <span class="type-badge under-review">Under Review</span>
+            <div class="proj-footer">
+              <div class="proj-tags">
+                <span class="skill-tag">Multi-Agent Planning</span>
+                <span class="skill-tag">Robotics</span>
+                <span class="skill-tag">Reinforcement Learning</span>
+              </div>
+              <div class="proj-venues" aria-label="Publication status">
+                <span class="venue-pill muted" title="HI-MAPF is currently under review" aria-label="HI-MAPF is currently under review">Under Review</span>
+              </div>
             </div>
           </div>
         </a>
@@ -549,10 +627,19 @@
               in social networks, reducing misinformation spread by 86% on real-world Cora graph (2000 nodes).
               Award-winning AAAI 2024 demo.
             </p>
-            <div class="proj-tags">
-              <span class="skill-tag">Generalized Planning</span>
-              <span class="skill-tag">Graph Neural Networks</span>
-              <span class="skill-tag">Opinion Dynamics</span>
+            <div class="proj-footer">
+              <div class="proj-tags">
+                <span class="skill-tag">Generalized Planning</span>
+                <span class="skill-tag">Graph Neural Networks</span>
+                <span class="skill-tag">Opinion Dynamics</span>
+              </div>
+              <div class="proj-venues" aria-label="Publication venues">
+                <span class="venue-pill has-count" title="AAAI 2024 Demo; GenPlan @ AAAI 2025" aria-label="AAAI with 2 publications">
+                  AAAI
+                  <span class="venue-pill-count" aria-hidden="true">2</span>
+                </span>
+                <span class="venue-pill" title="NeurIPS 2024" aria-label="NeurIPS with 1 publication">NeurIPS</span>
+              </div>
             </div>
           </div>
         </a>
@@ -560,7 +647,7 @@
         <a href="projects/ontology/index.html" class="proj-card-link">
           <div class="proj-card">
             <div class="proj-card-head">
-              <span class="proj-year">Jan 2022 – Present</span>
+              <span class="proj-year">Jan 2023 – Present</span>
               <span class="proj-title">Planning Ontology &amp; Explainability (PO, maPO, OMEGA)</span>
             </div>
             <p class="proj-desc">
@@ -568,10 +655,21 @@
               via maPO; OMEGA tool generates natural-language explanations for MAPF executions.
               95.2% user preference in evaluations.
             </p>
-            <div class="proj-tags">
-              <span class="skill-tag">Ontology</span>
-              <span class="skill-tag">Explainability</span>
-              <span class="skill-tag">Knowledge Representation</span>
+            <div class="proj-footer">
+              <div class="proj-tags">
+                <span class="skill-tag">Ontology</span>
+                <span class="skill-tag">Explainability</span>
+                <span class="skill-tag">Knowledge Representation</span>
+              </div>
+              <div class="proj-venues" aria-label="Publication venues">
+                <span class="venue-pill has-count" title="AAAI-MAKE 2026; AAAI 2026 Demo" aria-label="AAAI with 2 publications">
+                  AAAI
+                  <span class="venue-pill-count" aria-hidden="true">2</span>
+                </span>
+                <span class="venue-pill" title="Discover Data 2025" aria-label="Discover Data with 1 publication">Discover Data</span>
+                <span class="venue-pill" title="CODS 2024" aria-label="CODS with 1 publication">CODS</span>
+                <span class="venue-pill" title="PLATO @ ICAPS 2023" aria-label="ICAPS with 1 publication">ICAPS</span>
+              </div>
             </div>
           </div>
         </a>
