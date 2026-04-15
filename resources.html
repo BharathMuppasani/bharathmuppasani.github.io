@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources — Bharath Muppasani</title>
+  <meta name="description" content="Hosted slide decks and presentation resources from Bharath Muppasani.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f7;
+      --surface: #f2eded;
+      --border: #e4dcdc;
+      --text: #2a2020;
+      --muted: #6b5b5b;
+      --accent: #b76e79;
+      --accent-faint: rgba(183,110,121,0.08);
+      --accent-border: rgba(183,110,121,0.25);
+      --ff-sans: 'Instrument Sans', system-ui, sans-serif;
+      --ff-serif: 'Lora', Georgia, serif;
+      --max: 56rem;
+    }
+    [data-theme="dark"] {
+      --bg: #1a1616;
+      --surface: #231e1e;
+      --border: #3a3030;
+      --text: #ede5e5;
+      --muted: #a08888;
+      --accent: #cf838e;
+      --accent-faint: rgba(207,131,142,0.08);
+      --accent-border: rgba(207,131,142,0.28);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--ff-sans);
+      background:
+        radial-gradient(circle at top right, rgba(183,110,121,0.10), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(183,110,121,0.08), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      gap: 1rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .site-nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      opacity: 0.75;
+      transition: opacity 0.15s;
+    }
+    .site-nav a:hover, .site-nav a.active { opacity: 1; }
+    .site-nav a.brand {
+      font-weight: 600;
+      opacity: 1;
+      font-size: 0.95rem;
+      font-family: var(--ff-serif);
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .theme-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.25rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .page-header {
+      max-width: var(--max);
+      margin: 3.5rem auto 0;
+      padding: 0 1.5rem;
+    }
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .page-header h1 {
+      font-family: var(--ff-serif);
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-top: 0.55rem;
+      color: var(--text);
+    }
+    .page-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.85rem;
+      max-width: 44rem;
+    }
+
+    .section-divider {
+      max-width: var(--max);
+      margin: 2rem auto 0;
+      padding: 0 1.5rem;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .resource-list {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: grid;
+      gap: 1.25rem;
+    }
+    .resource-card {
+      background: color-mix(in srgb, var(--surface) 72%, transparent);
+      border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+      border-radius: 1rem;
+      padding: 1.35rem 1.4rem 1.25rem;
+      box-shadow: 0 10px 28px rgba(42,32,32,0.04);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .resource-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 0.8rem;
+      align-items: center;
+    }
+    .meta-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 0.18rem 0.62rem;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-faint);
+      color: var(--accent);
+    }
+    .meta-pill.soft {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .resource-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(1.15rem, 2vw, 1.35rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .resource-desc {
+      color: var(--text);
+      opacity: 0.86;
+      font-size: 0.93rem;
+      margin-top: 0.75rem;
+    }
+    .resource-note {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 0.8rem;
+    }
+    .resource-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent-border);
+      border-radius: 999px;
+      padding: 0.34rem 0.9rem;
+      transition: all 0.18s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .resource-link:hover {
+      background: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 4px 12px rgba(183,110,121,0.16);
+      transform: translateY(-1px);
+    }
+    .resource-link.secondary {
+      color: var(--muted);
+      border-color: var(--border);
+    }
+    .resource-link.secondary:hover {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--accent-border);
+    }
+    .site-footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.5rem 2.25rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 720px) {
+      .site-nav { align-items: flex-start; }
+      .nav-links { gap: 0.85rem 1rem; }
+      .resource-card { padding: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="brand">Bharath Muppasani</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="publications.html">Publications</a>
+    <a href="resources.html" class="active">Resources</a>
+    <a href="index.html#experience">Experience</a>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☽</button>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="eyebrow">Hosted Material</div>
+  <h1>Resources</h1>
+  <p>
+    Slide decks and talk material hosted directly from this site. These copies keep only the runtime HTML, JavaScript,
+    CSS, and media needed for browsing the decks, while excluding local render scripts and other build-only artifacts.
+  </p>
+</header>
+
+<hr class="section-divider">
+
+<main class="resource-list">
+  <article class="resource-card">
+    <div class="resource-meta">
+      <span class="meta-pill">Lecture Deck</span>
+      <span class="meta-pill soft">20 slides</span>
+      <span class="meta-pill soft">Optimization / Planning</span>
+    </div>
+    <h2 class="resource-title">Planning as Search and Optimization</h2>
+    <p class="resource-desc">
+      HTML lecture deck covering graph search, classical planning, heuristic guidance, dynamic replanning, and the bridge
+      from planning to learning-based control.
+    </p>
+    <p class="resource-note">Opens directly on the title slide. Use arrow keys or the in-deck controls to move through the lecture.</p>
+    <div class="resource-actions">
+      <a href="resources/slides/planning-search-optimization/slide-01-title.html" class="resource-link">Open Deck</a>
+    </div>
+  </article>
+
+  <article class="resource-card">
+    <div class="resource-meta">
+      <span class="meta-pill">Research Talk</span>
+      <span class="meta-pill soft">15 slides</span>
+      <span class="meta-pill soft">AAAI-MAKE 2026</span>
+    </div>
+    <h2 class="resource-title">maPO: An Ontology for Multi-Agent Path Finding and Its Usage for Explaining Planner Behaviour</h2>
+    <p class="resource-desc">
+      Hosted HTML version of the maPO presentation, including the deck visuals, embedded media used by the slides, and
+      the assets required to browse the talk end to end from the web.
+    </p>
+    <p class="resource-note">Opens directly on the title slide. The hosted copy retains only the slide runtime and the media referenced by the talk.</p>
+    <div class="resource-actions">
+      <a href="resources/slides/mapo-aaai-make-2026/html/slide-01-title.html" class="resource-link">Open Deck</a>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  Hosted resources for talks, lectures, and shareable presentation material.
+</footer>
+
+<script>
+  const themeBtn = document.getElementById('themeBtn');
+  function syncThemeButton() {
+    themeBtn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀' : '☽';
+  }
+  syncThemeButton();
+  themeBtn.addEventListener('click', () => {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (dark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    syncThemeButton();
+  });
+</script>
+</body>
+</html>

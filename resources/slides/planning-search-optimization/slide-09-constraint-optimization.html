@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 09 | Search Over Planning States</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/planning-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .expansion-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 590px 1fr;
+      height: 100%;
+    }
+    .expansion-layout .lead {
+      font-size: 28px;
+      line-height: 1.12;
+    }
+    .state-board {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,249,251,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 14px 16px;
+    }
+    .state-board .board-label {
+      color: var(--accent);
+      font-family: var(--heading-font);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .state-board .board-state {
+      color: var(--text);
+      font-family: var(--heading-font);
+      font-size: 29px;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      line-height: 0.96;
+      margin-top: 10px;
+    }
+    .state-board .board-copy {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.24;
+      margin-top: 8px;
+    }
+    .action-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .action-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      min-height: 84px;
+      padding: 12px 14px;
+    }
+    .action-card.valid {
+      border-left: 7px solid #1c7c54;
+    }
+    .action-card.invalid {
+      border-left: 7px solid #b42318;
+    }
+    .action-card strong {
+      display: block;
+      font-family: var(--mono-font);
+      font-size: 16px;
+      line-height: 1.26;
+    }
+    .action-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.16;
+      margin-top: 4px;
+    }
+    .expansion-layout .callout-banner {
+      padding: 12px 16px;
+    }
+    .expansion-layout .callout-banner p {
+      font-size: 20px;
+      line-height: 1.16;
+    }
+    .tree-shell {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+    }
+    .tree-shell svg {
+      background: #fff;
+      border: 1px solid var(--soft-line);
+      border-radius: 18px;
+      height: 556px;
+      width: 100%;
+    }
+    .tree-node text.label {
+      fill: #101114;
+      font-family: "Avenir Next Condensed", "Arial Narrow", sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+    .tree-node text.sub {
+      fill: #5a5f69;
+      font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      text-anchor: middle;
+    }
+    .action-badge {
+      fill: #fff;
+      stroke: #d7dbe0;
+    }
+    .action-badge.valid {
+      stroke: #1c7c54;
+    }
+    .action-badge.invalid {
+      stroke: #b42318;
+      stroke-dasharray: 8 6;
+    }
+    .action-badge-label {
+      font-family: "SFMono-Regular", Menlo, monospace;
+      font-size: 14px;
+      font-weight: 700;
+      text-anchor: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Planning State Space</div>
+          <h1 class="slide-title">Search Grows by Testing Every Candidate Action in the Current State</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="expansion-layout">
+            <section class="stack-md">
+              <p class="lead">The planner starts from one symbolic state and asks: <span class="keyword">which actions are applicable here</span>, and what successor state would each valid action produce?</p>
+
+              <div class="state-board" data-step="1">
+                <div class="board-label">Current state s0</div>
+                <div class="board-state">Robot at hallway, hand empty</div>
+                <div class="state-facts" style="margin-top:14px;">
+                  <span class="state-fact positive">(at-robot hallway)</span>
+                  <span class="state-fact positive">(at-pkg A mailroom)</span>
+                  <span class="state-fact positive">(at-pkg B storage)</span>
+                  <span class="state-fact positive">(handempty)</span>
+                </div>
+                <p class="board-copy">Goal facts remain unmet: <span class="math-mono">(at-pkg A lab)</span> and <span class="math-mono">(at-pkg B office)</span>.</p>
+              </div>
+
+              <div class="action-grid" data-step="2">
+                <article class="action-card valid">
+                  <strong>Move(hallway, mailroom)</strong>
+                  <p>Valid. The hallway is connected to the mailroom, so a new reachable state is created.</p>
+                </article>
+                <article class="action-card valid">
+                  <strong>Move(hallway, storage)</strong>
+                  <p>Valid. This branch may help later because package B is waiting in storage.</p>
+                </article>
+                <article class="action-card invalid">
+                  <strong>Pick(packageA, mailroom)</strong>
+                  <p>Invalid now. The robot is not in the mailroom yet, so the precondition fails.</p>
+                </article>
+                <article class="action-card invalid">
+                  <strong>Drop(packageA, lab)</strong>
+                  <p>Invalid now. The robot is not carrying package A, so dropping is impossible.</p>
+                </article>
+              </div>
+
+              <p class="micro-note" data-step="3"><strong class="keyword">Invalid actions are pruned</strong>, but every valid action still adds a new frontier state for the planner to evaluate next.</p>
+            </section>
+
+            <section class="tree-shell">
+              <div class="scene-toolbar">
+                <div class="figure-title">One expansion step in the warehouse problem</div>
+                <div class="mini-chip accent">valid successors plus rejected actions</div>
+              </div>
+              <div id="tree-stage" class="media-stage" style="height: 560px;"></div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">09</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+  <script>
+    const TREE_NODES = [
+      { id: "s0", label: "s0", sub: "hallway, empty", x: 530, y: 80, depth: 0 },
+      { id: "s1", label: "s1", sub: "mailroom", x: 270, y: 280, depth: 1 },
+      { id: "s2", label: "s2", sub: "storage", x: 530, y: 280, depth: 1 },
+      { id: "s3", label: "s3", sub: "lab", x: 790, y: 280, depth: 1 },
+      { id: "fail_pick", label: "invalid", sub: "pick A", x: 270, y: 440, depth: 1 },
+      { id: "fail_drop", label: "invalid", sub: "drop A", x: 790, y: 440, depth: 1 }
+    ];
+
+    const TREE_EDGES = [
+      { from: "s0", to: "s1" },
+      { from: "s0", to: "s2" },
+      { from: "s0", to: "s3" },
+      { from: "s0", to: "fail_pick" },
+      { from: "s0", to: "fail_drop" }
+    ];
+
+    window.initSlide = function initSlide() {
+      const scene = createPlanningScene({
+        mount: document.getElementById("tree-stage"),
+        width: 1060,
+        height: 560,
+        nodes: TREE_NODES,
+        edges: TREE_EDGES
+      });
+
+      return {
+        setStep(step) {
+          scene.reset();
+          if (step >= 1) {
+            scene.expandWave(0);
+            scene.focusPath(["s0"]);
+            scene.annotate("Current State s0", 460, 140);
+          }
+          if (step >= 2) {
+            scene.expandWave(1);
+            scene.highlightFrontier(["s1", "s2", "s3"], { fill: "#f3fbf6", stroke: "#1c7c54" });
+            scene.addBadge("s1", "move mailroom", { fill: "#1c7c54", stroke: "#1c7c54" });
+            scene.addBadge("s2", "move storage", { fill: "#1c7c54", stroke: "#1c7c54" });
+            scene.addBadge("s3", "move lab", { fill: "#1c7c54", stroke: "#1c7c54" });
+            
+            scene.markInvalid(["fail_pick", "fail_drop"]);
+            scene.addBadge("fail_pick", "pick A", { stroke: "#b42318", fill: "#b42318" });
+            scene.addBadge("fail_drop", "drop A", { stroke: "#b42318", fill: "#b42318" });
+          }
+          if (step >= 3) {
+            scene.annotate("Repeat from every valid successor.", 380, 500);
+          }
+        }
+      };
+    };
+  </script>
+</body>
+</html>

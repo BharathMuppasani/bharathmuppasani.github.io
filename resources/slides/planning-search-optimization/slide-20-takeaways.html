@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 20 | Takeaways</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .takeaway-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1.04fr 0.96fr;
+      height: 100%;
+    }
+    .takeaway-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .takeaway-card {
+      background: rgba(255,255,255,0.98);
+      border: 1px solid rgba(16,17,20,0.08);
+      border-left: 7px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      padding: 12px 14px;
+    }
+    .takeaway-card.planning { border-left-color: var(--accent); }
+    .takeaway-card.optimization { border-left-color: #204f8d; }
+    .takeaway-card.learning { border-left-color: #1c7c54; }
+    .takeaway-card strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+    .takeaway-card p {
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.22;
+    }
+    .closing-panel {
+      background: linear-gradient(180deg,#fbfbfc,#fff);
+      border: 1px solid rgba(16,17,20,0.08);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+    }
+    .closing-panel .label {
+      color: #204f8d;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Summary</div>
+          <h1 class="slide-title">Takeaways</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="takeaway-layout">
+            <section class="takeaway-grid">
+              <div class="takeaway-card planning" data-step="1">
+                <strong style="color: var(--accent)">Planning is structured search.</strong>
+                <p>We search over implicitly generated symbolic states, not just over explicit graph nodes.</p>
+              </div>
+              <div class="takeaway-card planning" data-step="1">
+                <strong style="color: var(--accent)">PDDL gives the search space meaning.</strong>
+                <p>Predicates, actions, preconditions, and effects define which trajectories are feasible.</p>
+              </div>
+              <div class="takeaway-card optimization" data-step="2">
+                <strong style="color: #204f8d">Optimization decides what “best” means.</strong>
+                <p>Action count, travel cost, energy, and risk can all lead to different optimal plans.</p>
+              </div>
+              <div class="takeaway-card optimization" data-step="2">
+                <strong style="color: #204f8d">Heuristics are the scalability lever.</strong>
+                <p>Useful estimates of remaining effort dramatically reduce the amount of search required.</p>
+              </div>
+              <div class="takeaway-card learning" data-step="3">
+                <strong style="color: #1c7c54">Dynamics motivate learning.</strong>
+                <p>When models drift, execution becomes uncertain, or reactions must be reused, learning becomes a natural extension of planning.</p>
+              </div>
+            </section>
+
+            <section class="closing-panel" data-step="3">
+              <div class="label">Lecture Arc</div>
+              <div class="concept-flow">
+                <span class="flow-chip" style="color: var(--accent); border-color: var(--accent);">Motivation</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-chip" style="color: var(--accent); border-color: var(--accent);">Search</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-chip" style="color: var(--accent); border-color: var(--accent);">Planning</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-chip" style="color: #204f8d; border-color: #204f8d;">Optimization</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-chip" style="color: #1c7c54; border-color: #1c7c54;">Dynamics</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-chip" style="color: #1c7c54; border-color: #1c7c54;">Learning</span>
+              </div>
+
+              <p class="body-copy small" style="margin-top:18px;"><strong class="keyword">Use planning when a trusted model exists.</strong> Use learning when the model must be estimated, adapted, or replaced by a reusable policy.</p>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">20</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

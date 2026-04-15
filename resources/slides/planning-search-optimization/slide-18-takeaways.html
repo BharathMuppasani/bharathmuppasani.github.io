@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 18 | Why Learning Is Needed</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .learning-need-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+    .need-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px;
+    }
+    .need-card.known {
+      border-left: 8px solid var(--accent);
+    }
+    .need-card.unknown {
+      border-left: 8px solid #204f8d;
+    }
+    .need-card h3 {
+      font-family: var(--heading-font);
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      line-height: 0.96;
+    }
+    .need-card p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.2;
+      margin-top: 8px;
+    }
+    .stack-md .lead {
+      font-size: 27px;
+      line-height: 1.14;
+    }
+    .stack-md .body-copy.small {
+      font-size: 21px;
+      line-height: 1.22;
+    }
+    .problem-pair .comparison-card {
+      padding: 14px 16px;
+    }
+    .problem-pair .comparison-card h3 {
+      font-size: 24px;
+    }
+    .problem-pair .comparison-card p {
+      font-size: 16px;
+      margin-top: 6px;
+    }
+    .stack-md > .callout-banner {
+      padding: 14px 18px;
+    }
+    .stack-md > .callout-banner p {
+      font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Bridge to Learning</div>
+          <h1 class="slide-title">Why Replanning Alone Is Not Enough When the Model Is Incomplete or Costly to Engineer</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="stack-md" style="height:100%; justify-content: space-between;">
+            <p class="lead">Planning works well when the transition model, action costs, and state representation are known. Learning becomes necessary when those pieces are uncertain, missing, or constantly changing.</p>
+
+            <div class="learning-need-layout">
+              <section class="need-card known">
+                <div class="figure-title">When planning is enough</div>
+                <h3>Known model, known objective, clear state.</h3>
+                <p>If the warehouse map is reliable, travel costs are accurate, and goals are explicit, a planner can search efficiently and replan when disruptions are observed.</p>
+                <div class="fact-tag-row" style="margin-top:14px;">
+                  <span class="fact-tag accent">hand-coded actions</span>
+                  <span class="fact-tag">known costs</span>
+                  <span class="fact-tag success">explicit goal facts</span>
+                </div>
+              </section>
+
+              <section class="need-card unknown">
+                <div class="figure-title" style="color: #204f8d;">When learning is needed</div>
+                <h3>Unknown costs, missing dynamics, noisy observations.</h3>
+                <p>Now the bottleneck is not search alone. We may need to learn how congestion affects travel time, how sensors imply blockage states, or how to act well under recurring uncertainty.</p>
+                <div class="fact-tag-row" style="margin-top:14px;">
+                  <span class="fact-tag warn">unknown travel-time model</span>
+                  <span class="fact-tag">sensor-to-state inference</span>
+                  <span class="fact-tag success">repeated uncertain decisions</span>
+                </div>
+              </section>
+            </div>
+
+            <div class="problem-pair" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px;">
+              <article class="comparison-card" style="border-top: 5px solid #204f8d;" data-step="2">
+                <div class="eyebrow" style="color: #204f8d;">Warehouse example 1</div>
+                <h3>Predict corridor blockage or delay.</h3>
+                <p>A planner can use the prediction, but it may not know how to produce it from raw sensor data without learning.</p>
+              </article>
+              <article class="comparison-card" style="border-top: 5px solid #1c7c54;" data-step="2">
+                <div class="eyebrow" style="color: #1c7c54;">Warehouse example 2</div>
+                <h3>Choose robust delivery behavior under recurring uncertainty.</h3>
+                <p>If the same disruptions happen over many episodes, learning reusable behavior becomes attractive.</p>
+              </article>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">18</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 07 | Modeling the Warehouse World</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/environment-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .model-layout {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 600px 1fr;
+      height: 100%;
+    }
+    .pddl-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+    .pddl-card pre {
+      font-family: var(--mono-font);
+      font-size: 18px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Modeling for Planning</div>
+          <h1 class="slide-title">How Do We Describe the Environment So a Planner Can Search It?</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="model-layout">
+            <section class="stack-md">
+              <p class="lead">Once the navigation intuition is clear, we need a compact description of the world: what objects exist, which actions are allowed, and when goals are satisfied.</p>
+
+              <div class="section-card" data-step="1">
+                <div class="eyebrow">What the model must capture</div>
+                <h3>The planner does not see pixels. It sees structure.</h3>
+                <p>Locations, connectivity, package locations, carrying status, and goal destinations are the parts of the environment that change search decisions.</p>
+              </div>
+
+              <div class="fact-tag-row" data-step="2">
+                <span class="fact-tag accent">rooms and connectivity</span>
+                <span class="fact-tag">robot location</span>
+                <span class="fact-tag">package locations</span>
+                <span class="fact-tag warn">capacity = one package</span>
+                <span class="fact-tag success">goal destinations</span>
+              </div>
+
+              <div class="pddl-card" data-step="3">
+                <div class="figure-title">PDDL is the modeling language</div>
+                <pre>(:predicates
+  (at-robot ?l)
+  (at-pkg ?p ?l)
+  (carrying ?p)
+  (handempty)
+  (connected ?l1 ?l2))
+
+; model states with facts
+; model transitions with actions</pre>
+              </div>
+            </section>
+
+            <section class="scene-card">
+              <div class="scene-toolbar">
+                <div class="figure-title">Warehouse World to Planning Model</div>
+                <div class="mini-chip accent">same running example</div>
+              </div>
+              <div id="model-stage" class="media-stage" style="height: 420px;"></div>
+
+              <div class="problem-pair" style="margin-top:14px;">
+                <article class="comparison-card soft-blue" data-step="2">
+                  <div class="eyebrow">Environment view</div>
+                  <h3>What is physically present?</h3>
+                  <p>Rooms, corridors, robot, packages, destinations.</p>
+                </article>
+                <article class="comparison-card" data-step="3">
+                  <div class="eyebrow">PDDL view</div>
+                  <h3>What must be true?</h3>
+                  <p>Facts that define the current state and action preconditions.</p>
+                </article>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">07</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    window.initSlide = function initSlide() {
+      const env = createEnvironmentScene({
+        mount: document.getElementById("model-stage"),
+        width: 980,
+        height: 420,
+        robot: "hallway",
+        locations: [
+          { id: "mailroom", label: "mailroom", x: 150, y: 110 },
+          { id: "hallway", label: "hallway", x: 380, y: 210 },
+          { id: "storage", label: "storage", x: 380, y: 340 },
+          { id: "lab", label: "lab", x: 760, y: 100, goal: true },
+          { id: "office", label: "office", x: 760, y: 320, goal: true }
+        ],
+        edges: [
+          { from: "mailroom", to: "hallway", cost: 2, primary: true },
+          { from: "hallway", to: "storage", cost: 3, primary: true },
+          { from: "hallway", to: "lab", cost: 5, primary: true },
+          { from: "storage", to: "office", cost: 4, primary: true },
+          { from: "storage", to: "lab", cost: 6 }
+        ],
+        packages: [
+          { id: "packageA", short: "A", location: "mailroom" },
+          { id: "packageB", short: "B", location: "storage" }
+        ]
+      });
+
+      return {
+        setStep(step) {
+          env.reset();
+          if (step >= 1) {
+            env.showGoals(["lab", "office"]);
+          }
+          if (step >= 2) {
+            env.annotate("model the objects and relations that drive decisions", 250, 18, "#73000a");
+          }
+          if (step >= 3) {
+            env.annotate("PDDL turns this world into predicates + actions", 248, 380, "#204f8d");
+          }
+        }
+      };
+    };
+  </script>
+</body>
+</html>

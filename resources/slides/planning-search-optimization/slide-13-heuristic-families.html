@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 13 | Heuristics Make Search Practical</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/planning-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .guidance-layout {
+      display: grid;
+      gap: 14px;
+      height: 100%;
+    }
+    .guidance-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .guidance-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+    .guidance-panel .media-stage {
+      height: 430px;
+    }
+    .guidance-caption {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.24;
+      margin-top: 8px;
+    }
+    .guidance-layout .callout-banner {
+      padding: 12px 16px;
+    }
+    .guidance-layout .callout-banner p {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Heuristic Guidance</div>
+          <h1 class="slide-title">Heuristics Cut Through the Same State Space Instead of Changing the Problem</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="guidance-layout">
+            <p class="lead">Both planners search over the same warehouse states. The only difference is how the next frontier state is ranked.</p>
+
+            <div class="guidance-grid">
+              <article class="guidance-panel">
+                <div class="scene-toolbar">
+                  <div class="algorithm-chip bfs">uninformed</div>
+                  <div class="mini-chip soft">expand by search order</div>
+                </div>
+                <div id="blind-stage" class="media-stage"></div>
+                <p class="guidance-caption">Blind search spends effort on the <span class="keyword">B-at-office</span> branch before it learns that package A still blocks the final goal.</p>
+              </article>
+
+              <article class="guidance-panel">
+                <div class="scene-toolbar">
+                  <div class="algorithm-chip astar">heuristic-guided</div>
+                  <div class="mini-chip success">rank by estimated remaining work</div>
+                </div>
+                <div id="guided-stage" class="media-stage"></div>
+                <p class="guidance-caption">The heuristic keeps the search focused on states that are structurally closer to completing both deliveries.</p>
+              </article>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">13</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const TREE_NODES = [
+      { id: "s0", label: "s0", sub: "hallway", x: 90, y: 260, depth: 0 },
+      { id: "s1", label: "s1", sub: "mailroom", x: 260, y: 110, depth: 1 },
+      { id: "s2", label: "s2", sub: "storage", x: 260, y: 260, depth: 1 },
+      { id: "s3", label: "s3", sub: "lab", x: 260, y: 410, depth: 1 },
+      { id: "s4", label: "s4", sub: "carry A", x: 450, y: 110, depth: 2 },
+      { id: "s5", label: "s5", sub: "carry B", x: 450, y: 260, depth: 2 },
+      { id: "n1", label: "n1", sub: "wander", x: 450, y: 410, depth: 2 },
+      { id: "s6", label: "s6", sub: "hallway + A", x: 640, y: 110, depth: 3 },
+      { id: "s7", label: "s7", sub: "B at office", x: 640, y: 260, depth: 3 },
+      { id: "n2", label: "n2", sub: "wander", x: 640, y: 410, depth: 3 },
+      { id: "s8", label: "s8", sub: "A at lab", x: 830, y: 110, depth: 4 },
+      { id: "n3", label: "n3", sub: "stuck", x: 830, y: 260, depth: 4 },
+      { id: "n4", label: "n4", sub: "dead end", x: 830, y: 410, depth: 4 },
+      { id: "s9", label: "s9", sub: "storage", x: 1020, y: 110, depth: 5 },
+      { id: "n5", label: "n5", sub: "loop", x: 1020, y: 260, depth: 5 },
+      { id: "s10", label: "s10", sub: "carry B", x: 1210, y: 110, depth: 6 },
+      { id: "sg", label: "goal", sub: "both done", x: 1400, y: 110, depth: 7 }
+    ];
+
+    const TREE_EDGES = [
+      { from: "s0", to: "s1" }, { from: "s0", to: "s2" }, { from: "s0", to: "s3" },
+      { from: "s1", to: "s4" }, { from: "s2", to: "s5" }, { from: "s3", to: "n1" },
+      { from: "s4", to: "s6" }, { from: "s5", to: "s7" }, { from: "n1", to: "n2" },
+      { from: "s6", to: "s8" }, { from: "s7", to: "n3" }, { from: "n2", to: "n4" },
+      { from: "s8", to: "s9" }, { from: "n3", to: "n5" },
+      { from: "s9", to: "s10" }, { from: "s10", to: "sg" }
+    ];
+
+    const HEURISTICS = {
+      s1: "9", s2: "11", s3: "12",
+      s4: "7", s5: "10", n1: "13",
+      s6: "5", s7: "8", n2: "14",
+      s8: "4", n3: "10", n4: "15",
+      s9: "2", n5: "11",
+      s10: "1", sg: "0"
+    };
+
+    window.initSlide = function initSlide() {
+      const blindScene = createPlanningScene({
+        mount: document.getElementById("blind-stage"),
+        width: 1480,
+        height: 500,
+        nodes: TREE_NODES,
+        edges: TREE_EDGES
+      });
+      const guidedScene = createPlanningScene({
+        mount: document.getElementById("guided-stage"),
+        width: 1480,
+        height: 500,
+        nodes: TREE_NODES,
+        edges: TREE_EDGES
+      });
+
+      function renderBlind(frame) {
+        blindScene.reset();
+        blindScene.expandWave(frame.wave);
+        if (frame.frontier) {
+          blindScene.highlightFrontier(frame.frontier, { fill: "#fff7e8", stroke: "#b86b00" });
+        }
+        if (frame.path) {
+          blindScene.focusPath(frame.path);
+        }
+        if (frame.badge) {
+          blindScene.addBadge(frame.badge.id, frame.badge.text, frame.badge.options || {});
+        }
+        if (frame.goal) {
+          blindScene.highlightGoal("sg");
+        }
+        if (frame.note) {
+          blindScene.annotate(frame.note.text, frame.note.x, frame.note.y);
+        }
+      }
+
+      function renderGuided(frame) {
+        guidedScene.reset();
+        guidedScene.expandWave(frame.wave);
+        guidedScene.setHeuristics(frame.heuristics || {});
+        if (frame.frontier) {
+          guidedScene.highlightFrontier(frame.frontier, { fill: "rgba(28,124,84,0.10)", stroke: "#1c7c54" });
+        }
+        if (frame.path) {
+          guidedScene.focusPath(frame.path);
+        }
+        if (frame.badge) {
+          guidedScene.addBadge(frame.badge.id, frame.badge.text, frame.badge.options || {});
+        }
+        if (frame.goal) {
+          guidedScene.highlightGoal("sg");
+        }
+        if (frame.note) {
+          guidedScene.annotate(frame.note.text, frame.note.x, frame.note.y);
+        }
+      }
+
+      const blindLoop = window.SlideUtils.createFrameLoop({
+        frames: [
+          {
+            wave: 1,
+            frontier: ["s1", "s2", "s3"],
+            badge: { id: "s2", text: "frontier" },
+            note: { text: "all depth-1 branches compete equally", x: 170, y: 26 }
+          },
+          {
+            wave: 3,
+            frontier: ["s6", "s7", "n2"],
+            path: ["s0", "s2", "s5", "s7"],
+            badge: { id: "s7", text: "partial" },
+            note: { text: "search suffers heavily across all useless dead-end branches", x: 500, y: 26 }
+          },
+          {
+            wave: 7,
+            path: ["s0", "s1", "s4", "s6", "s8", "s9", "s10", "sg"],
+            goal: true,
+            badge: { id: "sg", text: "15 expanded", options: { stroke: "#1c7c54" } },
+            note: { text: "goal found late after 15 completely useless node expansions", x: 920, y: 26 }
+          }
+        ],
+        frameMs: 1200,
+        exportFrame: 2,
+        applyFrame: renderBlind
+      });
+
+      const guidedLoop = window.SlideUtils.createFrameLoop({
+        frames: [
+          {
+            wave: 1,
+            heuristics: { s1: "9", s2: "11", s3: "12" },
+            frontier: ["s1", "s2", "s3"],
+            note: { text: "states with smaller h look more promising", x: 170, y: 26 }
+          },
+          {
+            wave: 4,
+            heuristics: HEURISTICS,
+            path: ["s0", "s1", "s4", "s6", "s8"],
+            frontier: ["s8"],
+            badge: { id: "s8", text: "A first", options: { stroke: "#1c7c54" } },
+            note: { text: "the heuristic prioritizes mandatory progress toward A->lab", x: 520, y: 26 }
+          },
+          {
+            wave: 7,
+            heuristics: HEURISTICS,
+            path: ["s0", "s1", "s4", "s6", "s8", "s9", "s10", "sg"],
+            goal: true,
+            badge: { id: "sg", text: "7 expanded", options: { stroke: "#1c7c54" } },
+            note: { text: "the same goal is reached with far less wasted work", x: 980, y: 26 }
+          }
+        ],
+        frameMs: 1200,
+        exportFrame: 2,
+        applyFrame: renderGuided
+      });
+
+      blindLoop.start();
+      guidedLoop.start();
+
+      return {
+        setStep() {},
+        destroy() {
+          blindLoop.stop();
+          guidedLoop.stop();
+        }
+      };
+    };
+  </script>
+</body>
+</html>

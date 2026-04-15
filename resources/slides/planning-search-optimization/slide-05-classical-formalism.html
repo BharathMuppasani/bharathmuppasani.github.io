@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 05 | BFS and DFS on the Same Grid</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/grid-search-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .search-grid-layout {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 560px 1fr;
+      height: 100%;
+    }
+    .search-demo-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .search-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+    }
+    .search-panel .media-stage {
+      height: 520px;
+    }
+    .search-caption {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.28;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Graph Search</div>
+          <h1 class="slide-title">BFS and DFS Explore the Same Grid Very Differently</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="search-grid-layout">
+            <section class="stack-md">
+              <p class="lead">We start with the navigation subproblem only: move the warehouse robot from <span class="keyword">mailroom</span> to <span class="keyword">lab</span> on the same grid world we will later model symbolically.</p>
+
+              <div class="section-card" data-step="1">
+                <div class="eyebrow">Breadth-First Search</div>
+                <h3>Wave expansion</h3>
+                <p>BFS explores all nodes at depth <em>d</em> before touching depth <em>d + 1</em>. It guarantees shortest paths in unweighted graphs, but the frontier grows rapidly.</p>
+              </div>
+
+              <div class="section-card soft-blue" data-step="2">
+                <div class="eyebrow">Depth-First Search</div>
+                <h3>Commit early</h3>
+                <p>DFS follows one branch deeply before backtracking. Memory stays small, but the first solution can be badly misguided.</p>
+              </div>
+
+              <div class="callout-banner" data-step="3">
+                <p><strong class="keyword">Search strategy changes the computation, not the problem.</strong> The start, goal, and grid are identical in both panels.</p>
+              </div>
+            </section>
+
+            <section class="search-demo-grid">
+              <article class="search-panel">
+                <div class="scene-toolbar">
+                  <div class="algorithm-chip bfs">BFS</div>
+                  <div class="mini-chip accent">wave-by-wave expansion</div>
+                </div>
+                <div id="bfs-stage" class="media-stage"></div>
+                <p class="search-caption">Looping demo: breadth-first exploration spreads outward before the goal is reached.</p>
+              </article>
+
+              <article class="search-panel">
+                <div class="scene-toolbar">
+                  <div class="algorithm-chip dfs">DFS</div>
+                  <div class="mini-chip soft">deep branch, then backtrack</div>
+                </div>
+                <div id="dfs-stage" class="media-stage"></div>
+                <p class="search-caption">Looping demo: depth-first search dives into one corridor and only later corrects course.</p>
+              </article>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">05</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const GRID = {
+      cols: 9,
+      rows: 6,
+      cell: 68,
+      padding: 38,
+      width: 850,
+      height: 520,
+      start: "0,5",
+      goal: "8,0",
+      walls: [
+        "1,0", "1,1", "1,2",
+        "3,1", "3,2", "3,3", "3,4",
+        "5,0", "5,1", "5,2",
+        "6,3", "6,4",
+        "7,1"
+      ],
+      cellLabels: {
+        "0,5": "mailroom",
+        "2,0": "storage",
+        "4,2": "hallway",
+        "8,0": "lab",
+        "8,5": "office"
+      }
+    };
+
+    function parseCell(id) {
+      return id.split(",").map((value) => Number.parseInt(value, 10));
+    }
+
+    function cellKey(col, row) {
+      return `${col},${row}`;
+    }
+
+    function isOpen(id) {
+      return !GRID.walls.includes(id);
+    }
+
+    function neighbors(id, order) {
+      const [col, row] = parseCell(id);
+      return order
+        .map(([dc, dr]) => cellKey(col + dc, row + dr))
+        .filter((next) => {
+          const [nc, nr] = parseCell(next);
+          return nc >= 0 && nc < GRID.cols && nr >= 0 && nr < GRID.rows && isOpen(next);
+        });
+    }
+
+    function reconstructPath(parent, goal) {
+      const path = [goal];
+      let current = goal;
+      while (parent.has(current)) {
+        current = parent.get(current);
+        path.push(current);
+      }
+      return path.reverse();
+    }
+
+    function compress(frames, count) {
+      if (frames.length <= count) {
+        return frames;
+      }
+      const out = [];
+      for (let index = 0; index < count; index += 1) {
+        const ratio = index / (count - 1);
+        out.push(frames[Math.round(ratio * (frames.length - 1))]);
+      }
+      return out;
+    }
+
+    function buildTrace(mode) {
+      const frontier = [GRID.start];
+      const parent = new Map();
+      const visited = new Set([GRID.start]);
+      const expanded = [];
+      const frames = [];
+      const bfsOrder = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+      const dfsOrder = [[1, 0], [0, -1], [-1, 0], [0, 1]];
+      const order = mode === "dfs" ? dfsOrder : bfsOrder;
+
+      while (frontier.length) {
+        const current = mode === "dfs" ? frontier.pop() : frontier.shift();
+        expanded.push(current);
+        if (current === GRID.goal) {
+          frames.push({
+            visited: [...expanded],
+            frontier: [...frontier],
+            current,
+            stats: [
+              mode.toUpperCase(),
+              `expanded ${expanded.length} nodes`,
+              current === GRID.goal ? "goal reached" : "searching"
+            ]
+          });
+          break;
+        }
+
+        neighbors(current, order).forEach((next) => {
+          if (visited.has(next)) {
+            return;
+          }
+          visited.add(next);
+          parent.set(next, current);
+          frontier.push(next);
+        });
+
+        frames.push({
+          visited: [...expanded],
+          frontier: [...frontier],
+          current,
+          stats: [
+            mode.toUpperCase(),
+            `expanded ${expanded.length} nodes`,
+            mode === "dfs" ? "commits to one branch" : "frontier grows in layers"
+          ],
+          annotation: mode === "dfs"
+            ? { text: "deep branch", x: 64, y: 18, fill: "#204f8d" }
+            : { text: "breadth wave", x: 64, y: 18, fill: "#73000a" }
+        });
+      }
+
+      const path = reconstructPath(parent, GRID.goal);
+      frames.push({
+        visited: [...expanded],
+        path,
+        frontier: [],
+        current: GRID.goal,
+        pathColor: mode === "dfs" ? "#204f8d" : "#73000a",
+        stats: [
+          mode.toUpperCase(),
+          `solution depth ${path.length - 1}`,
+          mode === "dfs" ? "found after detours" : "shortest unweighted path"
+        ]
+      });
+      frames.push(frames[frames.length - 1]);
+      frames.push(frames[frames.length - 1]);
+      frames.push(frames[frames.length - 1]);
+      return compress(frames, 14);
+    }
+
+    window.initSlide = function initSlide(ctx) {
+      const bfsScene = createGridSearchScene({ mount: document.getElementById("bfs-stage"), ...GRID });
+      const dfsScene = createGridSearchScene({ mount: document.getElementById("dfs-stage"), ...GRID });
+      const bfsFrames = buildTrace("bfs");
+      const dfsFrames = buildTrace("dfs");
+      const bfsLoop = bfsScene.startLoop(bfsFrames, { interval: 760, exportMode: ctx.exportMode, reducedMotion: ctx.reducedMotion, exportFrame: bfsFrames.length - 1 });
+      const dfsLoop = dfsScene.startLoop(dfsFrames, { interval: 760, exportMode: ctx.exportMode, reducedMotion: ctx.reducedMotion, exportFrame: dfsFrames.length - 1 });
+
+      return {
+        setStep() {},
+        destroy() {
+          bfsLoop.stop();
+          dfsLoop.stop();
+        }
+      };
+    };
+  </script>
+</body>
+</html>

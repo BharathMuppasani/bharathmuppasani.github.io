@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 11 | SPARQL Explanation Interface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .demo-layout {
+      display: grid;
+      gap: 30px;
+      grid-template-columns: 610px 1018px;
+      height: 100%;
+      align-items: stretch;
+    }
+    .demo-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+      justify-content: flex-start;
+    }
+    .demo-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 100%;
+    }
+    .demo-link {
+      align-items: center;
+      background: rgba(115, 0, 10, 0.08);
+      border: 1px solid rgba(115, 0, 10, 0.18);
+      border-radius: 999px;
+      color: var(--garnet);
+      display: inline-flex;
+      font-size: 15px;
+      font-weight: 800;
+      gap: 8px;
+      padding: 8px 14px;
+      text-decoration: none;
+      width: fit-content;
+    }
+    .demo-hero {
+      background:
+        linear-gradient(135deg, rgba(115, 0, 10, 0.04), rgba(26, 82, 118, 0.03)),
+        #ffffff;
+      border: 2px solid rgba(17, 17, 17, 0.09);
+      border-radius: 22px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      padding: 16px;
+    }
+    .demo-main-frame {
+      background: #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 18px;
+      height: 380px;
+      overflow: hidden;
+      position: relative;
+    }
+    .demo-main-frame img {
+      display: block;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      width: 100%;
+    }
+    .demo-pin {
+      background: rgba(255, 255, 255, 0.94);
+      border: 2px solid rgba(115, 0, 10, 0.18);
+      border-radius: 999px;
+      color: var(--garnet);
+      font-size: 14px;
+      font-weight: 800;
+      padding: 8px 12px;
+      position: absolute;
+      z-index: 2;
+    }
+    .demo-actions {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 14px;
+    }
+    .action-card {
+      background: #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-left: 7px solid var(--blue);
+      border-radius: 16px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 198px 1fr;
+      min-height: 138px;
+      overflow: hidden;
+      padding: 9px;
+    }
+    .action-card img {
+      border-radius: 12px;
+      display: block;
+      height: 118px;
+      object-fit: cover;
+      object-position: center top;
+      width: 100%;
+    }
+    .action-card strong {
+      color: var(--garnet);
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    .action-card span {
+      color: var(--muted);
+      display: block;
+      font-size: 13.7px;
+      line-height: 1.22;
+    }
+    .action-copy {
+      align-self: center;
+    }
+    .demo-heading {
+      color: var(--blue);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .scan-key {
+      color: #9b4137;
+      font-weight: 600;
+    }
+    .scan-key.blue {
+      color: #3b7392;
+    }
+    .demo-left .card-copy {
+      font-size: 19.6px;
+      line-height: 1.28;
+    }
+    .demo-left .card-label {
+      margin-bottom: 5px;
+    }
+    .demo-answer .prompt {
+      font-size: 21.6px;
+      line-height: 1.22;
+    }
+    .demo-answer .response {
+      font-size: 20.6px;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Explanation Interface</div>
+        <h1 class="slide-title" id="slide-title">SPARQL Explanation Interface</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          <div class="demo-layout">
+            <section class="demo-left">
+              <p class="thesis" style="max-width:575px;font-size:21px;" data-step="0">The <span class="scan-key">OMEGA</span> interface <strong style="color:#1a5276;font-weight:700;">[8]</strong> turns <span class="scan-key blue">SPARQL results</span> over maPO into <span class="scan-key">visual and natural-language explanations</span> grounded in the <span class="scan-key blue">same knowledge graph</span>.</p>
+              <div class="info-card blue" style="padding:12px 14px;" data-step="0">
+                <div class="card-label">Load a maPO RDF graph</div>
+                <div class="card-copy">The platform opens the <span class="scan-key blue">generated knowledge graph</span> and reconstructs the run from <span class="scan-key">ontology instances</span> rather than planner-specific viewers.</div>
+              </div>
+              <div class="info-card" style="padding:12px 14px;" data-step="1">
+                <div class="card-label">Inspect collision, alert, and plan context</div>
+                <div class="card-copy">The operator can inspect the <span class="scan-key blue">grid</span>, the <span class="scan-key">conflict location</span>, the <span class="scan-key blue">affected agents</span>, and the <span class="scan-key">revised subplan</span> from one graph-backed view.</div>
+              </div>
+              <div class="info-card blue" style="padding:12px 14px;" data-step="1">
+                <div class="card-label">From SPARQL to explanation text</div>
+                <div class="card-copy">Query results are rendered as <span class="scan-key">explanation templates</span>, so each answer stays grounded in explicit <span class="scan-key blue">ontology entities and relations</span>.</div>
+              </div>
+              <div class="demo-answer" style="grid-template-columns:176px 1fr;padding:10px 12px;" data-step="2">
+                <div class="prompt">Q: Why did Agent-3 reroute?</div>
+                <div class="response">A: The revised subplan <span class="scan-key">resolves a recorded conflict</span> and points back to the <span class="scan-key blue">alert</span>, <span class="scan-key">strategy</span>, and <span class="scan-key blue">original plan</span> through provenance links.</div>
+              </div>
+            </section>
+
+            <section class="demo-right">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;" data-step="2">
+                <div class="demo-heading">Demo video snapshots</div>
+                <a class="demo-link" href="../assets/demo/demo_app.mp4">Watch demo</a>
+              </div>
+
+              <div class="demo-hero">
+                <div class="demo-main-frame" data-step="2">
+                  <img src="./video_frames/frame-48.png" alt="Demo frame showing the grid replay with highlighted conflict cells">
+                  <div class="demo-pin" style="left:18px;top:18px;">Conflict cell highlighted in red</div>
+                  <div class="demo-pin" style="left:43%;top:18px;">Replay agent trajectories</div>
+                  <div class="demo-pin" style="right:18px;bottom:18px;">Same graph drives query and answer</div>
+                </div>
+                <div class="demo-actions" data-step="3">
+                  <div class="action-card">
+                    <img src="./video_frames/frame-36.png" alt="Explanation view from the demo showing detailed conflict reasoning">
+                    <div class="action-copy">
+                      <strong>Generate NL explanations</strong>
+                      <span>The explanation panel turns graph-grounded query results into natural-language answers about conflicts, agents, and plan revision.</span>
+                    </div>
+                  </div>
+                  <div class="action-card" style="border-left-color:var(--garnet);">
+                    <img src="./video_frames/frame-72.png" alt="Ontology graph view from the demo">
+                    <div class="action-copy">
+                      <strong>Inspect ontology evidence directly</strong>
+                      <span>The same run can be explored as an ontology graph, making conflicts, alerts, plans, and strategies first-class entities.</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="figure-caption" style="align-self:center;margin-top:8px;text-align:center;width:100%;" data-step="3">Figure 6. Demo snapshots show replay, conflict inspection, and ontology evidence from the same maPO graph.</div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">11 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 03 | MAPF Requires Explanations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .problem-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      height: 100%;
+    }
+    .problem-layout {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 796px 824px;
+      align-items: start;
+      flex: 1 1 auto;
+    }
+    .problem-pointers {
+      display: grid;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .problem-pointer {
+      align-items: start;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(250, 250, 250, 0.98));
+      border: 1px solid rgba(17, 17, 17, 0.07);
+      border-radius: 18px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 232px 1fr;
+      min-height: 88px;
+      padding: 14px 16px;
+      position: relative;
+    }
+    .problem-pointer.garnet {
+      background: linear-gradient(180deg, rgba(115, 0, 10, 0.045), rgba(255, 255, 255, 0.98));
+      border-color: rgba(115, 0, 10, 0.14);
+    }
+    .problem-pointer.blue {
+      background: linear-gradient(180deg, rgba(26, 82, 118, 0.05), rgba(255, 255, 255, 0.98));
+      border-color: rgba(26, 82, 118, 0.14);
+    }
+    .problem-pointer.slate {
+      background: linear-gradient(180deg, rgba(94, 108, 123, 0.05), rgba(255, 255, 255, 0.98));
+      border-color: rgba(94, 108, 123, 0.14);
+    }
+    .pointer-label {
+      align-self: start;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.12;
+      padding: 6px 0 0;
+    }
+    .problem-pointer.garnet .pointer-label {
+      color: var(--garnet);
+    }
+    .problem-pointer.blue .pointer-label {
+      color: var(--blue);
+    }
+    .problem-pointer.slate .pointer-label {
+      color: #4c5963;
+    }
+    .pointer-copy {
+      color: var(--text);
+      font-size: 20px;
+      line-height: 1.28;
+      padding-top: 6px;
+    }
+    .problem-note-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .problem-note {
+      background: linear-gradient(180deg, rgba(115, 0, 10, 0.10) 0%, rgba(244, 247, 249, 0.98) 100%);
+      border: 2px solid rgba(115, 0, 10, 0.24);
+      border-radius: 18px;
+      box-shadow: 0 10px 18px rgba(115, 0, 10, 0.08);
+      color: var(--text);
+      display: inline-flex;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.24;
+      max-width: 1450px;
+      padding: 13px 18px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .problem-note .key {
+      background: rgba(115, 0, 10, 0.10);
+      border-radius: 7px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      color: var(--garnet);
+      font-weight: 600;
+      padding: 0 0.22em;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Problem Setting</div>
+        <h1 class="slide-title" id="slide-title">MAPF Requires Explanations</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          
+            <div class="problem-shell">
+              <div class="problem-layout">
+              <section class="stack" style="height:100%;justify-content:flex-start;gap:18px;">
+                <p class="thesis" style="font-size:25px;line-height:1.26;max-width:700px;" data-step="0">MAPF computes coordinated multi-robot motion effectively, yet the <strong style="color:#73000a;">causal basis of replanning decisions</strong> often remains opaque to human operators.</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2px;margin-bottom:2px;" data-step="0">
+                  <span style="background:rgba(115,0,10,0.08);border:1px solid rgba(115,0,10,0.12);border-radius:999px;color:#73000a;font-size:16px;font-weight:700;padding:8px 12px;">Operational accountability</span>
+                  <span style="background:rgba(26,82,118,0.08);border:1px solid rgba(26,82,118,0.12);border-radius:999px;color:#1a5276;font-size:16px;font-weight:700;padding:8px 12px;">Conflict-driven replanning</span>
+                  <span style="background:#f5f5f5;border:1px solid rgba(17,17,17,0.08);border-radius:999px;color:#444;font-size:16px;font-weight:700;padding:8px 12px;">Human oversight</span>
+                </div>
+                <div class="problem-pointers" data-step="1">
+                  <div class="problem-pointer garnet">
+                    <div class="pointer-label">Joint execution in shared space</div>
+                    <div class="pointer-copy">Multiple agents follow coordinated trajectories toward distinct goals on the same grid.</div>
+                  </div>
+                  <div class="problem-pointer blue">
+                    <div class="pointer-label">Conflict resolution revises behavior</div>
+                    <div class="pointer-copy">Safe execution may introduce waits, detours, or revised subplans that were not present in the original plan.</div>
+                  </div>
+                  <div class="problem-pointer slate">
+                    <div class="pointer-label">Operators require traceable reasons</div>
+                    <div class="pointer-copy">An explanation must identify which conflict occurred, which agent was affected, and why the resulting behavior changed.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="stack" style="height:100%;justify-content:flex-start;" data-step="2">
+                <div class="figure-card fill" style="height:546px;padding:18px 18px 16px;">
+                  <div class="figure-frame">
+                    <img src="../assets/paper_figures/mapf_example.png" alt="MAPF example with five agents">
+                  </div>
+                </div>
+                <div class="figure-caption" style="align-self:center;max-width:720px;text-align:center;">Figure 1. Representative MAPF instance with obstacles, interacting trajectories, and conflict-prone motion on a shared grid.</div>
+              </section>
+              </div>
+              <div class="problem-note-wrap" data-step="3">
+                <div class="problem-note">Conventional planner outputs expose final paths, but they rarely preserve the <span class="key">semantic rationale for revision</span> that links a specific conflict to the resolved behavior.</div>
+              </div>
+            </div>
+            
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">03 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

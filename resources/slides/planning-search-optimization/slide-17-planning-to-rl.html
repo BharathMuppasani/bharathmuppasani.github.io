@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 17 | Dynamic Response</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/warehouse-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .dynamic-layout {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: 1.02fr 0.98fr;
+      height: 100%;
+    }
+    .response-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    .response-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      min-height: 114px;
+      padding: 14px;
+    }
+    .response-card.replan { border-left: 6px solid var(--accent); }
+    .response-card.repair { border-left: 6px solid #204f8d; }
+    .response-card.policy { border-left: 6px solid #1c7c54; }
+    .response-card strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .response-card p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .dynamic-layout .lead {
+      font-size: 28px;
+      line-height: 1.18;
+    }
+    .dynamic-layout .equation-block {
+      padding: 18px 20px;
+    }
+    .dynamic-layout .equation-main {
+      font-size: 24px;
+    }
+    .dynamic-layout .equation-sub {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Dynamic Response</div>
+          <h1 class="slide-title">When the Plan Breaks, We Must Recover While Preserving the Same Goal</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="stack-md" style="height: 100%;">
+            <p class="lead">The disruption changes the route, not the objective. The robot is still carrying <span class="keyword">package A</span>, and package A still belongs in the <span class="keyword">lab</span>.</p>
+
+            <div class="dynamic-layout">
+              <section class="scene-card">
+                <div class="scene-toolbar">
+                  <div class="figure-title">Failure Then Recovery in the Same Warehouse</div>
+                  <div class="mini-chip accent">goal remains “deliver A to lab”</div>
+                </div>
+                <div id="recovery-stage" class="media-stage" style="height: 470px;">
+                </div>
+                <div class="state-fact-board" style="margin-top: 12px;" data-step="2">
+                  <div class="board-title">Current State After Failure Detection</div>
+                  <div class="state-facts">
+                    <span class="state-fact positive">(at-robot hallway)</span>
+                    <span class="state-fact positive">(carrying A)</span>
+                    <span class="state-fact positive">goal: (at-pkg A lab)</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="stack-md">
+                <div class="response-grid" data-step="2">
+                  <div class="response-card replan">
+                    <strong>Replanning</strong>
+                    <p>Solve a new planning problem from the current state. Here the new path is <span class="math-mono">hallway → storage → lab</span>.</p>
+                  </div>
+                  <div class="response-card repair">
+                    <strong>Plan repair</strong>
+                    <p>Keep the executed prefix and modify only the broken suffix. This is often cheaper than solving from scratch.</p>
+                  </div>
+                  <div class="response-card policy">
+                    <strong>Policy-based reaction</strong>
+                    <p>Use a learned or hand-designed state-to-action rule such as: “if the lab corridor is blocked, go to storage next.”</p>
+                  </div>
+                </div>
+
+                <div class="equation-block" data-step="3">
+                  <div class="equation-main">goal fixed , response adaptive</div>
+                  <div class="equation-sub">
+                    <div><strong class="keyword">goal</strong> deliver A to lab</div>
+                    <div><strong class="keyword">change</strong> the hallway-lab corridor is no longer available</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">17</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+  <script>
+    const WORLD = {
+      robot: "hallway",
+      locations: [
+        { id: "mailroom", label: "mailroom", x: 150, y: 110, zone: "ingress" },
+        { id: "hallway", label: "hallway", x: 380, y: 210, zone: "hub" },
+        { id: "storage", label: "storage", x: 380, y: 340, zone: "work" },
+        { id: "lab", label: "lab", x: 760, y: 100, zone: "goal" },
+        { id: "office", label: "office", x: 760, y: 320, zone: "goal" }
+      ],
+      edges: [
+        { id: "mailroom-hallway", from: "mailroom", to: "hallway", cost: 2, primary: true },
+        { id: "hallway-storage", from: "hallway", to: "storage", cost: 3, primary: true },
+        { id: "hallway-lab", from: "hallway", to: "lab", cost: 5, primary: true },
+        { id: "storage-lab", from: "storage", to: "lab", cost: 6, primary: true },
+        { id: "storage-office", from: "storage", to: "office", cost: 4, primary: true }
+      ],
+      packages: [
+        { id: "packageA", short: "A", location: "mailroom", color: "#204f8d" },
+        { id: "packageB", short: "B", location: "storage", color: "#73000a" }
+      ]
+    };
+
+    window.initSlide = function initSlide() {
+      const scene = createWarehouseScene({
+        mount: document.getElementById("recovery-stage"),
+        width: 980,
+        height: 420,
+        robot: WORLD.robot,
+        locations: WORLD.locations,
+        edges: WORLD.edges,
+        packages: WORLD.packages
+      });
+
+      return {
+        setStep(step) {
+          scene.applySnapshot({
+            goals: ["lab", "office"],
+            robot: "hallway",
+            carrying: "packageA",
+            blockedEdge: "hallway-lab",
+            primaryWidth: 7,
+            primaryOpacity: 0.8,
+            packages: {
+              packageA: { carried: true },
+              packageB: { location: "storage" }
+            },
+            primaryPath: ["hallway", "storage", "lab"],
+            facts: [
+              { text: "current goal: A -> lab", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "replanned suffix", fill: "#eaf2ff", stroke: "#204f8d", color: "#204f8d" }
+            ],
+            annotation: { text: "new valid plan: hallway → storage → lab", x: 260, y: 26, color: "#1c7c54" }
+          });
+        }
+      };
+    };
+  </script>
+</body>
+</html>

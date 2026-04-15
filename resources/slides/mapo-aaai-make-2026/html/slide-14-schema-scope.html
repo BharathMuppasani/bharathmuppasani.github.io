@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 14 | What maPO Explicitly Models</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .slide-twelve .thesis {
+      font-size: 24px;
+      line-height: 1.28;
+    }
+    .slide-twelve .metric-grid {
+      gap: 14px;
+      margin-top: 0;
+    }
+    .slide-twelve .metric-card {
+      padding: 18px 16px;
+    }
+    .slide-twelve .metric-card .value {
+      font-size: 52px;
+    }
+    .slide-twelve .metric-card .label {
+      font-size: 18px;
+      margin-top: 8px;
+    }
+    .slide-twelve .metric-card .desc {
+      font-size: 16px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas slide-twelve" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Schema Scope</div>
+        <h1 class="slide-title" id="slide-title">What maPO Explicitly Models</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          <div class="stack centered" style="height:100%;gap:18px;">
+            <p class="thesis centered" data-step="0">maPO extends the Planning Ontology with MAPF-specific entities needed for explanation: agents, subplans, conflicts, alerts, strategies, provenance, and temporal grounding.</p>
+            <div class="metric-grid" style="margin-top:0;">
+              <div class="metric-card" data-step="0"><span class="value">Agent</span><span class="label">ma:Agent + ma:AgentState</span><span class="desc">identifier, capability, initial and goal location</span></div>
+              <div class="metric-card" data-step="0"><span class="value">SubPlan</span><span class="label">original / resolved / joint</span><span class="desc">path segments, plan cost, and overall makespan</span></div>
+              <div class="metric-card" data-step="1"><span class="value">Conflict</span><span class="label">ma:CollisionEvent</span><span class="desc">type, time, location, and involved agents</span></div>
+              <div class="metric-card" data-step="1"><span class="value">Alert</span><span class="label">ma:ConflictAlert</span><span class="desc">target agent and planner selectionRationale</span></div>
+              <div class="metric-card total" data-step="2"><span class="value" style="font-size:42px;">PROV-O + TIME</span><span class="label">strategy, provenance, temporality</span><span class="desc">ReplanningStrategy, prov:wasDerivedFrom, prov:wasGeneratedBy, and time:Instant</span></div>
+            </div>
+            <div class="stats-bar" style="background:rgba(115,0,10,0.06);border-color:rgba(115,0,10,0.16);color:var(--garnet);font-size:18px;max-width:980px;align-self:center;padding:10px 14px;" data-step="3">These constructs make the paper’s competency questions answerable over one graph.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">14 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

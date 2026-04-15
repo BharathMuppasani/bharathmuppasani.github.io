@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 05 | maPO Turns Logs Into Knowledge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .solution-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+    }
+    .figure-card.fill.solution-card {
+      height: 550px;
+    }
+    .solution-tag {
+      align-self: flex-start;
+      background: rgba(26, 82, 118, 0.08);
+      border: 2px solid rgba(26, 82, 118, 0.18);
+      border-radius: 999px;
+      color: var(--blue);
+      display: inline-flex;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 6px 13px;
+    }
+    .solution-frame {
+      align-items: center;
+      display: flex;
+      flex: 1 1 auto;
+      justify-content: center;
+      min-height: 0;
+    }
+    .solution-frame img {
+      background: #ffffff;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      width: 100%;
+    }
+    .solution-caption-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .solution-caption-grid .figure-caption {
+      font-size: 12px;
+      line-height: 1.12;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Solution</div>
+        <h1 class="slide-title" id="slide-title">maPO Turns Logs Into Knowledge</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          <div class="stack" style="height:100%;justify-content:flex-start;gap:6px;">
+            <p class="thesis" style="max-width:1440px;" data-step="0">maPO combines a <strong style="color:#73000a;">planner-agnostic ontology schema</strong> with a <strong style="color:#1a5276;">SPARQL-based explanation framework</strong>. Structured MAPF traces are mapped to RDF triples, then queried without modifying the underlying planner.</p>
+
+            <div class="solution-grid" data-step="0">
+              <section class="figure-card fill solution-card">
+                <div class="solution-tag">Ontology schema</div>
+                <div class="figure-frame solution-frame">
+                  <img src="../assets/diagrams/maPO_ontology_visual.png" alt="maPO ontology schema">
+                </div>
+              </section>
+
+              <section class="figure-card fill solution-card">
+                <div class="solution-tag">System architecture</div>
+                <div class="figure-frame solution-frame">
+                  <img src="../assets/paper_figures/system_architecture.png" alt="maPO system architecture">
+                </div>
+              </section>
+            </div>
+
+            <div class="solution-caption-grid" data-step="1">
+              <div class="figure-caption">Figure 3a. maPO extends the Planning Ontology with MAPF-specific constructs for agents, conflicts, alerts, strategies, and revised plans.</div>
+              <div class="figure-caption">Figure 3b. Structured JSON traces are mapped to RDF and served to a web platform for SPARQL-based explanation generation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">05 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

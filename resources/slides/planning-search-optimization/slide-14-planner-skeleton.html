@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 14 | Designing a Heuristic</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/warehouse-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .design-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 500px 1fr;
+      height: 100%;
+    }
+    .design-shell {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+    }
+    .design-shell .media-stage {
+      height: 460px;
+    }
+    .breakdown-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      margin-top: 12px;
+      padding: 14px 16px;
+    }
+    .breakdown-card .formula {
+      color: var(--text);
+      font-family: var(--mono-font);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.22;
+    }
+    .breakdown-card .copy {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.24;
+      margin-top: 6px;
+    }
+    .design-layout .lead {
+      font-size: 26px;
+      line-height: 1.16;
+    }
+    .design-layout .section-card {
+      padding: 14px 16px;
+    }
+    .design-layout .section-card h3 {
+      font-size: 24px;
+    }
+    .design-layout .section-card p {
+      font-size: 16px;
+      margin-top: 6px;
+    }
+    .design-layout .callout-banner {
+      padding: 12px 16px;
+    }
+    .design-layout .callout-banner p {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Heuristic Design</div>
+          <h1 class="slide-title">A Useful Heuristic Is a Cheap Lower Bound on the Remaining Delivery Work</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="design-layout">
+            <section class="stack-md">
+              <p class="lead">For this warehouse problem, a simple heuristic can approximate how much delivery work is left without solving the entire plan exactly.</p>
+
+              <div class="section-card" data-step="1">
+                <div class="eyebrow">Design idea</div>
+                <h3>Count unfinished transport, not exact future choices.</h3>
+                <p>We estimate the remaining cost using shortest-path travel for the deliveries that still need to happen.</p>
+              </div>
+
+              <div class="section-card soft-blue" data-step="2">
+                <div class="eyebrow">Delete Relaxation Heuristic</div>
+                <h3>Ignore negative effects ($h^+$).</h3>
+                <p>Classic heuristics like <strong>h-add</strong> or <strong>FF</strong> assume achieved facts are never deleted. By ignoring the capacity limit, the robot hypothetically solves the rest of the problem instantly, creating a fast polynomial-time lower bound estimate.</p>
+              </div>
+
+              <div class="section-card soft-green" data-step="3">
+                <div class="eyebrow">Why it is still useful</div>
+                <h3>The estimate decreases when the right subgoals are achieved.</h3>
+                <p>Picking A, delivering A to the lab, and finally carrying B to the office all reduce the remaining lower bound.</p>
+              </div>
+
+            </section>
+
+            <section class="design-shell">
+              <div class="scene-toolbar">
+                <div class="figure-title">Running example heuristic over execution snapshots</div>
+                <div class="mini-chip success">looping lower-bound calculation</div>
+              </div>
+              <div id="heuristic-design-stage" class="media-stage"></div>
+              <div id="heuristic-breakdown" class="breakdown-card"></div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">14</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const WORLD = {
+      robot: "hallway",
+      locations: [
+        { id: "mailroom", label: "mailroom", x: 170, y: 210, zone: "ingress" },
+        { id: "hallway", label: "hallway", x: 430, y: 300, zone: "hub" },
+        { id: "storage", label: "storage", x: 430, y: 470, zone: "work" },
+        { id: "lab", label: "lab", x: 1020, y: 160, zone: "goal" },
+        { id: "office", label: "office", x: 1020, y: 470, zone: "goal" },
+      ],
+      edges: [
+        { id: "mailroom-hallway", from: "mailroom", to: "hallway", cost: 2, primary: true },
+        { id: "hallway-storage", from: "hallway", to: "storage", cost: 3, primary: true },
+        { id: "hallway-lab", from: "hallway", to: "lab", cost: 5, primary: true },
+        { id: "storage-lab", from: "storage", to: "lab", cost: 6, primary: true },
+        { id: "storage-office", from: "storage", to: "office", cost: 4, primary: true },
+      ],
+      packages: [
+        { id: "packageA", short: "A", location: "mailroom", color: "#204f8d" },
+        { id: "packageB", short: "B", location: "storage", color: "#73000a" }
+      ]
+    };
+
+    window.initSlide = function initSlide(ctx) {
+      const scene = createWarehouseScene({
+        mount: document.getElementById("heuristic-design-stage"),
+        width: 1180,
+        height: 600,
+        robot: WORLD.robot,
+        locations: WORLD.locations,
+        edges: WORLD.edges,
+        packages: WORLD.packages
+      });
+      const breakdown = document.getElementById("heuristic-breakdown");
+
+      const frames = [
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "hallway",
+            primaryPath: ["storage", "office"],
+            secondaryPath: ["hallway", "mailroom", "hallway", "lab"],
+            primaryWidth: 8,
+            secondaryWidth: 7,
+            packages: {
+              packageA: { location: "mailroom" },
+              packageB: { location: "storage" }
+            },
+            facts: [
+              { text: "A pending", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "B pending", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" },
+              { text: "h=13", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "start: both deliveries still require transport work", x: 126, y: 20, color: "#101114" }
+          },
+          formula: "s0: Move(mailroom)   h = 13",
+          copy: "The heuristic starts high because both deliveries are still untouched."
+        },
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "mailroom",
+            carrying: "packageA",
+            primaryPath: ["storage", "office"],
+            secondaryPath: ["mailroom", "hallway", "lab"],
+            primaryWidth: 8,
+            secondaryWidth: 7,
+            packages: {
+              packageA: { carried: true },
+              packageB: { location: "storage" }
+            },
+            facts: [
+              { text: "Pick(A)", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "B still pending", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" },
+              { text: "h=11", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "after picking A, one important subgoal is already aligned", x: 132, y: 20, color: "#204f8d" }
+          },
+          formula: "s1: Pick(A)   h = 11",
+          copy: "The estimate drops because the robot no longer needs to travel to package A first."
+        },
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "hallway",
+            carrying: "packageA",
+            primaryPath: ["storage", "office"],
+            secondaryPath: ["hallway", "lab"],
+            primaryWidth: 8,
+            secondaryWidth: 7,
+            packages: {
+              packageA: { carried: true },
+              packageB: { location: "storage" }
+            },
+            facts: [
+              { text: "Move(hallway)", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "A in gripper", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" },
+              { text: "h=9", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "moving toward the lab keeps reducing genuine remaining work", x: 116, y: 20, color: "#204f8d" }
+          },
+          formula: "s2: Move(hallway)   h = 9",
+          copy: "The lower bound shrinks again because A is now one move from its destination."
+        },
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "lab",
+            packages: {
+              packageA: { location: "lab", delivered: true },
+              packageB: { location: "storage" }
+            },
+            primaryPath: ["hallway", "storage", "office"],
+            primaryWidth: 8,
+            facts: [
+              { text: "Drop(A)", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "A delivered", fill: "#ebf8ef", stroke: "#c7e7d1", color: "#1c7c54" },
+              { text: "h=7", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "after A is dropped at the lab, only the B delivery remains", x: 110, y: 20, color: "#1c7c54" }
+          },
+          formula: "s3: Drop(A)   h = 7",
+          copy: "The heuristic remembers it visited the hallway, so the relaxed path to B shortcuts directly across it."
+        },
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "storage",
+            primaryPath: ["storage", "office"],
+            primaryWidth: 8,
+            packages: {
+              packageA: { location: "lab", delivered: true },
+              packageB: { location: "storage" }
+            },
+            facts: [
+              { text: "Move(storage)", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "B ready", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" },
+              { text: "h=4", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "the graph stays the same; only the remaining work changes", x: 120, y: 20, color: "#101114" }
+          },
+          formula: "s4: Move(storage)   h = 4",
+          copy: "The model is unchanged from earlier slides. The heuristic simply keeps scoring the remaining delivery work."
+        },
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "storage",
+            carrying: "packageB",
+            primaryPath: ["storage", "office"],
+            primaryWidth: 8,
+            packages: {
+              packageA: { location: "lab", delivered: true },
+              packageB: { carried: true }
+            },
+            facts: [
+              { text: "Pick(B)", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" },
+              { text: "A complete", fill: "#ebf8ef", stroke: "#c7e7d1", color: "#1c7c54" },
+              { text: "h=4", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "one final transport segment remains", x: 220, y: 20, color: "#73000a" }
+          },
+          formula: "s5: Pick(B)   h = 4",
+          copy: "Once B is in hand, the remaining relaxed cost is only the storage-to-office segment."
+        },
+        {
+          snapshot: {
+            goals: ["lab", "office"],
+            robot: "office",
+            packages: {
+              packageA: { location: "lab", delivered: true },
+              packageB: { location: "office", delivered: true }
+            },
+            facts: [
+              { text: "Drop(B)", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" },
+              { text: "both goals true", fill: "#ebf8ef", stroke: "#c7e7d1", color: "#1c7c54" },
+              { text: "h=0", fill: "#f3fbf6", stroke: "#c7e7d1", color: "#1c7c54" }
+            ],
+            annotation: { text: "goal reached: no mandatory delivery work remains", x: 178, y: 20, color: "#1c7c54" }
+          },
+          formula: "s_goal: Drop(B)   h = 0",
+          copy: "The estimate reaches zero only when the same delivery goals used throughout the talk are satisfied."
+        }
+      ];
+
+      const loop = window.SlideUtils.createFrameLoop({
+        frames,
+        frameMs: 1800,
+        exportFrame: frames.length - 1,
+        applyFrame(frame) {
+          scene.applySnapshot(frame.snapshot);
+          breakdown.innerHTML = `
+            <div class="formula">${frame.formula}</div>
+            <div class="copy">${frame.copy}</div>
+          `;
+        }
+      });
+      loop.start();
+
+      return {
+        setStep() {},
+        destroy() {
+          loop.stop();
+        }
+      };
+    };
+  </script>
+</body>
+</html>

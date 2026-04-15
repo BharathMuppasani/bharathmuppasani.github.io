@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 12 | Optimality Depends on the Metric</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .tradeoff-layout {
+      display: grid;
+      gap: 30px;
+      grid-template-columns: 1.02fr 0.98fr;
+      height: 100%;
+    }
+    .tradeoff-shell {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+    }
+    .winner-note {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.32;
+      margin-top: 18px;
+      padding-top: 16px;
+    }
+    .plan-tag {
+      align-items: center;
+      border-radius: 999px;
+      display: inline-flex;
+      font-family: var(--heading-font);
+      font-size: 18px;
+      font-weight: 900;
+      min-height: 34px;
+      padding: 0 12px;
+    }
+    .plan-tag.plan-a {
+      background: rgba(115,0,10,0.1);
+      color: #73000a;
+    }
+    .plan-tag.plan-b {
+      background: rgba(32,79,141,0.1);
+      color: #204f8d;
+    }
+    .plan-tag.plan-c {
+      background: rgba(28,124,84,0.1);
+      color: #1c7c54;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Metric-Sensitive Optimality</div>
+          <h1 class="slide-title">The Optimal Plan Depends on Which Cost We Choose to Minimize</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="tradeoff-layout">
+            <section class="tradeoff-shell">
+              <div class="scene-toolbar">
+                <div class="figure-title">Three feasible delivery plans in the same warehouse</div>
+                <div class="mini-chip soft">all reach A to lab and B to office</div>
+              </div>
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Plan</th>
+                    <th>Route idea</th>
+                    <th>Travel cost</th>
+                    <th>Energy</th>
+                    <th>Comment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="planA">
+                    <td><span class="plan-tag plan-a">A</span></td>
+                    <td>Direct delivery first, little detour</td>
+                    <td class="cell-cost">8</td>
+                    <td class="cell-energy">11</td>
+                    <td>Fastest route, most energy-hungry.</td>
+                  </tr>
+                  <tr id="planB">
+                    <td><span class="plan-tag plan-b">B</span></td>
+                    <td>Balanced route through storage</td>
+                    <td class="cell-cost">10</td>
+                    <td class="cell-energy">7</td>
+                    <td>Compromise between speed and battery use.</td>
+                  </tr>
+                  <tr id="planC">
+                    <td><span class="plan-tag plan-c">C</span></td>
+                    <td>Longer detour with low-power motion</td>
+                    <td class="cell-cost">13</td>
+                    <td class="cell-energy">4</td>
+                    <td>Best for tight battery budgets.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div id="winner-note" class="winner-note">If the objective is minimum travel cost, Plan A is optimal.</div>
+            </section>
+
+            <section class="stack-md">
+              <div class="tradeoff-shell">
+                <div class="figure-title">Travel cost versus energy</div>
+                <svg viewBox="0 0 560 380" width="100%" height="360" aria-label="Travel cost versus energy scatter plot">
+                  <line x1="84" y1="316" x2="484" y2="316" stroke="#101114" stroke-width="3"></line>
+                  <line x1="84" y1="316" x2="84" y2="66" stroke="#101114" stroke-width="3"></line>
+
+                  <line x1="84" y1="248" x2="484" y2="248" stroke="#eceef1" stroke-width="2"></line>
+                  <line x1="84" y1="184" x2="484" y2="184" stroke="#eceef1" stroke-width="2"></line>
+                  <line x1="84" y1="120" x2="484" y2="120" stroke="#eceef1" stroke-width="2"></line>
+
+                  <line x1="178" y1="316" x2="178" y2="66" stroke="#eceef1" stroke-width="2"></line>
+                  <line x1="270" y1="316" x2="270" y2="66" stroke="#eceef1" stroke-width="2"></line>
+                  <line x1="390" y1="316" x2="390" y2="66" stroke="#eceef1" stroke-width="2"></line>
+
+                  <text x="464" y="350" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="20" fill="#5a5f69">travel cost</text>
+                  <text x="28" y="92" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="20" fill="#5a5f69" transform="rotate(-90 28 92)">energy used</text>
+                  <text x="170" y="340" font-family="SFMono-Regular, Menlo, monospace" font-size="14" fill="#5a5f69">8</text>
+                  <text x="262" y="340" font-family="SFMono-Regular, Menlo, monospace" font-size="14" fill="#5a5f69">10</text>
+                  <text x="382" y="340" font-family="SFMono-Regular, Menlo, monospace" font-size="14" fill="#5a5f69">13</text>
+                  <text x="56" y="252" font-family="SFMono-Regular, Menlo, monospace" font-size="14" fill="#5a5f69">4</text>
+                  <text x="56" y="188" font-family="SFMono-Regular, Menlo, monospace" font-size="14" fill="#5a5f69">7</text>
+                  <text x="50" y="124" font-family="SFMono-Regular, Menlo, monospace" font-size="14" fill="#5a5f69">11</text>
+
+                  <circle cx="178" cy="120" r="20" fill="#ffffff" stroke="#73000a" stroke-width="4"></circle>
+                  <text x="178" y="127" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="22" font-weight="900" fill="#73000a">A</text>
+
+                  <circle cx="270" cy="184" r="20" fill="#ffffff" stroke="#204f8d" stroke-width="4"></circle>
+                  <text x="270" y="191" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="22" font-weight="900" fill="#204f8d">B</text>
+
+                  <circle cx="390" cy="248" r="20" fill="#ffffff" stroke="#1c7c54" stroke-width="4"></circle>
+                  <text x="390" y="255" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="22" font-weight="900" fill="#1c7c54">C</text>
+
+                  <path d="M146 98 L420 270" fill="none" stroke="#d0d6de" stroke-width="3" stroke-dasharray="8 8"></path>
+                  <text x="438" y="286" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="16" fill="#5a5f69">Pareto tradeoff frontier</text>
+                </svg>
+              </div>
+
+              <div class="callout-banner" data-step="3">
+                <p><strong class="keyword">Optimality is objective-dependent.</strong> A planner is not asked for “the best plan” in the abstract. It is asked for the best plan under a specific metric or constraint set.</p>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">12</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    window.initSlide = function initSlide() {
+      const rows = {
+        A: document.getElementById("planA"),
+        B: document.getElementById("planB"),
+        C: document.getElementById("planC")
+      };
+      const note = document.getElementById("winner-note");
+
+      function clear() {
+        Object.values(rows).forEach((row) => {
+          row.querySelector(".cell-cost").className = "cell-cost";
+          row.querySelector(".cell-energy").className = "cell-energy";
+        });
+      }
+
+      return {
+        setStep(step) {
+          clear();
+          if (step <= 1) {
+            rows.A.querySelector(".cell-cost").classList.add("cell-highlight");
+            note.textContent = "If the objective is minimum travel cost, Plan A is optimal.";
+          } else if (step === 2) {
+            rows.C.querySelector(".cell-energy").classList.add("cell-highlight");
+            note.textContent = "If the objective is minimum energy, Plan C is optimal.";
+          } else {
+            rows.B.querySelector(".cell-cost").classList.add("cell-highlight");
+            rows.B.querySelector(".cell-energy").classList.add("cell-highlight");
+            note.textContent = "If we balance both metrics, Plan B is the compromise solution.";
+          }
+        }
+      };
+    };
+  </script>
+</body>
+</html>

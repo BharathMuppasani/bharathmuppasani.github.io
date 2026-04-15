@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 02 | Outline</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .outline-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .outline-card {
+      background: rgba(255,255,255,0.98);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px 22px;
+      box-shadow: var(--shadow-soft);
+    }
+    .outline-card .eyebrow {
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .outline-card h3 {
+      font-family: var(--heading-font);
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+    .outline-card p {
+      font-size: 17px;
+      line-height: 1.34;
+      color: var(--muted);
+    }
+    .outline-card.soft-blue { border-top: 5px solid #204f8d; }
+    .outline-card.soft-green { border-top: 5px solid #1c7c54; }
+    .outline-card.soft-slate { border-top: 5px solid #5a5f69; }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Lecture Map</div>
+          <h1 class="slide-title">Outline</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="stack-lg" style="height: 100%; justify-content: space-between;">
+            <p class="lead">One running warehouse robot example will connect <span class="keyword">graph search</span>, <span class="keyword">planning models</span>, <span class="keyword">optimization objectives</span>, and <span class="keyword">learning-based control</span>.</p>
+
+            <div class="outline-grid">
+              <article class="outline-card" data-step="1">
+                <div class="eyebrow">Part I</div>
+                <h3>Why planning?</h3>
+                <p>Sequential decisions, real deployments, and why optimizing over trajectories differs from one-shot optimization.</p>
+              </article>
+              <article class="outline-card soft-blue" data-step="1">
+                <div class="eyebrow">Part II</div>
+                <h3>Search on graphs</h3>
+                <p>BFS, DFS, and A* on the same warehouse maze, with the heuristic intuition made explicit.</p>
+              </article>
+              <article class="outline-card soft-green" data-step="2">
+                <div class="eyebrow">Part III</div>
+                <h3>Modeling for planning</h3>
+                <p>Robot world, PDDL, symbolic states, actions, and search over implicit planning states.</p>
+              </article>
+              <article class="outline-card soft-slate" data-step="2">
+                <div class="eyebrow">Part IV</div>
+                <h3>Optimization and heuristics</h3>
+                <p>Constraint optimization, metric-sensitive optimality, heuristic guidance, and planner search control.</p>
+              </article>
+              <article class="outline-card soft-blue" data-step="3">
+                <div class="eyebrow">Part V</div>
+                <h3>Dynamics</h3>
+                <p>When classical assumptions fail, how replanning responds, and where fixed plans stop being enough.</p>
+              </article>
+              <article class="outline-card" data-step="3">
+                <div class="eyebrow">Part VI</div>
+                <h3>Learning</h3>
+                <p>Why learned policies become necessary, and how supervised signals differ from reward-based RL.</p>
+              </article>
+            </div>
+
+            <div class="callout-banner" data-step="3">
+              <p><strong class="keyword">Main claim:</strong> planning is best understood as search and optimization over state transitions, with heuristics and learning added when scale and dynamics demand them.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">02</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

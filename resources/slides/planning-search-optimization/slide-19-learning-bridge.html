@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 19 | Two Ways to Learn Missing Decision Knowledge</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .bridge-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+    }
+    .learning-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+    }
+    .learning-card h3 {
+      color: var(--text);
+      font-family: var(--heading-font);
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.96;
+    }
+    .learning-card p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.3;
+    }
+    .learning-card svg {
+      background: #fff;
+      border: 1px solid var(--soft-line);
+      border-radius: 18px;
+      display: block;
+      height: 268px;
+      width: 100%;
+    }
+    .signal-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .signal-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      min-height: 76px;
+      padding: 10px;
+    }
+    .signal-box strong {
+      color: var(--accent);
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .signal-box p {
+      font-size: 14px;
+      line-height: 1.24;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Learning Routes</div>
+          <h1 class="slide-title">Two Ways to Learn Missing Decision Knowledge</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="bridge-layout">
+            <section class="learning-card">
+              <div class="scene-toolbar">
+                <div class="figure-title">Label-Based Learning</div>
+                <div class="mini-chip accent">supervised / imitation setting</div>
+              </div>
+              <h3>Learn from labeled good behavior.</h3>
+              <p>If an expert, a planner, or solved traces tell us which action should be taken in each state, we can train a predictor for actions, heuristic values, or missing costs.</p>
+
+              <svg viewBox="0 0 720 320" aria-label="Supervised learning from labeled warehouse traces">
+                <defs>
+                  <marker id="arrowBlue" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 z" fill="#204f8d"></path>
+                  </marker>
+                  <marker id="arrowGreen" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 z" fill="#1c7c54"></path>
+                  </marker>
+                  <marker id="arrowAmber" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 z" fill="#b86b00"></path>
+                  </marker>
+                </defs>
+                <rect x="16" y="18" width="688" height="284" rx="24" fill="#ffffff" stroke="#d8dde2"></rect>
+                <rect x="30" y="70" width="168" height="88" rx="18" fill="#f4f6fb" stroke="#204f8d" stroke-width="3"></rect>
+                <text x="114" y="104" text-anchor="middle" font-size="22" font-weight="900" fill="#204f8d">state</text>
+                <text x="114" y="132" text-anchor="middle" font-size="16" fill="#5a5f69">hallway, carry A</text>
+                <text x="114" y="152" text-anchor="middle" font-size="16" fill="#5a5f69">corridor blocked</text>
+
+                <rect x="230" y="80" width="240" height="68" rx="18" fill="#fff8f8" stroke="#73000a" stroke-width="3"></rect>
+                <text x="350" y="122" text-anchor="middle" font-size="20" font-weight="900" fill="#73000a">label = Move(storage)</text>
+
+                <rect x="502" y="70" width="180" height="88" rx="18" fill="#f3fbf6" stroke="#1c7c54" stroke-width="3"></rect>
+                <text x="592" y="104" text-anchor="middle" font-size="20" font-weight="900" fill="#1c7c54">learned model</text>
+                <text x="592" y="132" text-anchor="middle" font-size="16" fill="#5a5f69">state → action</text>
+                <text x="592" y="152" text-anchor="middle" font-size="16" fill="#5a5f69">or state → heuristic</text>
+
+                <line x1="198" y1="114" x2="218" y2="114" stroke="#204f8d" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowBlue)"></line>
+                <line x1="470" y1="114" x2="490" y2="114" stroke="#1c7c54" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowGreen)"></line>
+
+                <rect x="60" y="214" width="280" height="54" rx="16" fill="#ffffff" stroke="#d7dbe0"></rect>
+                <rect x="360" y="214" width="320" height="54" rx="16" fill="#ffffff" stroke="#d7dbe0"></rect>
+                <text x="200" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#101114">source: expert traces or planner output</text>
+                <text x="520" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#101114">use: imitation, heuristic prediction, cost prediction</text>
+              </svg>
+
+              <div class="signal-grid">
+                <div class="signal-box">
+                  <strong>Training Signal</strong>
+                  <p>Action labels, solved plans, or expert choices.</p>
+                </div>
+                <div class="signal-box">
+                  <strong>Strength</strong>
+                  <p>Sample-efficient when high-quality labels exist.</p>
+                </div>
+                <div class="signal-box">
+                  <strong>Typical Use</strong>
+                  <p>Imitation policies or learned heuristics.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="learning-card">
+              <div class="scene-toolbar">
+                <div class="figure-title">Reward-Based Learning</div>
+                <div class="mini-chip success">reinforcement learning</div>
+              </div>
+              <h3>Learn from consequences instead of labels.</h3>
+              <p>If no expert action is provided, the agent can still learn from delayed reward: successful deliveries, shorter travel, lower energy, and fewer failures.</p>
+
+              <svg viewBox="0 0 720 320" aria-label="Reinforcement learning loop">
+                <defs>
+                  <marker id="arrowBlue2" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 z" fill="#204f8d"></path>
+                  </marker>
+                  <marker id="arrowGreen2" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 z" fill="#1c7c54"></path>
+                  </marker>
+                  <marker id="arrowAmber2" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+                    <path d="M0,0 L16,8 L0,16 z" fill="#b86b00"></path>
+                  </marker>
+                </defs>
+                <rect x="16" y="18" width="688" height="284" rx="24" fill="#ffffff" stroke="#d8dde2"></rect>
+                <circle cx="360" cy="160" r="72" fill="#fff8f8" stroke="#73000a" stroke-width="3"></circle>
+                <text x="360" y="150" text-anchor="middle" font-size="26" font-weight="900" fill="#73000a">policy</text>
+                <text x="360" y="176" text-anchor="middle" font-size="16" fill="#5a5f69">state → action</text>
+
+                <circle cx="150" cy="96" r="48" fill="#f4f6fb" stroke="#204f8d" stroke-width="3"></circle>
+                <text x="150" y="92" text-anchor="middle" font-size="20" font-weight="900" fill="#204f8d">state</text>
+                <text x="150" y="112" text-anchor="middle" font-size="14" fill="#5a5f69">observe</text>
+
+                <circle cx="570" cy="96" r="48" fill="#f3fbf6" stroke="#1c7c54" stroke-width="3"></circle>
+                <text x="570" y="92" text-anchor="middle" font-size="20" font-weight="900" fill="#1c7c54">reward</text>
+                <text x="570" y="112" text-anchor="middle" font-size="14" fill="#5a5f69">delivery, cost</text>
+
+                <circle cx="570" cy="224" r="48" fill="#fffaf0" stroke="#b86b00" stroke-width="3"></circle>
+                <text x="570" y="220" text-anchor="middle" font-size="20" font-weight="900" fill="#b86b00">update</text>
+                <text x="570" y="240" text-anchor="middle" font-size="14" fill="#5a5f69">improve</text>
+
+                <circle cx="150" cy="224" r="48" fill="#f4f6fb" stroke="#204f8d" stroke-width="3"></circle>
+                <text x="150" y="220" text-anchor="middle" font-size="20" font-weight="900" fill="#204f8d">action</text>
+                <text x="150" y="240" text-anchor="middle" font-size="14" fill="#5a5f69">execute</text>
+
+                <path d="M198 106 C238 114, 255 130, 280 144" fill="none" stroke="#204f8d" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowBlue2)"></path>
+                <path d="M432 140 C465 125, 485 110, 514 102" fill="none" stroke="#1c7c54" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowGreen2)"></path>
+                <line x1="570" y1="144" x2="570" y2="164" stroke="#b86b00" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowAmber2)"></line>
+                <path d="M524 238 C472 236, 434 214, 420 190" fill="none" stroke="#b86b00" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowAmber2)"></path>
+                <path d="M296 186 C265 205, 236 220, 204 224" fill="none" stroke="#204f8d" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowBlue2)"></path>
+                <line x1="150" y1="176" x2="150" y2="156" stroke="#204f8d" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowBlue2)"></line>
+              </svg>
+
+              <div class="signal-grid">
+                <div class="signal-box">
+                  <strong>Training Signal</strong>
+                  <p>Scalar reward, not action labels.</p>
+                </div>
+                <div class="signal-box">
+                  <strong>Strength</strong>
+                  <p>Useful when good labels are unavailable.</p>
+                </div>
+                <div class="signal-box">
+                  <strong>Typical Use</strong>
+                  <p>Reactive policies under repeated interaction.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">19</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

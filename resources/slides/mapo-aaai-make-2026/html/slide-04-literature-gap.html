@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 04 | Existing Explanation Methods Are Fragmented</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .label-ref {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Literature Gap</div>
+        <h1 class="slide-title" id="slide-title">Existing Explanation Methods Are Fragmented</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          
+            <div style="display:grid;grid-template-columns:1102px 546px;gap:28px;height:100%;align-items:stretch;">
+              <section class="stack" style="height:100%;justify-content:flex-start;gap:10px;">
+                <p class="thesis" style="font-size:22px;line-height:1.26;max-width:980px;" data-step="0">Segmentation snapshots, stakeholder taxonomies, and logic-based why queries each explain <strong style="color:#73000a;">one part of the problem</strong>, but MAPF still lacks a unified formal model that links them to planner traces.</p>
+                <div class="info-card blue" style="padding:14px 16px;" data-step="1">
+                  <div class="card-label">Segmentation-based visual explanations <span class="label-ref">[1, 2]</span></div>
+                  <div class="card-copy">These help humans verify safety, but they do not preserve provenance, replanning rationale, or reusable semantics.</div>
+                </div>
+                <div class="info-card" style="padding:14px 16px;" data-step="1">
+                  <div class="card-label">User-centered explanation taxonomies <span class="label-ref">[3]</span></div>
+                  <div class="card-copy">These clarify what stakeholders want to know, but not a machine-readable structure that answers those questions across planners.</div>
+                </div>
+                <div class="info-card blue" style="padding:14px 16px;" data-step="1">
+                  <div class="card-label">Logic-based why / why-not queries <span class="label-ref">[4]</span></div>
+                  <div class="card-copy">These can answer specific replanning questions, yet MAPF still lacks a shared semantic representation spanning traces, conflicts, and revisions.</div>
+                </div>
+                <div class="qa-box" style="padding:14px 18px;" data-step="2">
+                  <div class="qa-title">What is still missing</div>
+                  <div class="qa-copy" style="font-size:18px;line-height:1.24;">A <strong style="color:#73000a;">unified semantic framework</strong> that formalizes MAPF entities and supports visual, logical, and contrastive explanations from the same trace.</div>
+                </div>
+              </section>
+
+              <section class="stack" style="height:100%;justify-content:center;gap:12px;" data-step="0">
+                <div class="figure-top-tag" style="align-self:flex-start;left:auto;position:static;top:auto;">Planner trace in JSON schema</div>
+                <div class="figure-card" style="height:606px;padding:8px 10px 14px;display:flex;flex-direction:column;justify-content:center;">
+                  <div class="figure-frame" style="display:flex;align-items:center;justify-content:center;">
+                    <img src="../assets/paper_figures/json_snippet.png" alt="JSON planner log snippet" style="width:454px;height:auto;max-width:none;">
+                  </div>
+                </div>
+                <div class="figure-caption" style="max-width:520px;">Figure 2. Planner logs contain rich facts, but those facts are not yet organized as a shared explanation model.</div>
+              </section>
+            </div>
+            
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">04 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

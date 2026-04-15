@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 01 | Planning as Search and Optimization</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .title-hero {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1.12fr 0.88fr;
+      height: 100%;
+    }
+    .title-story {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .title-kicker-main {
+      color: var(--accent);
+      font-family: var(--heading-font);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .title-main-heading {
+      color: var(--text);
+      font-family: var(--heading-font);
+      font-size: 98px;
+      font-weight: 900;
+      letter-spacing: -0.055em;
+      line-height: 0.9;
+      margin-top: 18px;
+      max-width: 1120px;
+    }
+    .title-strap {
+      color: var(--muted);
+      font-size: 34px;
+      line-height: 1.18;
+      margin-top: 24px;
+      max-width: 1040px;
+    }
+    .title-meta-line {
+      align-items: center;
+      display: flex;
+      gap: 14px;
+      margin-top: 34px;
+    }
+    .meta-pill {
+      align-items: center;
+      background: rgba(16, 17, 20, 0.04);
+      border: 1px solid rgba(16, 17, 20, 0.08);
+      border-radius: 999px;
+      color: var(--text);
+      display: inline-flex;
+      font-size: 18px;
+      font-weight: 700;
+      min-height: 40px;
+      padding: 0 16px;
+    }
+    .title-name {
+      color: var(--text);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-top: 18px;
+    }
+    .title-right {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      justify-content: space-between;
+    }
+    .title-map-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,247,249,0.98));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+    }
+    .title-flow-card {
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px 22px;
+    }
+    .flow-row {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .flow-node {
+      align-items: center;
+      background: rgba(115, 0, 10, 0.08);
+      border-radius: 999px;
+      color: var(--accent);
+      display: inline-flex;
+      font-family: var(--heading-font);
+      font-size: 24px;
+      font-weight: 900;
+      min-height: 48px;
+      padding: 0 18px;
+    }
+    .flow-node.soft {
+      background: rgba(16, 17, 20, 0.04);
+      color: var(--text);
+    }
+    .flow-arrow {
+      color: rgba(16, 17, 20, 0.4);
+      font-family: var(--heading-font);
+      font-size: 34px;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide title-slide">
+      <div class="slide-inner">
+        <div class="title-hero">
+          <section class="title-story">
+            <div>
+              <div class="title-kicker-main">Optimization Lecture</div>
+              <h1 class="title-main-heading">Planning as Search and Optimization</h1>
+              <p class="title-strap" data-step="1">From graph search and symbolic state models to heuristic planning, dynamic replanning, and learning-based control.</p>
+              <div class="title-meta-line" data-step="1">
+                <span class="meta-pill">single running example</span>
+                <span class="meta-pill">visual lecture deck</span>
+                <span class="meta-pill">optimization framing</span>
+              </div>
+              <div class="title-name" data-step="1">Bharath Muppasani<br>Optimization Class</div>
+            </div>
+
+            <div class="title-flow-card" data-step="2">
+              <div class="figure-title">Lecture Through-Line</div>
+              <div class="flow-row">
+                <span class="flow-node">search</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-node soft">planning</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-node soft">optimization</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-node soft">dynamics</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-node soft">learning</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="title-right">
+            <div class="title-map-card" data-step="2">
+              <div class="figure-title">Running Warehouse Example</div>
+              <svg viewBox="0 0 760 620" width="100%" height="560" aria-label="Warehouse robot running example">
+                <rect x="32" y="28" width="696" height="540" rx="34" fill="#ffffff" stroke="#d7dbe0"></rect>
+                <rect x="92" y="84" width="144" height="86" rx="24" fill="#fff" stroke="#101114" stroke-width="3"></rect>
+                <text x="164" y="136" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="32" font-weight="900">mailroom</text>
+                <rect x="300" y="232" width="156" height="92" rx="24" fill="#fff" stroke="#101114" stroke-width="3"></rect>
+                <text x="378" y="288" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="34" font-weight="900">hallway</text>
+                <rect x="516" y="86" width="142" height="84" rx="24" fill="#ebf8ef" stroke="#1c7c54" stroke-width="3"></rect>
+                <text x="587" y="138" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="32" font-weight="900">lab</text>
+                <rect x="528" y="390" width="130" height="84" rx="24" fill="#fff" stroke="#101114" stroke-width="3"></rect>
+                <text x="593" y="442" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="30" font-weight="900">office</text>
+                <rect x="282" y="424" width="154" height="88" rx="24" fill="#fff" stroke="#101114" stroke-width="3"></rect>
+                <text x="359" y="478" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="33" font-weight="900">storage</text>
+                <line x1="236" y1="144" x2="300" y2="232" stroke="#b8c0ca" stroke-width="10" stroke-linecap="round"></line>
+                <line x1="456" y1="232" x2="516" y2="144" stroke="#b8c0ca" stroke-width="10" stroke-linecap="round"></line>
+                <line x1="456" y1="322" x2="528" y2="432" stroke="#b8c0ca" stroke-width="10" stroke-linecap="round"></line>
+                <line x1="378" y1="324" x2="359" y2="424" stroke="#b8c0ca" stroke-width="10" stroke-linecap="round"></line>
+                <line x1="436" y1="468" x2="528" y2="432" stroke="#b8c0ca" stroke-width="8" stroke-linecap="round"></line>
+                <line x1="436" y1="454" x2="516" y2="156" stroke="#cfd6de" stroke-width="6" stroke-linecap="round"></line>
+                <g transform="translate(386 266)">
+                  <rect x="-22" y="-18" width="44" height="36" rx="10" fill="#101114"></rect>
+                  <rect x="-14" y="-34" width="28" height="18" rx="8" fill="#73000a"></rect>
+                  <circle cx="-12" cy="22" r="6" fill="#101114"></circle>
+                  <circle cx="12" cy="22" r="6" fill="#101114"></circle>
+                  <circle cx="-7" cy="-1" r="3" fill="#ffffff"></circle>
+                  <circle cx="7" cy="-1" r="3" fill="#ffffff"></circle>
+                </g>
+                <g transform="translate(122 196)">
+                  <rect x="-18" y="-18" width="36" height="36" rx="10" fill="#eaf2ff" stroke="#204f8d" stroke-width="2.5"></rect>
+                  <text x="0" y="7" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="22" font-weight="900" fill="#204f8d">A</text>
+                </g>
+                <g transform="translate(323 546)">
+                  <rect x="-18" y="-18" width="36" height="36" rx="10" fill="#fcebea" stroke="#73000a" stroke-width="2.5"></rect>
+                  <text x="0" y="7" text-anchor="middle" font-family="Avenir Next Condensed, Arial Narrow, sans-serif" font-size="22" font-weight="900" fill="#73000a">B</text>
+                </g>
+                <circle cx="587" cy="128" r="64" fill="none" stroke="#1c7c54" stroke-width="4" stroke-dasharray="8 8"></circle>
+                <circle cx="593" cy="432" r="64" fill="none" stroke="#1c7c54" stroke-width="4" stroke-dasharray="8 8"></circle>
+              </svg>
+            </div>
+          </section>
+        </div>
+      </div>
+      <footer class="slide-footer"></footer>
+    </main>
+  </div>
+</body>
+</html>

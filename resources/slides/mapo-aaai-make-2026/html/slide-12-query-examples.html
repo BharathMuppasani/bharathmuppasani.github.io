@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 12 | What the Knowledge Graph Can Answer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .query-layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 690px 958px;
+      height: calc(100% - 108px);
+      align-items: stretch;
+    }
+    .query-col,
+    .answer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+    .family-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .family-card {
+      background: #f7f7f7;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-left: 8px solid var(--blue);
+      border-radius: 18px;
+      min-height: 80px;
+      padding: 10px 12px;
+    }
+    .family-num {
+      color: var(--blue);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .family-title {
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+    .family-copy {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.2;
+      margin-top: 4px;
+    }
+    .answer-head {
+      align-items: flex-start;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .answer-row {
+      align-items: center;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 180px 1fr;
+    }
+    .answer-label {
+      color: var(--garnet);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .question-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .question-strip .question-pill {
+      background: rgba(26, 82, 118, 0.07);
+      border-color: rgba(26, 82, 118, 0.14);
+      color: var(--blue);
+    }
+    .chain-flow {
+      background: #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 18px;
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+    .answer-map {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 228px 1fr;
+      align-items: stretch;
+    }
+    .answer-root {
+      background: linear-gradient(180deg, rgba(115, 0, 10, 0.08), rgba(115, 0, 10, 0.03));
+      border: 2px solid rgba(115, 0, 10, 0.16);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 12px;
+      text-align: center;
+    }
+    .answer-root strong {
+      color: var(--garnet);
+      display: block;
+      font-size: 18px;
+      line-height: 1.12;
+      margin-bottom: 6px;
+    }
+    .answer-root span {
+      color: var(--muted);
+      display: block;
+      font-size: 13px;
+      line-height: 1.18;
+    }
+    .answer-stack {
+      display: grid;
+      gap: 10px;
+    }
+    .chain-line {
+      align-items: center;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 126px 20px 1fr;
+    }
+    .chain-node {
+      background: #f7f7f7;
+      border: 1px solid rgba(115, 0, 10, 0.14);
+      border-radius: 14px;
+      color: var(--text);
+      min-height: 62px;
+      padding: 10px 12px;
+    }
+    .chain-node strong {
+      color: var(--garnet);
+      display: block;
+      font-size: 16px;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .chain-node > span {
+      color: var(--muted);
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+    .chain-copy.compact {
+      font-size: 12.5px;
+      line-height: 1.16;
+    }
+    .inline-highlight {
+      background: rgba(26, 82, 118, 0.08);
+      border-radius: 6px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      color: var(--blue);
+      font-weight: 700;
+      padding: 0 0.2em;
+      white-space: nowrap;
+    }
+    .chain-arrow {
+      align-items: center;
+      color: var(--blue);
+      display: flex;
+      font-size: 24px;
+      font-weight: 800;
+      justify-content: center;
+    }
+    .relation-pill {
+      align-items: center;
+      background: rgba(26, 82, 118, 0.08);
+      border: 1px solid rgba(26, 82, 118, 0.14);
+      border-radius: 999px;
+      color: var(--blue);
+      display: inline-flex;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 800;
+      justify-content: center;
+      line-height: 1.1;
+      min-height: 30px;
+      padding: 5px 10px;
+      text-align: center;
+    }
+    .chain-note {
+      background: rgba(115, 0, 10, 0.06);
+      border: 1px solid rgba(115, 0, 10, 0.14);
+      border-left: 8px solid var(--garnet);
+      border-radius: 16px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.25;
+      padding: 12px 14px;
+    }
+    .question-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .question-pill {
+      background: rgba(115, 0, 10, 0.07);
+      border: 1px solid rgba(115, 0, 10, 0.14);
+      border-radius: 999px;
+      color: var(--garnet);
+      font-size: 15px;
+      font-weight: 800;
+      padding: 8px 12px;
+    }
+    .query-note {
+      align-self: center;
+      background: linear-gradient(180deg, rgba(46, 92, 102, 0.14) 0%, rgba(163, 118, 58, 0.10) 100%);
+      border: 2px solid rgba(77, 96, 92, 0.26);
+      border-radius: 18px;
+      box-shadow: 0 10px 18px rgba(70, 88, 94, 0.09);
+      color: var(--text);
+      display: block;
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.28;
+      max-width: 1620px;
+      padding: 12px 18px;
+      text-align: center;
+      width: 1620px;
+    }
+    .query-note .key {
+      background: rgba(115, 0, 10, 0.1);
+      border-radius: 8px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      color: var(--garnet);
+      font-weight: 700;
+      padding: 0 0.22em;
+      white-space: nowrap;
+    }
+    .query-note .key.blue {
+      background: rgba(26, 82, 118, 0.1);
+      color: var(--blue);
+    }
+    .omega-link-box {
+      background: linear-gradient(180deg, rgba(115, 0, 10, 0.05), rgba(255, 255, 255, 0.98));
+      border: 1px solid rgba(115, 0, 10, 0.14);
+      border-radius: 16px;
+      box-shadow: 0 10px 18px rgba(115, 0, 10, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 14px;
+    }
+    .omega-link-head {
+      color: var(--garnet);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .omega-readout {
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      font-size: 16.5px;
+      gap: 8px;
+      line-height: 1.24;
+      max-width: 100%;
+      text-align: left;
+    }
+    .omega-item {
+      align-items: baseline;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 150px 1fr;
+    }
+    .omega-label {
+      color: var(--garnet);
+      font-weight: 800;
+    }
+    .omega-readout a {
+      color: var(--blue);
+      font-family: "Source Code Pro", monospace;
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Query Example</div>
+        <h1 class="slide-title" id="slide-title">What the Knowledge Graph Can Answer</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          <div style="display:flex;flex-direction:column;gap:12px;height:100%;">
+          <div class="query-layout">
+            <section class="query-col">
+              <div class="code-block" style="min-height:330px;padding:18px 20px;" data-step="0">
+                <div class="label">Concrete SPARQL query</div>
+                <pre style="font-size:17px;line-height:1.28;">SELECT ?type ?time ?x ?y WHERE {
+  ?rsp a ma:ResolvedSubPlan ;
+       ma:belongsToAgent ma:Robot-1 ;
+       ma:resolvesConflict ?c .
+  ?c ma:conflictTypeEvent ?type ;
+     ma:occursAtTime/time:inXSDDateTimeStamp ?time ;
+     ma:conflictLocation ?loc .
+  ?loc ma:xCoordinate ?x ;
+       ma:yCoordinate ?y .
+}</pre>
+              </div>
+
+              <div class="question-strip" data-step="1">
+                <span class="question-pill">Which CollisionEvents were detected?</span>
+                <span class="question-pill">Who received the ConflictAlert?</span>
+                <span class="question-pill">What is the final JointPlan?</span>
+              </div>
+              <div class="omega-link-box" data-step="1">
+                <div class="omega-link-head">AAAI-26 OMEGA Links</div>
+                <div class="omega-readout">
+                  <div class="omega-item"><span class="omega-label">Paper:</span><a href="https://doi.org/10.1609/aaai.v40i48.42367">https://doi.org/10.1609/aaai.v40i48.42367</a></div>
+                  <div class="omega-item"><span class="omega-label">Demo video:</span><a href="https://shorturl.at/298j5">https://shorturl.at/298j5</a></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="answer-col">
+              <div class="answer-head" data-step="2">
+                <p class="thesis" style="max-width:860px;font-size:23px;">The same graph supports conflict-centric, causal, contrastive, global, and provenance queries.</p>
+              </div>
+
+              <div class="family-grid" data-step="2">
+                <div class="family-card">
+                  <div class="family-num">01</div>
+                  <div class="family-title">C1-C2 Conflict-centric analysis</div>
+                  <div class="family-copy">Which CollisionEvents occurred, and which agent received the ConflictAlert?</div>
+                </div>
+                <div class="family-card">
+                  <div class="family-num">02</div>
+                  <div class="family-title">C3-C4 Causal and contrastive</div>
+                  <div class="family-copy">What changed between the original and final plan, and why did an agent wait or reroute?</div>
+                </div>
+                <div class="family-card">
+                  <div class="family-num">03</div>
+                  <div class="family-title">C5-C7 Strategy and provenance</div>
+                  <div class="family-copy">Which strategy was used, and why was that agent selected to replan?</div>
+                </div>
+                <div class="family-card">
+                  <div class="family-num">04</div>
+                  <div class="family-title">C6-C8 Global summaries</div>
+                  <div class="family-copy">What cost changed, and what is the final JointPlan and makespan?</div>
+                </div>
+              </div>
+
+              <div class="chain-flow" data-step="3">
+                <div class="answer-map">
+                  <div class="answer-root">
+                    <strong>Robot-1 Revised</strong>
+                    <span>The answer returned to the operator is a revised subplan, not just a free-text explanation.</span>
+                  </div>
+                  <div class="answer-stack">
+                    <div class="chain-line">
+                      <div class="relation-pill">derivesFrom</div>
+                      <div class="chain-arrow">→</div>
+                      <div class="chain-node">
+                        <strong>Robot-1 Original</strong>
+                        <span>The route segment that existed before replanning.</span>
+                      </div>
+                    </div>
+                    <div class="chain-line">
+                      <div class="relation-pill">resolvesConflict</div>
+                      <div class="chain-arrow">→</div>
+                      <div class="chain-node">
+                        <strong>Conflict-3</strong>
+                        <span class="chain-copy compact">Vertex conflict at <span class="inline-highlight">(5,4)</span> and timestep <span class="inline-highlight">t = 4</span>.</span>
+                      </div>
+                    </div>
+                    <div class="chain-line">
+                      <div class="relation-pill">generatedBy</div>
+                      <div class="chain-arrow">→</div>
+                      <div class="chain-node">
+                        <strong>ReplanActivity-3</strong>
+                        <span><span class="inline-highlight">generalized_yield</span> created the revised subplan after <span class="inline-highlight">ConflictAlert-3</span>.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="figure-caption" style="font-size:14px;line-height:1.18;max-width:760px;align-self:center;margin-top:-2px;" data-step="3">Figure 7. One SPARQL query can be rendered as a readable provenance chain for an operator.</div>
+            </section>
+          </div>
+          <div class="query-note" data-step="1">The ontology supports <span class="key">any query written in SPARQL</span>. <span class="key blue">OMEGA</span> provides a curated set of <span class="key">pre-canned queries</span> for interactive use, but the graph itself is not limited to those templates.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">12 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 10 | Naive Plan Search Effort</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/planning-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .naive-layout {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 560px 1fr;
+      height: 100%;
+    }
+    .effort-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .effort-grid .metric-card-minimal .value {
+      font-size: 34px;
+    }
+    .timeline-row .tick {
+      font-size: 24px;
+    }
+    .timeline-row .desc {
+      font-size: 19px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Uninformed Planning Search</div>
+          <h1 class="slide-title">Blind Search Finds a Goal Only After Exploring Many Weak Branches</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="naive-layout">
+            <section class="stack-md" style="justify-content: space-between; height: 100%;">
+              <p class="lead">In the delivery problem, the first goal state is not adjacent to the initial state. An uninformed planner must keep expanding whatever is next on the frontier until a full delivery state is reached.</p>
+
+              <div class="effort-grid" data-step="1">
+                <div class="metric-card-minimal">
+                  <span class="label">Branching</span>
+                  <span class="value">3-4x</span>
+                  <span class="sub">several valid actions per state</span>
+                </div>
+                <div class="metric-card-minimal">
+                  <span class="label">Goal Depth</span>
+                  <span class="value">7</span>
+                  <span class="sub">A to lab, then B to office</span>
+                </div>
+                <div class="metric-card-minimal">
+                  <span class="label">Expanded</span>
+                  <span class="value">11</span>
+                  <span class="sub">before the first goal appears</span>
+                </div>
+              </div>
+
+              <div class="timeline-card" data-step="2">
+                <div class="figure-title">Observed effort on this tree</div>
+                <div class="timeline-row">
+                  <div class="tick">d0</div>
+                  <div class="desc">Initial state only.</div>
+                </div>
+                <div class="timeline-row">
+                  <div class="tick">d1</div>
+                  <div class="desc">Move branches open: mailroom, storage, lab.</div>
+                </div>
+                <div class="timeline-row">
+                  <div class="tick">d2-d4</div>
+                  <div class="desc">Partial-delivery branches are explored even when they do not complete the task.</div>
+                </div>
+                <div class="timeline-row">
+                  <div class="tick">d7</div>
+                  <div class="desc">The first complete goal state is finally discovered.</div>
+                </div>
+              </div>
+
+              <div class="callout-banner" data-step="3">
+                <p><strong class="keyword">The planner is correct but inefficient.</strong> The issue is not feasibility. The issue is the volume of reachable but low-value states.</p>
+              </div>
+            </section>
+
+            <section class="scene-card">
+              <div class="scene-toolbar">
+                <div class="figure-title">Blind frontier growth on the warehouse state tree</div>
+                <div class="mini-chip soft">looping expansion trace</div>
+              </div>
+              <div id="naive-tree-stage" class="media-stage" style="height: 560px;"></div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">10</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const TREE_NODES = [
+      { id: "s0", label: "s0", sub: "hallway, empty", x: 90, y: 280, depth: 0 },
+      { id: "s1", label: "s1", sub: "mailroom", x: 250, y: 130, depth: 1 },
+      { id: "s2", label: "s2", sub: "storage", x: 250, y: 280, depth: 1 },
+      { id: "s3", label: "s3", sub: "lab", x: 250, y: 430, depth: 1 },
+      { id: "s4", label: "s4", sub: "carry A", x: 430, y: 130, depth: 2 },
+      { id: "s5", label: "s5", sub: "carry B", x: 430, y: 280, depth: 2 },
+      { id: "s6", label: "s6", sub: "hallway + A", x: 610, y: 130, depth: 3 },
+      { id: "s7", label: "s7", sub: "B at office", x: 610, y: 280, depth: 3 },
+      { id: "s8", label: "s8", sub: "A at lab", x: 790, y: 130, depth: 4 },
+      { id: "s9", label: "s9", sub: "storage after A", x: 790, y: 280, depth: 5 },
+      { id: "s10", label: "s10", sub: "carry B", x: 950, y: 280, depth: 6 },
+      { id: "sg", label: "goal", sub: "A at lab, B at office", x: 980, y: 130, depth: 7 }
+    ];
+
+    const TREE_EDGES = [
+      { from: "s0", to: "s1" }, { from: "s0", to: "s2" }, { from: "s0", to: "s3" },
+      { from: "s1", to: "s4" }, { from: "s2", to: "s5" },
+      { from: "s4", to: "s6" }, { from: "s5", to: "s7" },
+      { from: "s6", to: "s8" }, { from: "s8", to: "s9" },
+      { from: "s9", to: "s10" }, { from: "s10", to: "sg" }
+    ];
+
+    window.initSlide = function initSlide(ctx) {
+      const scene = createPlanningScene({
+        mount: document.getElementById("naive-tree-stage"),
+        width: 1040,
+        height: 560,
+        nodes: TREE_NODES,
+        edges: TREE_EDGES
+      });
+
+      function applyFrame(frame) {
+        scene.reset();
+        scene.expandWave(frame.wave);
+        if (frame.frontier) {
+          scene.highlightFrontier(frame.frontier, { fill: "#fff7e8", stroke: "#b86b00" });
+        }
+        if (frame.path) {
+          scene.focusPath(frame.path);
+        }
+        if (frame.goal) {
+          scene.highlightGoal("sg");
+        }
+        if (frame.badges) {
+          frame.badges.forEach((badge) => scene.addBadge(badge.id, badge.text, badge.options || {}));
+        }
+        if (frame.note) {
+          scene.annotate(frame.note.text, frame.note.x, frame.note.y);
+        }
+      }
+
+      const frames = [
+        {
+          wave: 0,
+          frontier: ["s0"],
+          badges: [{ id: "s0", text: "1" }],
+          note: { text: "start from the initial state", x: 52, y: 26 }
+        },
+        {
+          wave: 1,
+          frontier: ["s1", "s2", "s3"],
+          badges: [{ id: "s2", text: "frontier" }],
+          note: { text: "three move branches open immediately", x: 210, y: 26 }
+        },
+        {
+          wave: 3,
+          frontier: ["s6", "s7"],
+          badges: [{ id: "s7", text: "partial" }],
+          note: { text: "the B branch is explored even though A is still undelivered", x: 408, y: 26 }
+        },
+        {
+          wave: 6,
+          frontier: ["s10"],
+          path: ["s0", "s1", "s4", "s6", "s8", "s9", "s10"],
+          badges: [{ id: "s8", text: "A done", options: { stroke: "#1c7c54" } }],
+          note: { text: "goal is still not reached after delivering only A", x: 584, y: 26 }
+        },
+        {
+          wave: 7,
+          path: ["s0", "s1", "s4", "s6", "s8", "s9", "s10", "sg"],
+          goal: true,
+          badges: [{ id: "sg", text: "11 expanded", options: { stroke: "#1c7c54" } }],
+          note: { text: "the first full goal state appears only after broad expansion", x: 646, y: 26 }
+        }
+      ];
+
+      const loop = window.SlideUtils.createFrameLoop({
+        frames,
+        frameMs: 1200,
+        exportFrame: frames.length - 1,
+        applyFrame
+      });
+      loop.start();
+
+      return {
+        setStep() {},
+        destroy() {
+          loop.stop();
+        }
+      };
+    };
+  </script>
+</body>
+</html>

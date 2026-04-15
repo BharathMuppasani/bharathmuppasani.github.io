@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 11 | Planning as Constraint Optimization</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .optimization-layout {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1.04fr 0.96fr;
+      height: 100%;
+    }
+    .optimization-shell {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,248,250,0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 18px 20px;
+    }
+    math.optimization-formula {
+      display: block;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 29px;
+      line-height: 1.1;
+    }
+    .constraint-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .constraint-row {
+      align-items: flex-start;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 104px 1fr;
+      padding: 10px 12px;
+    }
+    .constraint-row .constraint-label {
+      color: var(--accent);
+      font-family: var(--heading-font);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .constraint-row .constraint-copy {
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.16;
+    }
+    .optimization-layout .lead {
+      font-size: 28px;
+      line-height: 1.14;
+    }
+    .optimization-layout .compare-table th,
+    .optimization-layout .compare-table td {
+      font-size: 18px;
+      padding: 11px 12px;
+    }
+    .optimization-layout .compare-table th {
+      font-size: 19px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Optimization View</div>
+          <h1 class="slide-title">Planning Can Be Written as a Constraint Optimization Problem</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="optimization-layout">
+            <section class="stack-md">
+              <p class="lead">A plan is a sequence of decision variables constrained by the transition model. Optimization chooses the <span class="keyword">best feasible sequence</span> under a chosen metric.</p>
+
+              <div class="optimization-shell" data-step="1">
+                <div class="figure-title">Canonical finite-horizon formulation</div>
+                <math class="optimization-formula" display="block" aria-label="Finite-horizon planning optimization problem">
+                  <munder>
+                    <mo>min</mo>
+                    <mrow>
+                      <msub><mi>a</mi><mn>0</mn></msub>
+                      <mo>,</mo>
+                      <msub><mi>a</mi><mn>1</mn></msub>
+                      <mo>,</mo>
+                      <mo>&#x2026;</mo>
+                      <mo>,</mo>
+                      <msub><mi>a</mi><mrow><mi>H</mi><mo>-</mo><mn>1</mn></mrow></msub>
+                    </mrow>
+                  </munder>
+                  <mrow>
+                    <munderover>
+                      <mo>&#x2211;</mo>
+                      <mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow>
+                      <mrow><mi>H</mi><mo>-</mo><mn>1</mn></mrow>
+                    </munderover>
+                    <mi>c</mi>
+                    <mo>(</mo>
+                    <msub><mi>s</mi><mi>t</mi></msub>
+                    <mo>,</mo>
+                    <msub><mi>a</mi><mi>t</mi></msub>
+                    <mo>)</mo>
+                  </mrow>
+                </math>
+
+                <div class="constraint-list">
+                  <div class="constraint-row">
+                    <div class="constraint-label">Initial</div>
+                    <div class="constraint-copy"><span class="math-mono">s0 = I</span>. The first symbolic state must match the modeled warehouse start configuration.</div>
+                  </div>
+                  <div class="constraint-row">
+                    <div class="constraint-label">Dynamics</div>
+                    <div class="constraint-copy"><span class="math-mono">s(t+1) = T(s(t), a(t))</span>. Actions change the state only according to the planning model.</div>
+                  </div>
+                  <div class="constraint-row">
+                    <div class="constraint-label">Validity</div>
+                    <div class="constraint-copy"><span class="math-mono">a(t) in A(s(t))</span>. Pick, drop, and move are legal only when their preconditions hold.</div>
+                  </div>
+                  <div class="constraint-row">
+                    <div class="constraint-label">Goal</div>
+                    <div class="constraint-copy"><span class="math-mono">sH |= G</span>. The terminal state must satisfy <span class="math-mono">(A at lab)</span> and <span class="math-mono">(B at office)</span>.</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="stack-md">
+              <div class="scene-card">
+                <div class="scene-toolbar">
+                  <div class="figure-title">Planning language to optimization language</div>
+                  <div class="mini-chip accent">same problem, different lens</div>
+                </div>
+                <table class="compare-table">
+                  <thead>
+                    <tr>
+                      <th>Planning concept</th>
+                      <th>Optimization role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-step="1">
+                      <td>Action sequence <span class="math-mono">a0, ..., aH-1</span></td>
+                      <td>Decision variables</td>
+                    </tr>
+                    <tr data-step="1">
+                      <td>Predicates defining each state</td>
+                      <td>State variables / feasibility context</td>
+                    </tr>
+                    <tr data-step="2">
+                      <td>Preconditions</td>
+                      <td>Action applicability constraints</td>
+                    </tr>
+                    <tr data-step="2">
+                      <td>Effects</td>
+                      <td>Transition consistency constraints</td>
+                    </tr>
+                    <tr data-step="3">
+                      <td>Goal facts</td>
+                      <td>Terminal constraint</td>
+                    </tr>
+                    <tr data-step="3">
+                      <td>Travel cost / energy / lateness</td>
+                      <td>Objective function</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="callout-banner" data-step="3">
+                <p><strong class="keyword">Nothing mystical happened here.</strong> Planning is trajectory optimization with logical dynamics and feasibility constraints.</p>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">11</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

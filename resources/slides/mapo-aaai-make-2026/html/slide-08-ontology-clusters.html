@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 08 | Ontology Clusters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .cat-agent { color: #9b59b6; }
+    .cat-conflict { color: #e67e22; }
+    .cat-plan { color: #27ae60; }
+    .cat-planner { color: #c0392b; }
+    .cluster-layout {
+      display: grid;
+      gap: 26px;
+      grid-template-columns: 440px 1fr;
+      height: 100%;
+      align-items: stretch;
+    }
+    .cluster-side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+    .overview-card {
+      background: #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 22px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+      padding: 12px;
+      position: relative;
+    }
+    .overview-map {
+      height: 280px;
+      position: relative;
+    }
+    .overview-map img {
+      display: block;
+      height: 100%;
+      margin: 0 auto;
+      object-fit: contain;
+      width: 100%;
+    }
+    .cluster-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+      height: 100%;
+    }
+    .cluster-card {
+      background: #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 22px;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      padding: 12px;
+    }
+    .cluster-card.agent {
+      background: #ffffff;
+      border: 2px solid rgba(155, 89, 182, 0.42);
+      box-shadow: 0 12px 22px rgba(155, 89, 182, 0.14);
+    }
+    .cluster-card.planner {
+      background: #ffffff;
+      border: 2px solid rgba(192, 57, 43, 0.42);
+      box-shadow: 0 12px 22px rgba(192, 57, 43, 0.14);
+    }
+    .cluster-card.conflict {
+      background: #ffffff;
+      border: 2px solid rgba(230, 126, 34, 0.42);
+      box-shadow: 0 12px 22px rgba(230, 126, 34, 0.14);
+    }
+    .cluster-card.plan {
+      background: #ffffff;
+      border: 2px solid rgba(39, 174, 96, 0.42);
+      box-shadow: 0 12px 22px rgba(39, 174, 96, 0.14);
+    }
+    .crop-frame {
+      background: #ffffff;
+      border-radius: 16px;
+      height: 190px;
+      overflow: hidden;
+      position: relative;
+    }
+    .crop-bg {
+      background-image: url("../assets/diagrams/maPO_ontology_visual.png");
+      background-repeat: no-repeat;
+      inset: 0;
+      position: absolute;
+    }
+    .crop-bg.agent {
+      background-position: 2px -98px;
+      background-size: 650px auto;
+    }
+    .crop-bg.conflict {
+      background-position: -8px -172px;
+      background-size: 580px auto;
+    }
+    .crop-bg.plan {
+      background-position: -10px -244px;
+      background-size: 575px auto;
+    }
+    .crop-bg.planner {
+      background-position: -26px -8px;
+      background-size: 600px auto;
+    }
+    .cluster-head {
+      align-items: flex-start;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+    .cluster-title {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      min-width: 0;
+    }
+    .cluster-dot {
+      border-radius: 50%;
+      flex: 0 0 12px;
+      height: 12px;
+      width: 12px;
+    }
+    .cluster-head strong {
+      font-size: 18px;
+      line-height: 1.1;
+    }
+    .cluster-cqs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: flex-end;
+      margin-left: 12px;
+      padding-top: 1px;
+    }
+    .cluster-cq {
+      align-items: center;
+      background: rgba(17, 17, 17, 0.04);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 999px;
+      color: var(--muted);
+      display: inline-flex;
+      font-size: 10px;
+      font-weight: 700;
+      height: 20px;
+      justify-content: center;
+      letter-spacing: 0.02em;
+      min-width: 28px;
+      padding: 0 7px;
+    }
+    .cluster-card.agent .cluster-cq {
+      background: rgba(155, 89, 182, 0.1);
+      border-color: rgba(155, 89, 182, 0.16);
+      color: #8e57b3;
+    }
+    .cluster-card.planner .cluster-cq {
+      background: rgba(192, 57, 43, 0.1);
+      border-color: rgba(192, 57, 43, 0.16);
+      color: #b0483a;
+    }
+    .cluster-card.conflict .cluster-cq {
+      background: rgba(230, 126, 34, 0.1);
+      border-color: rgba(230, 126, 34, 0.16);
+      color: #cc7a1f;
+    }
+    .cluster-card.plan .cluster-cq {
+      background: rgba(39, 174, 96, 0.1);
+      border-color: rgba(39, 174, 96, 0.16);
+      color: #3a9763;
+    }
+    .cluster-copy {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.28;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Ontology Clusters</div>
+        <h1 class="slide-title" id="slide-title">Ontology Clusters</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          <div class="stack" style="height:100%;gap:14px;">
+            <p class="thesis" style="max-width:1600px;" data-step="0">The full maPO schema is most readable as four coordinated clusters: <strong class="cat-agent">agent concepts</strong>, <strong class="cat-conflict">conflict and resolution</strong>, <strong class="cat-plan">plan hierarchy</strong>, and <strong class="cat-planner">planner concepts</strong>. Together, these clusters expose the causal structure required for MAPF explanation.</p>
+
+            <div class="cluster-layout">
+              <section class="cluster-side" data-step="0">
+                <div class="chip blue" style="font-size:14px;padding:6px 12px;width:fit-content;">Canonical ontology map</div>
+                <div class="overview-card">
+                  <div class="overview-map">
+                    <img src="../assets/diagrams/maPO_ontology_visual.png" alt="Full maPO ontology map">
+                  </div>
+                </div>
+                <div class="qa-box">
+                  <div class="qa-title">Reading the map</div>
+                  <div class="qa-copy">This decomposition shows how maPO links <strong class="cat-agent">agent state</strong>, <strong class="cat-conflict">conflict detection and resolution</strong>, <strong class="cat-plan">plan revision</strong>, and <strong class="cat-planner">planner abstractions</strong> within one queryable schema.</div>
+                </div>
+              </section>
+
+              <section class="cluster-grid">
+                <article class="cluster-card agent" data-step="1">
+                  <div class="crop-frame"><div class="crop-bg agent"></div></div>
+                  <div class="cluster-head">
+                    <div class="cluster-title"><span class="cluster-dot" style="background:#9b59b6;"></span><strong style="color:#9b59b6;">Agent concepts</strong></div>
+                    <div class="cluster-cqs" aria-label="Related competency questions">
+                      <span class="cluster-cq">C1</span>
+                      <span class="cluster-cq">C2</span>
+                      <span class="cluster-cq">C4</span>
+                    </div>
+                  </div>
+                  <div class="cluster-copy"><span class="mono">Agent</span>, <span class="mono">AgentState</span>, and temporal links keep each robot grounded in location and time.</div>
+                </article>
+                <article class="cluster-card planner" data-step="2">
+                  <div class="crop-frame"><div class="crop-bg planner"></div></div>
+                  <div class="cluster-head">
+                    <div class="cluster-title"><span class="cluster-dot" style="background:#c0392b;"></span><strong style="color:#c0392b;">Planner concepts</strong></div>
+                    <div class="cluster-cqs" aria-label="Related competency questions">
+                      <span class="cluster-cq">C5</span>
+                      <span class="cluster-cq">C7</span>
+                    </div>
+                  </div>
+                  <div class="cluster-copy"><span class="mono">plan:Planner</span>, <span class="mono">plan:State</span>, and <span class="mono">plan:PlanningProblem</span> link maPO back to the planning stack.</div>
+                </article>
+                <article class="cluster-card conflict" data-step="3">
+                  <div class="crop-frame"><div class="crop-bg conflict"></div></div>
+                  <div class="cluster-head">
+                    <div class="cluster-title"><span class="cluster-dot" style="background:#e67e22;"></span><strong style="color:#e67e22;">Conflict &amp; resolution</strong></div>
+                    <div class="cluster-cqs" aria-label="Related competency questions">
+                      <span class="cluster-cq">C1</span>
+                      <span class="cluster-cq">C2</span>
+                      <span class="cluster-cq">C4</span>
+                      <span class="cluster-cq">C5</span>
+                      <span class="cluster-cq">C7</span>
+                    </div>
+                  </div>
+                  <div class="cluster-copy"><span class="mono">CollisionEvent</span>, <span class="mono">ConflictAlert</span>, and <span class="mono">ReplanningStrategy</span> explain why replanning happens.</div>
+                </article>
+                <article class="cluster-card plan" data-step="4">
+                  <div class="crop-frame"><div class="crop-bg plan"></div></div>
+                  <div class="cluster-head">
+                    <div class="cluster-title"><span class="cluster-dot" style="background:#27ae60;"></span><strong style="color:#27ae60;">Plan hierarchy</strong></div>
+                    <div class="cluster-cqs" aria-label="Related competency questions">
+                      <span class="cluster-cq">C3</span>
+                      <span class="cluster-cq">C4</span>
+                      <span class="cluster-cq">C6</span>
+                      <span class="cluster-cq">C8</span>
+                    </div>
+                  </div>
+                  <div class="cluster-copy"><span class="mono">OriginalSubPlan</span>, <span class="mono">ResolvedSubPlan</span>, and <span class="mono">JointPlan</span> preserve before/after structure.</div>
+                </article>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">08 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

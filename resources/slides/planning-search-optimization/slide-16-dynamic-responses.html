@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 16 | Dynamic Environment Failures</title>
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-utils.js" defer></script>
+  <script src="./components/warehouse-scene.js" defer></script>
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .limits-layout {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: 700px 1fr;
+      height: 100%;
+    }
+    .challenge-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .challenge-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      min-height: 108px;
+      padding: 12px 14px;
+    }
+    .challenge-card strong {
+      color: var(--accent);
+      display: block;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .challenge-card p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.28;
+    }
+    .limits-layout .lead {
+      font-size: 28px;
+      line-height: 1.18;
+    }
+    .limits-layout .callout-banner {
+      padding: 14px 18px;
+    }
+    .limits-layout .callout-banner p {
+      font-size: 21px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas lecture-slide">
+      <div class="slide-rail"></div>
+      <div class="slide-inner">
+        <header class="slide-header">
+          <div class="slide-kicker">Classical Limits</div>
+          <h1 class="slide-title">Classical Planning Assumptions Break as Soon as the World Changes During Execution</h1>
+          <div class="slide-rule"></div>
+        </header>
+
+        <section class="slide-body">
+          <div class="limits-layout">
+            <section class="stack-md">
+              <p class="lead">The warehouse example was easy to model because we assumed a known, static, deterministic world. Real systems violate those assumptions constantly.</p>
+
+              <div class="challenge-grid" data-step="1">
+                <article class="challenge-card"><strong>Unpredictable events</strong><p>A hallway can close after the plan is already computed.</p></article>
+                <article class="challenge-card"><strong>Non-deterministic actions</strong><p>The same move command may not always finish in the same place or time.</p></article>
+                <article class="challenge-card"><strong>Partial observability</strong><p>The robot may not know a blockage exists until it reaches the corridor.</p></article>
+                <article class="challenge-card"><strong>Continuous changes</strong><p>Traffic, humans, and timing constraints evolve while the plan is being executed.</p></article>
+                <article class="challenge-card"><strong>Moving obstacles</strong><p>New constraints appear from outside the planner's original model.</p></article>
+                <article class="challenge-card"><strong>Imperfect execution</strong><p>Sensors drift, objects slip, and real action effects can deviate from the model.</p></article>
+              </div>
+
+              <div class="callout-banner" data-step="2">
+                <p><strong class="keyword">A plan can be valid at time t and invalid at time t+1.</strong> That is the central motivation for dynamic planning methods.</p>
+              </div>
+            </section>
+
+            <section class="scene-card">
+              <div class="scene-toolbar">
+                <div class="figure-title">Running example failure</div>
+                <div class="mini-chip soft">robot carrying A, corridor closes mid-execution</div>
+              </div>
+              <div id="dynamic-failure-stage" class="media-stage" style="height: 580px;"></div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <footer class="slide-footer">
+        <div class="page-number">16</div>
+        <div class="footer-mark"><span>Planning as Search and Optimization</span><span>Optimization Class</span></div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const WORLD = {
+      robot: "hallway",
+      locations: [
+        { id: "mailroom", label: "mailroom", x: 150, y: 110, zone: "ingress" },
+        { id: "hallway", label: "hallway", x: 380, y: 210, zone: "hub" },
+        { id: "storage", label: "storage", x: 380, y: 340, zone: "work" },
+        { id: "lab", label: "lab", x: 760, y: 100, zone: "goal" },
+        { id: "office", label: "office", x: 760, y: 320, zone: "goal" }
+      ],
+      edges: [
+        { id: "mailroom-hallway", from: "mailroom", to: "hallway", cost: 2, primary: true },
+        { id: "hallway-storage", from: "hallway", to: "storage", cost: 3, primary: true },
+        { id: "hallway-lab", from: "hallway", to: "lab", cost: 5, primary: true },
+        { id: "storage-lab", from: "storage", to: "lab", cost: 6, primary: true },
+        { id: "storage-office", from: "storage", to: "office", cost: 4, primary: true }
+      ],
+      packages: [
+        { id: "packageA", short: "A", location: "mailroom", color: "#204f8d" },
+        { id: "packageB", short: "B", location: "storage", color: "#73000a" }
+      ]
+    };
+
+    window.initSlide = function initSlide() {
+      const scene = createWarehouseScene({
+        mount: document.getElementById("dynamic-failure-stage"),
+        width: 980,
+        height: 420,
+        robot: WORLD.robot,
+        locations: WORLD.locations,
+        edges: WORLD.edges,
+        packages: WORLD.packages
+      });
+
+      const loop = window.SlideUtils.createFrameLoop({
+        frames: [
+          {
+            goals: ["lab", "office"],
+            robot: "hallway",
+            carrying: "packageA",
+            packages: {
+              packageA: { carried: true },
+              packageB: { location: "storage" }
+            },
+            primaryPath: ["hallway", "lab"],
+            primaryWidth: 7,
+            primaryOpacity: 0.48,
+            facts: [
+              { text: "current goal: A -> lab", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "B still pending", fill: "#fff1f1", stroke: "#f1c7c7", color: "#73000a" }
+            ],
+            annotation: { text: "the original plan heads directly to the lab", x: 380, y: 26, color: "#101114" }
+          },
+          {
+            goals: ["lab", "office"],
+            robot: "hallway",
+            carrying: "packageA",
+            blockedEdge: "hallway-lab",
+            primaryWidth: 7,
+            primaryOpacity: 0.42,
+            packages: {
+              packageA: { carried: true },
+              packageB: { location: "storage" }
+            },
+            primaryPath: ["hallway", "lab"],
+            facts: [
+              { text: "current goal: A -> lab", fill: "#eef5ff", stroke: "#bcd0f1", color: "#204f8d" },
+              { text: "route invalidated", fill: "#fff1f1", stroke: "#f1c7c7", color: "#b42318" }
+            ],
+            annotation: { text: "unexpected blockage: the plan is now infeasible", x: 360, y: 26, color: "#b42318" }
+          }
+        ],
+        frameMs: 1450,
+        exportFrame: 1,
+        applyFrame(frame) {
+          scene.applySnapshot(frame);
+        }
+      });
+      loop.start();
+
+      return {
+        setStep() {},
+        destroy() {
+          loop.stop();
+        }
+      };
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 15 | Contributions and Next Steps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./slide-theme.css">
+  <script src="./slide-deck.js" defer></script>
+  <style>
+    .closing-layout {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 820px 820px;
+      height: 100%;
+      align-items: stretch;
+    }
+    .closing-left {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 100%;
+    }
+    .contrib-grid-alt {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .contrib-card-alt {
+      background:
+        linear-gradient(180deg, rgba(115, 0, 10, 0.04), rgba(255, 255, 255, 0.98)),
+        #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-left: 6px solid var(--garnet);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: flex-start;
+      min-height: 142px;
+      padding: 13px 14px 14px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+    .contrib-head {
+      align-items: baseline;
+      display: flex;
+      gap: 10px;
+    }
+    .contrib-num-alt {
+      color: var(--garnet);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 0;
+      text-transform: uppercase;
+    }
+    .contrib-text-alt {
+      color: var(--text);
+      flex: 1 1 auto;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.18;
+    }
+    .contrib-copy-alt {
+      color: var(--muted);
+      display: block;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+    .contrib-tag {
+      align-self: flex-start;
+      background: rgba(26, 82, 118, 0.08);
+      border: 1px solid rgba(26, 82, 118, 0.12);
+      border-radius: 999px;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 9px;
+      text-transform: uppercase;
+    }
+    .refs-card {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      gap: 10px;
+      padding: 2px 2px 0;
+    }
+    .refs-head {
+      color: var(--garnet);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .refs-rule {
+      background: linear-gradient(90deg, var(--garnet), rgba(26, 82, 118, 0.55));
+      border-radius: 999px;
+      height: 3px;
+      width: 100%;
+    }
+    .refs-grid {
+      display: grid;
+      gap: 7px;
+      grid-template-columns: 1fr;
+    }
+    .refs-item {
+      align-items: start;
+      color: var(--text);
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 36px 1fr;
+      font-size: 12.2px;
+      line-height: 1.2;
+      padding-bottom: 5px;
+    }
+    .refs-item:last-child {
+      padding-bottom: 0;
+    }
+    .refs-num {
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.05;
+    }
+    .refs-text {
+      display: block;
+    }
+    .refs-item strong {
+      color: inherit;
+      font-weight: inherit;
+    }
+    .refs-text em {
+      font-style: italic;
+    }
+    .refs-text a {
+      color: var(--blue);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .thanks-float {
+      align-items: center;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.48)),
+        linear-gradient(180deg, rgba(115, 0, 10, 0.11), rgba(26, 82, 118, 0.10));
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      border-radius: 20px;
+      box-shadow:
+        0 16px 28px rgba(115, 0, 10, 0.10),
+        0 8px 18px rgba(26, 82, 118, 0.10);
+      -webkit-backdrop-filter: blur(16px) saturate(135%);
+      backdrop-filter: blur(16px) saturate(135%);
+      display: inline-flex;
+      gap: 12px;
+      justify-content: center;
+      min-height: 78px;
+      padding: 14px 24px 14px 24px;
+      position: absolute;
+      left: 1140px;
+      top: 94px;
+      width: 446px;
+      z-index: 2;
+    }
+    .thanks-float::before {
+      display: none;
+    }
+    .thanks-float::after {
+      display: none;
+    }
+    .thanks-float strong {
+      color: var(--garnet);
+      font-size: 31px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .thanks-float span {
+      color: var(--blue);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .hero-close {
+      background:
+        radial-gradient(circle at 20% 18%, rgba(115, 0, 10, 0.12), transparent 28%),
+        radial-gradient(circle at 82% 16%, rgba(26, 82, 118, 0.10), transparent 30%),
+        linear-gradient(135deg, rgba(115, 0, 10, 0.06), rgba(26, 82, 118, 0.04));
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 24px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 100%;
+      overflow: hidden;
+      padding: 18px;
+    }
+    .hero-top {
+      align-items: center;
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 300px 1fr;
+    }
+    .hero-badge {
+      background: #ffffff;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    .hero-badge img {
+      display: block;
+      height: 160px;
+      object-fit: contain;
+      width: 276px;
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hero-line {
+      color: var(--garnet);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-statement {
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .hero-sub {
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 17px;
+      gap: 10px;
+      line-height: 1.35;
+      max-width: 620px;
+    }
+    .hero-meta-chip {
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 6px 12px 7px;
+      white-space: nowrap;
+    }
+    .hero-meta-chip.event {
+      background: rgba(115, 0, 10, 0.10);
+      color: var(--garnet);
+    }
+    .hero-meta-chip.date {
+      background: rgba(26, 82, 118, 0.10);
+      color: var(--blue);
+    }
+    .hero-meta-chip.place {
+      background: rgba(142, 68, 173, 0.10);
+      color: #8e44ad;
+    }
+    .next-band {
+      display: grid;
+      gap: 12px;
+    }
+    .next-label {
+      align-self: flex-start;
+      background: linear-gradient(180deg, rgba(26, 82, 118, 0.12), rgba(26, 82, 118, 0.07));
+      border: 1px solid rgba(26, 82, 118, 0.16);
+      border-radius: 999px;
+      box-shadow: 0 8px 16px rgba(26, 82, 118, 0.08);
+      color: var(--blue);
+      display: inline-flex;
+      font-size: 13px;
+      font-weight: 800;
+      justify-self: start;
+      letter-spacing: 0.06em;
+      padding: 7px 12px;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+    .next-step {
+      background: rgba(26, 82, 118, 0.07);
+      border-left: 8px solid var(--blue);
+      border-radius: 0 16px 16px 0;
+      color: var(--text);
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.25;
+      padding: 14px 16px;
+    }
+    .qr-row-alt {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-top: auto;
+    }
+    .qr-card-alt {
+      background: transparent;
+      border: none;
+      border-radius: 18px;
+      box-shadow: none;
+      padding: 12px 14px 14px;
+      text-align: center;
+      width: 210px;
+    }
+    .qr-card-alt img {
+      display: block;
+      height: 126px;
+      margin: 0 auto;
+      object-fit: contain;
+      width: 126px;
+    }
+    .qr-card-alt span {
+      color: var(--garnet);
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+    .slide-disclaimer {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(26, 82, 118, 0.10);
+      border-radius: 10px;
+      bottom: 136px;
+      display: inline-block;
+      left: 96px;
+      max-width: 560px;
+      padding: 4px 10px 5px;
+      position: absolute;
+      text-align: left;
+      z-index: 3;
+    }
+    .slide-disclaimer-copy {
+      color: var(--blue);
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-shell">
+    <main class="slide-canvas" aria-labelledby="slide-title">
+      <div class="slide-inner">
+        <div class="slide-kicker">Conclusion</div>
+        <h1 class="slide-title" id="slide-title">Contributions and Next Steps</h1>
+        <div class="slide-rule" aria-hidden="true"></div>
+        <div class="slide-body">
+          <div class="closing-layout">
+            <section class="closing-left">
+              <div class="contrib-grid-alt">
+                <div class="contrib-card-alt" data-step="0">
+                  <div class="contrib-head">
+                    <div class="contrib-num-alt">1</div>
+                    <div class="contrib-text-alt">Planner-agnostic maPO schema</div>
+                  </div>
+                  <div class="contrib-copy-alt">A unified ontology for MAPF traces, conflicts, revisions, and provenance across planner families.</div>
+                  <div class="contrib-tag">Schema</div>
+                </div>
+                <div class="contrib-card-alt" data-step="0">
+                  <div class="contrib-head">
+                    <div class="contrib-num-alt">2</div>
+                    <div class="contrib-text-alt">Standards-based ontology alignment</div>
+                  </div>
+                  <div class="contrib-copy-alt">Alignment with Planning Ontology, PROV-O, SOSA, and TIME keeps the model interoperable and extensible.</div>
+                  <div class="contrib-tag">Standards</div>
+                </div>
+                <div class="contrib-card-alt" data-step="1">
+                  <div class="contrib-head">
+                    <div class="contrib-num-alt">3</div>
+                    <div class="contrib-text-alt">SPARQL-driven explanation framework</div>
+                  </div>
+                  <div class="contrib-copy-alt">The same graph supports segmentation views, provenance walkthroughs, and generated explanation templates.</div>
+                  <div class="contrib-tag">Framework</div>
+                </div>
+                <div class="contrib-card-alt" data-step="1">
+                  <div class="contrib-head">
+                    <div class="contrib-num-alt">4</div>
+                    <div class="contrib-text-alt">Readability and user-study validation</div>
+                  </div>
+                  <div class="contrib-copy-alt">We evaluate explanation quality through readability analysis and a within-subject user study against raw traces.</div>
+                  <div class="contrib-tag">Evaluation</div>
+                </div>
+              </div>
+
+              <div class="refs-card" data-step="2">
+                <div class="refs-head">References</div>
+                <div class="refs-rule" aria-hidden="true"></div>
+                <div class="refs-grid">
+                  <div class="refs-item"><div class="refs-num">[1]</div><div class="refs-text">Almagor, S. and Lahijanian, M. (2020) ‘Explainable Multi Agent Path Finding’, <em>Proceedings of the 19th International Conference on Autonomous Agents and MultiAgent Systems (AAMAS ’20)</em>, pp. 34–42.</div></div>
+                  <div class="refs-item"><div class="refs-num">[2]</div><div class="refs-text">Kottinger, J., Almagor, S. and Lahijanian, M. (2022) ‘Conflict-Based Search for Explainable Multi-Agent Path Finding’, <em>Proceedings of the International Conference on Automated Planning and Scheduling</em>, 32(1), pp. 692–700.</div></div>
+                  <div class="refs-item"><div class="refs-num">[3]</div><div class="refs-text">Brandao, M. et al. (2022) ‘Explainability in Multi-Agent Path/Motion Planning: User-study-driven Taxonomy and Requirements’, <em>Proceedings of the 21st International Conference on Autonomous Agents and Multiagent Systems (AAMAS ’22)</em>, pp. 172–180.</div></div>
+                  <div class="refs-item"><div class="refs-num">[4]</div><div class="refs-text">Bogatarkan, A. (2021) ‘Flexible and Explainable Solutions for Multi-Agent Path Finding Problems’, <em>EPTCS</em>, 345, pp. 240–247.</div></div>
+                  <div class="refs-item"><div class="refs-num">[5]</div><div class="refs-text">Sharon, G. et al. (2015) ‘Conflict-Based Search for Optimal Multi-Agent Pathfinding’, <em>Artificial Intelligence</em>, 219, pp. 40–66.</div></div>
+                  <div class="refs-item"><div class="refs-num">[6]</div><div class="refs-text">Boyarski, E. et al. (2015) ‘ICBS: The Improved Conflict-Based Search Algorithm for Multi-Agent Pathfinding’, <em>Proceedings of the International Symposium on Combinatorial Search</em>, 6(1), pp. 223–225.</div></div>
+                  <div class="refs-item"><div class="refs-num">[7]</div><div class="refs-text">Muppasani, B. et al. (2024) ‘Building a Plan Ontology to Represent and Exploit Planning Knowledge and Its Applications’, <em>Proceedings of the Eighth International Conference on Data Science and Management of Data (CODS-COMAD ’24)</em>.</div></div>
+                  <div class="refs-item"><div class="refs-num">[8]</div><div class="refs-text">Muppasani, B., Dey, R., Srivastava, B., &amp; Narayanan, V. (2026). ‘OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding’. <em>Proceedings of the AAAI Conference on Artificial Intelligence</em>, 40(48), pp. 41643-41645. <a href="https://doi.org/10.1609/aaai.v40i48.42367">https://doi.org/10.1609/aaai.v40i48.42367</a></div></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="hero-close">
+              <div class="hero-top" data-step="2">
+                <div class="hero-badge">
+                  <img src="../assets/paper_figures/maPO_PO.png" alt="Planning Ontology tutorial figure">
+                </div>
+                <div class="hero-copy">
+                  <div class="hero-line">Future Tutorial Announcement</div>
+                  <div class="hero-statement">Planning Ontology: A Tutorial on Knowledge Representation and Explainable Planning</div>
+                  <div class="hero-sub">
+                    <span class="hero-meta-chip event">ICAPS 2026</span>
+                    <span class="hero-meta-chip date">June 27 to July 2</span>
+                    <span class="hero-meta-chip place">Dublin, Ireland</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="next-band" data-step="3">
+                <div class="next-label">Next Steps</div>
+                <div class="next-step">Adaptive natural-language generation grounded in maPO.</div>
+                <div class="next-step">Multimodal and personalized explanations for different users.</div>
+                <div class="next-step">Real-time, sensor-grounded integration with robotic platforms.</div>
+              </div>
+
+              <div class="qr-row-alt" data-step="4">
+                <div class="qr-card-alt"><img src="../assets/icons/qr_codes/website_qr.png" alt="Website QR code"><span>Website</span></div>
+                <div class="qr-card-alt"><img src="../assets/icons/qr_codes/paper_qr.png" alt="Paper QR code"><span>Paper</span></div>
+                <div class="qr-card-alt"><img src="../assets/icons/qr_codes/video_qr.png" alt="Video QR code"><span>Video</span></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div class="thanks-float"><strong>Thank You!</strong><span>Questions?</span></div>
+      <div class="slide-disclaimer">
+        <span class="slide-disclaimer-copy">The slides are designed with the help of Agentic AI tools.</span>
+      </div>
+      <div class="slide-footer">
+        <div class="rule"></div>
+        <div class="meta">maPO · AAAI 2026 MAKE</div>
+        <div class="num">15 / 15</div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
