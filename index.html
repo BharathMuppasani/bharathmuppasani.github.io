@@ -269,16 +269,17 @@
     .hl { background: var(--accent-faint); color: var(--accent); padding: 0.05em 0.2em; border-radius: 0.2rem; font-weight: 500; }
 
     /* Venue tags - base */
-    .venue-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .venue-row { display: flex; flex-wrap: wrap; gap: 0.28rem; margin-top: 0.75rem; }
     .vtag {
-      font-size: 0.69rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.035em; text-transform: uppercase;
       background: var(--surface); border: 1px solid var(--border);
-      color: var(--muted); border-radius: 999px; padding: 0.2rem 0.6rem;
+      color: var(--muted); border-radius: 999px; padding: 0.14rem 0.42rem;
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .vtag:hover { transform: translateY(-1px); }
     /* First-author venue tags */
     .vtag.fa { border-color: var(--accent-border); background: var(--accent-faint); color: var(--accent); }
+    .vtag.nfa { border-style: dashed; }
 
     .vtag.award { background: rgba(215,175,55,0.1); border-color: rgba(215,175,55,0.4); color: #9a7a00; }
     [data-theme="dark"] .vtag.award { color: #d4aa30; }
@@ -503,7 +504,7 @@
         <span class="chip">2022 – Present</span>
       </div>
 
-      <div class="internship-notice">Looking for Summer Internships 2026</div>
+      <!-- <div class="internship-notice">Looking for Summer Internships 2026</div> -->
 
       <p class="hero-sub">
         Planning · Learning · Representation<br>
@@ -566,21 +567,31 @@
           <p style="margin-top: 1rem; font-size: 0.82rem; color: var(--muted);">Published at:</p>
           <div class="venue-row">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2026</span>
+            <span class="vtag fa">IROS</span>
             <span class="vtag fa">AAAI Demo</span>
             <span class="vtag fa">MAKE @ AAAI</span>
+          </div>
+          <div class="venue-row" style="margin-top:0.3rem;">
+            <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2025</span>
+            <span class="vtag fa">GenPlan @ AAAI</span>
+            <span class="vtag fa">Discover Data</span>
           </div>
           <div class="venue-row" style="margin-top:0.3rem;">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2024</span>
             <span class="vtag fa">NeurIPS</span>
             <span class="vtag fa">AAAI Demo <span class="award-tag" style="font-size:0.58rem; font-weight:700; border-radius:4px; padding:0 4px; display:inline; vertical-align:middle; cursor:pointer;">★ Best Demo</span></span>
-            <span class="vtag fa">ICAPS</span>
-            <span class="vtag fa">Discover Data</span>
+            <span class="vtag fa">CODS-COMAD</span>
+            <span class="vtag fa nfa">ICAPS</span>
+            <span class="vtag fa">ICAPS Demo</span>
+            <span class="vtag fa">HSDIP @ ICAPS</span>
           </div>
           <div class="venue-row" style="margin-top:0.3rem;">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2023</span>
             <span class="vtag fa">AAAI/IAAI</span>
-            <span class="vtag fa">AI Magazine</span>
-            <span class="vtag fa">IJCAI Demo</span>
+            <span class="vtag fa nfa">AI Magazine</span>
+            <span class="vtag fa nfa">IJCAI Demo</span>
+            <span class="vtag fa">PLATO @ ICAPS</span>
+            <span class="vtag fa nfa">FinPlan @ ICAPS</span>
           </div>
 
           <a href="assets/Bharath_Resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link">
@@ -611,7 +622,7 @@
                 <span class="skill-tag">Reinforcement Learning</span>
               </div>
               <div class="proj-venues" aria-label="Publication status">
-                <span class="venue-pill muted" title="HI-MAPF is currently under review" aria-label="HI-MAPF is currently under review">Under Review</span>
+                <span class="venue-pill" title="Accepted at IROS 2026" aria-label="Accepted at IROS 2026">IROS 2026</span>
               </div>
             </div>
           </div>
@@ -686,6 +697,12 @@
         <div class="section-title">Selected Publications</div>
 
         <div class="pub-entry">
+          <p class="pub-title">HI-MAPF: Towards Resource-Efficient Multi-Agent Deployment with Minimal Inter-Agent Information Sharing</p>
+          <p class="pub-authors"><strong>Bharath Muppasani</strong>, Risha Patel, Biplav Srivastava, Vignesh Narayanan</p>
+          <div class="pub-meta"><span class="type-badge conference">Conference</span><span class="vtag fa">IROS 2026</span><span class="skill-tag">MAPF</span><span class="skill-tag">Robotics</span></div>
+        </div>
+
+        <div class="pub-entry">
           <p class="pub-title">OMEGA: An Ontology-Driven Tool for Explaining Multi-Agent Path Finding</p>
           <p class="pub-authors"><strong>Bharath Muppasani</strong>, Ritirupa Dey, Biplav Srivastava, Vignesh Narayanan</p>
           <div class="pub-meta"><span class="type-badge demo">Demo</span><span class="vtag fa">AAAI 2026</span><span class="skill-tag">MAPF</span><span class="skill-tag">Ontology</span></div>
@@ -730,6 +747,23 @@
       <!-- Experience -->
       <section id="experience" class="section">
         <div class="section-title">Experience</div>
+
+        <div class="proj-card">
+          <div class="proj-card-head">
+            <span class="proj-year">Summer 2026</span>
+            <span class="exp-role">Research Intern</span>
+          </div>
+          <p class="exp-org">Adobe Research · Bengaluru, India</p>
+          <p class="exp-desc">
+            Conducting research on persuasive conversational systems that generate context-aware,
+            adaptive responses for effective, goal-oriented interactions.
+          </p>
+          <div class="proj-tags">
+            <span class="skill-tag">Conversational AI</span>
+            <span class="skill-tag">LLMs</span>
+            <span class="skill-tag">Persuasive Systems</span>
+          </div>
+        </div>
 
         <div class="proj-card">
           <div class="proj-card-head">
