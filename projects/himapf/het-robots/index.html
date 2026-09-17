@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heterogeneous Robot Planning &amp; Learning — Literature Review</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='50'>🤖</text></svg>">
+</head>
+<body>
+
+<header class="site">
+  <div class="hwrap">
+    <div class="brand">het&#8209;robots<span>/</span>lit</div>
+    <div class="tagline">Learning and planning across heterogeneous robot teams — LoCoBot PX100 · Crazyflie 2.1 · TurtleBot 4</div>
+    <div class="tools"><button class="iconbtn" id="themeBtn">☾ Dark</button></div>
+  </div>
+  <nav class="tabs">
+    <button data-tab="overview" class="on">Overview</button>
+    <button data-tab="papers">Papers</button>
+    <button data-tab="gaps">Gap analysis</button>
+    <button data-tab="tracker">Tracker</button>
+    <button data-tab="problem">Problem framing</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════ OVERVIEW ══════════ -->
+<section class="view on" id="v-overview">
+  <p class="lede">The corpus read one way: <b>which papers actually use heterogeneous robots</b>, and
+  within those, <b>what they were used for</b> and <b>what was learned</b>. Tier is ignored here — under
+  this framing the adjacent papers matter as much as the core ones.</p>
+
+  <div class="grid g3" id="obsnums" style="margin-bottom:30px"></div>
+
+  <div class="sec-title">1 · Heterogeneous robots, or not</div>
+  <p class="small muted" style="margin:-4px 0 14px">Heterogeneous means the team contains robots that
+  cannot substitute for one another. Click any chip to jump to the full entry.</p>
+  <div class="grid g3" id="splitcards"></div>
+
+  <div class="sec-title">2 · What kind of heterogeneity</div>
+  <p class="small muted" style="margin:-4px 0 14px">This distinction decides which experiments are even
+  possible. Trait-vector heterogeneity can be varied as a parameter, so transfer to unseen teams can be
+  measured; morphological heterogeneity cannot be swept, so those papers report demonstrations instead.</p>
+  <div class="grid g3" id="kindcards"></div>
+
+  <div class="sec-title">3 · What the heterogeneous teams were used for</div>
+  <p class="small muted" style="margin:-4px 0 14px">Applications, ordered by how many papers target them.</p>
+  <div class="grid g2" id="appcards"></div>
+
+  <div class="sec-title">4 · What learning methods were explored</div>
+  <p class="small muted" style="margin:-4px 0 14px">Same set of heterogeneous papers, cut by method family.</p>
+  <div class="grid g2" id="methodcards"></div>
+
+  <div class="sec-title">5 · Application × method</div>
+  <p class="small muted" style="margin:-4px 0 14px">Where the two cuts meet. Hover a cell for the titles.</p>
+  <div class="tblwrap" id="crosstab" style="margin-bottom:22px"></div>
+
+  <div class="card">
+    <h3>What the two cuts show together</h3>
+    <ul class="tight">
+      <li><b>Realistic applications and learned policies barely overlap.</b> Construction, assembly,
+        inspection and field operations are almost entirely non-learning — classical scheduling and
+        optimisation. The learned policies cluster in warehouse/tool-delivery, search &amp; rescue,
+        object transport and abstract allocation.</li>
+      <li><b>The largest single application is not an application.</b> Abstract allocation and scheduling
+        instances dominate, which is why so many of these methods have never met perception, grasping
+        or a physics engine.</li>
+      <li><b>Method follows heterogeneity type.</b> Trait-vector papers reach for attention/graph
+        networks and hypernetworks, because capabilities are an input vector. Morphologically
+        heterogeneous papers reach for macro-actions or LLMs, because the gap between an arm and a
+        quadrotor is easier to bridge with discrete skills than with a shared action space.</li>
+      <li><b>Information-gathering is an application here, not a decision.</b> In the inspection and
+        mapping row, coverage <em>is</em> the goal. No paper in this corpus treats inspection as one
+        option competing against acting directly — which is the gap the project targets.</li>
+      <li><b>LLM methods buy embodiment diversity cheaply.</b> The most physically varied teams
+        (quadrotor + quadruped + arm) are all LLM-coordinated, because prompting sidesteps the problem
+        of a shared learned representation across bodies — at the cost of optimising nothing.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Using this while writing</h3>
+    <p style="margin-top:0">The <b>Tracker</b> tab is the working surface: every paper on one line with a
+      one-sentence gist, a <em>“use it for”</em> note saying which claim it supports or blocks, a copyable
+      citation key, and a free-text note of your own. Add new papers there as you find them — they persist
+      in this browser and appear everywhere else in the site.</p>
+    <p class="small muted" style="margin-bottom:0">The <b>Papers</b> tab holds the long form: full
+      description, what is learned versus supplied, caveats, and annotated figures.
+      <b>Gap analysis</b> is the positioning argument.</p>
+  </div>
+
+  <div class="card">
+    <h3>Provenance &amp; how much to trust this</h3>
+    <p class="small muted" id="metaNote"></p>
+    <p class="small muted" style="margin:8px 0 0">Source: <span id="metaSource"></span> ·
+      Compiled <span id="metaDate"></span> · 35 papers · PDFs are not redistributed here — each entry links to its source</p>
+    <p class="small muted" style="margin:8px 0 0"><b>On the classification above:</b> the
+      heterogeneity / application / method labels are my categorisation of this corpus, assigned from
+      each paper's stated setup — not a claim made by the papers themselves. One entry (B16) is marked
+      <em>needs checking</em> because its heterogeneity could not be confirmed from metadata alone.</p>
+  </div>
+</section>
+
+<!-- ══════════ PAPERS ══════════ -->
+<section class="view" id="v-papers">
+  <p class="lede">All 35 papers, grouped by tier and ordered by reading priority. Click any row to
+  expand. Where a paper has a system or algorithm diagram, it is shown with a walkthrough of what the
+  figure actually depicts and what to take from it.</p>
+
+  <div class="controls">
+    <input type="search" id="q" placeholder="Search title, author, venue, platform, method…">
+    <button class="iconbtn" id="expandAll">Expand / collapse all</button>
+    <span class="count" id="pcount"></span>
+  </div>
+  <div class="chips" id="f-tier" style="margin-bottom:8px"></div>
+  <div class="chips" id="f-thread" style="margin-bottom:8px"></div>
+  <div class="chips" id="f-flag" style="margin-bottom:20px"></div>
+
+  <div id="paperlist"></div>
+</section>
+
+<!-- ══════════ GAPS ══════════ -->
+<section class="view" id="v-gaps">
+  <p class="lede">Which capability does each core paper actually demonstrate? Rows covered by at most
+  one paper are flagged — that is where the opening is.</p>
+
+  <div class="tblwrap" id="gaptable" style="margin-bottom:22px"></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>Already established — do not claim as novel</h3>
+      <ul class="tight" id="established"></ul>
+    </div>
+    <div class="card" style="border-color:var(--accent)">
+      <h3>The opening</h3>
+      <p style="margin:0 0 8px"><b>Learning the value of information-gathering and <em>enabling</em>
+        actions inside a temporally coordinated heterogeneous plan.</b></p>
+      <p class="small muted" style="margin:0 0 6px">Specifically, the combination of:</p>
+      <ul class="tight" id="opening"></ul>
+    </div>
+  </div>
+
+  <div class="note warn" style="margin-top:6px"><b>Honest caveat.</b> <span id="gapcaveat"></span></div>
+
+  <div class="card">
+    <h3>How the nearest neighbours fall short</h3>
+    <ul class="tight">
+      <li><b>A03 / A04</b> handle allocation, but with tasks supplied and no information-gathering decision.</li>
+      <li><b>A10 / A11</b> handle asynchrony and partial observability, but not value-of-information over
+        <em>enabling</em> actions that pay off across future tasks.</li>
+      <li><b>A07 / A09</b> handle heterogeneous decomposition, but via prompted LLMs — nothing is optimised,
+        so nothing can weigh whether an inspection is worth its cost.</li>
+      <li><b>A16</b> has the capability heterogeneity, the RL and the hardware — but a fully observed arena.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ TRACKER / LIBRARY ══════════ -->
+<section class="view" id="v-tracker">
+  <p class="lede">One line per paper: what it does, and what you would cite it for. Add new papers as
+  you find them — entries you add are stored in this browser and show up across the whole site.</p>
+
+  <div class="controls">
+    <input type="search" id="libq" placeholder="Search gist, claim, author, venue, your notes…">
+    <select id="libthread"></select>
+    <button class="iconbtn" id="csvBtn">⬇ CSV</button>
+    <button class="iconbtn" id="bibBtn">⬇ BibTeX</button>
+    <button class="iconbtn" id="jsonBtn">⬇ Added entries (JSON)</button>
+    <span class="count" id="libcount"></span>
+  </div>
+
+  <details id="addwrap" class="card addcard">
+    <summary><b>+ Add a paper</b> <span class="small muted">— only the title is required</span></summary>
+    <form id="addform" class="addgrid">
+      <label>Title<input id="na-title" required placeholder="Full paper title"></label>
+      <label>Authors<input id="na-authors" placeholder="Surname, Surname et al."></label>
+      <label>Year<input id="na-year" type="number" min="1950" max="2100" placeholder="2026"></label>
+      <label>Venue<input id="na-venue" placeholder="ICRA 2026 / arXiv preprint"></label>
+      <label>Cite as<input id="na-cite" placeholder="Surname et al., ICRA 2026"></label>
+      <label>BibTeX key<input id="na-bibkey" placeholder="surname2026slug"></label>
+      <label>Thread<select id="na-thread"></select></label>
+      <label>Uses RL?<select id="na-rl"><option>Yes</option><option>No</option><option>Partly</option></select></label>
+      <label class="wide">Gist — one sentence<input id="na-gist" placeholder="What it actually does."></label>
+      <label class="wide">Use it for — which claim it supports or blocks<input id="na-usefor" placeholder="Cite when arguing that…"></label>
+      <label>What is learned<input id="na-learned" placeholder="…or “nothing — planning”"></label>
+      <label>Platforms<input id="na-platforms" placeholder="UAV + UGV"></label>
+      <label>Simulator<input id="na-simulator" placeholder="Gazebo / Isaac / abstract"></label>
+      <label>Real hardware<input id="na-hardware" placeholder="Yes / No"></label>
+      <label class="wide">Paper URL<input id="na-url" type="url" placeholder="https://arxiv.org/abs/…"></label>
+      <label>Code URL<input id="na-code" type="url" placeholder="https://github.com/…"></label>
+      <label>PDF filename in <code>papers/</code><input id="na-pdf" placeholder="C01_Slug_Author_2026.pdf"></label>
+      <label>ID <span class="small muted">(blank = auto)</span><input id="na-id" placeholder="C01"></label>
+      <div class="wide"><button type="submit" class="iconbtn primary">Add to library</button></div>
+    </form>
+  </details>
+
+  <div class="tblwrap" id="librarytable"></div>
+  <p class="small muted" style="margin-top:12px">
+    Your notes and added entries live under <code>hetrobots.library.v2</code> in this browser's local
+    storage. Export the JSON and paste it into <code>js/data.js</code> to make additions permanent and
+    shareable. Built-in entries cannot be deleted — filter them out instead.</p>
+</section>
+
+<!-- ══════════ PROBLEM ══════════ -->
+<section class="view" id="v-problem">
+  <p class="lede">The proposed research setup this review was assembled to support — carried over from
+  the source session and kept here so the literature and the problem stay in one place.</p>
+
+  <div class="card" style="border-color:var(--accent)">
+    <div class="sec-title" style="margin-top:0">Working title</div>
+    <h3 style="font-size:19px">Learning When Robots Should Help: Contingent Planning for Heterogeneous Robot Teams</h3>
+    <div class="sec-title">Central research question</div>
+    <p style="font-family:var(--serif);font-size:17px;margin:0" id="pq"></p>
+  </div>
+
+  <div class="sec-title">The environment</div>
+  <p>A small laboratory: <b>four rooms, six sample objects, one collection station.</b> Goals look like
+    “collect all red samples and deliver them to the station before the deadline.” The floor plan is
+    known; sample locations and some route conditions are <b>not</b>.</p>
+  <div class="grid g3" id="probRobots" style="margin:16px 0"></div>
+  <div class="card"><h3>Physical constraints to respect</h3><ul class="tight" id="probConstraints"></ul></div>
+
+  <div class="sec-title">The decisions that must genuinely compete</div>
+  <div class="card"><dl class="dl-inline" id="probDecisions"></dl>
+    <div class="note warn" style="margin-bottom:0"><b>Design requirement.</b> <span id="designRule"></span></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card"><h3>Observation model</h3><ul class="tight" id="probObs"></ul></div>
+    <div class="card"><h3>RL formulation</h3><ul class="tight" id="probForm"></ul></div>
+  </div>
+
+  <div class="sec-title">Two learning targets</div>
+  <div class="tblwrap"><table><thead><tr><th>Target</th><th>What is learned</th><th>Why it fits</th></tr></thead>
+    <tbody id="probTargets"></tbody></table></div>
+  <div class="note" style="margin-top:14px"><b>Reward.</b> <span id="probReward"></span></div>
+
+  <div class="sec-title">Build &amp; evaluation plan</div>
+  <div class="card"><ol class="tight" id="probStages"></ol></div>
+  <div class="grid g2">
+    <div class="card"><h3>Baselines</h3><ul class="tight" id="probBaselines"></ul></div>
+    <div class="card"><h3>Metrics</h3><ul class="tight" id="probMetrics"></ul></div>
+  </div>
+  <div class="note"><b>First result to pursue.</b> <span id="probFirst"></span></div>
+
+  <div class="sec-title">Hardware &amp; code references</div>
+  <div class="card"><ul class="tight" id="hardware"></ul></div>
+</section>
+
+</main>
+
+<div id="lb"><img id="lbimg" alt="Figure, enlarged"></div>
+
+<footer>
+  Figures are reproduced from the cited papers for research and study, each credited to its source and
+  linked to the original. All rights remain with the respective authors and publishers.
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
