@@ -165,8 +165,8 @@
     }
     .chip.accent { background: var(--accent-faint); border-color: var(--accent-border); color: var(--accent); }
 
-    /* Internship notice - not tag style */
-    .internship-notice {
+    /* Highlight notices */
+    .internship-notice, .publication-notice {
       font-size: 0.76rem; font-weight: 600; color: var(--accent);
       margin-bottom: 0.5rem;
       padding: 0.3rem 0.5rem;
@@ -175,6 +175,38 @@
       border-radius: 6px;
       white-space: nowrap;
       position: relative;
+    }
+    .publication-notice {
+      width: fit-content;
+      max-width: 100%;
+      margin-top: 1rem;
+      padding: 0.25rem 0.5rem;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 400;
+      line-height: 1.5;
+      white-space: normal;
+      overflow: hidden;
+      --publication-beam: rgba(255, 255, 255, 0.6);
+    }
+    .publication-notice strong { font-weight: 600; color: var(--accent); }
+    .publication-notice::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 35%, var(--publication-beam) 50%, transparent 65%);
+      pointer-events: none;
+      opacity: 0;
+      animation: publication-light-sweep 9s ease-in-out infinite;
+    }
+    [data-theme="dark"] .publication-notice { --publication-beam: rgba(255, 255, 255, 0.1); }
+    @keyframes publication-light-sweep {
+      0%, 5% { transform: translateX(-110%); opacity: 0; }
+      8% { opacity: 1; }
+      28%, 100% { transform: translateX(110%); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .publication-notice::after { animation: none; }
     }
     /* Animated border using conic gradient */
     .internship-notice::before {
@@ -277,6 +309,10 @@
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .vtag:hover { transform: translateY(-1px); }
+    a.vtag { text-decoration: none; }
+    a.vtag:hover { text-decoration: underline; }
+    a.vtag:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .vtag.venue-case, .venue-pill.venue-case { text-transform: none; }
     /* First-author venue tags */
     .vtag.fa { border-color: var(--accent-border); background: var(--accent-faint); color: var(--accent); }
     .vtag.nfa { border-style: dashed; }
@@ -564,34 +600,35 @@
             <span class="skill-tag">Ontology &amp; Explainability</span>
           </div>
 
-          <p style="margin-top: 1rem; font-size: 0.82rem; color: var(--muted);">Published at:</p>
+          <p class="publication-notice"><strong>1st author</strong> at NeurIPS, IROS, AAAI/IAAI, CODS-COMAD, and ICAPS demos and workshops.</p>
+          <p style="font-size: 0.82rem; color: var(--muted);">Published at:</p>
           <div class="venue-row">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2026</span>
-            <span class="vtag fa">IROS</span>
-            <span class="vtag fa">AAAI Demo</span>
-            <span class="vtag fa">MAKE @ AAAI</span>
+            <a class="vtag fa" href="https://ai4society.github.io/publications/papers_local/HI-MAPF_IROS-26.pdf" target="_blank" rel="noopener noreferrer">IROS</a>
+            <a class="vtag fa" href="projects/ontology/papers/AAAI_26_Demo_MAPF_Ontology.pdf" target="_blank" rel="noopener noreferrer">AAAI Demo</a>
+            <a class="vtag fa" href="projects/ontology/papers/MAPF_Ontology.pdf" target="_blank" rel="noopener noreferrer">MAKE @ AAAI</a>
           </div>
           <div class="venue-row" style="margin-top:0.3rem;">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2025</span>
-            <span class="vtag fa">GenPlan @ AAAI</span>
-            <span class="vtag fa">Discover Data</span>
+            <a class="vtag fa" href="projects/infospread/papers/CR_AAAI_25_Opinion_Dynamics_formulation_for_Dialog_Management.pdf" target="_blank" rel="noopener noreferrer">GenPlan @ AAAI</a>
+            <a class="vtag fa" href="projects/ontology/papers/AI Planning Ontology - CODS - Discover Data Journal.pdf" target="_blank" rel="noopener noreferrer">Discover Data</a>
           </div>
           <div class="venue-row" style="margin-top:0.3rem;">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2024</span>
-            <span class="vtag fa">NeurIPS</span>
-            <span class="vtag fa">AAAI Demo <span class="award-tag" style="font-size:0.58rem; font-weight:700; border-radius:4px; padding:0 4px; display:inline; vertical-align:middle; cursor:pointer;">★ Best Demo</span></span>
-            <span class="vtag fa">CODS-COMAD</span>
-            <span class="vtag fa nfa">ICAPS</span>
-            <span class="vtag fa">ICAPS Demo</span>
-            <span class="vtag fa">HSDIP @ ICAPS</span>
+            <a class="vtag fa venue-case" href="projects/infospread/papers/Neurips_2024_camera_ready_version.pdf" target="_blank" rel="noopener noreferrer">NeurIPS</a>
+            <a class="vtag fa" href="projects/infospread/papers/InfoSpread_AAAI_Demo.pdf" target="_blank" rel="noopener noreferrer">AAAI Demo <span class="award-tag" style="font-size:0.58rem; font-weight:700; border-radius:4px; padding:0 4px; display:inline; vertical-align:middle; cursor:pointer;">★ Best Demo</span></a>
+            <a class="vtag fa" href="projects/ontology/papers/CODS_24_AI_Planning_Ontology.pdf" target="_blank" rel="noopener noreferrer">CODS-COMAD</a>
+            <a class="vtag fa nfa" href="https://ojs.aaai.org/index.php/ICAPS/article/download/31503/33663/35560" target="_blank" rel="noopener noreferrer">ICAPS</a>
+            <a class="vtag fa" href="https://ai4society.github.io/publications/papers_local/RC_ICAPS_24_Demo.pdf" target="_blank" rel="noopener noreferrer">ICAPS Demo</a>
+            <a class="vtag fa" href="https://ai4society.github.io/publications/papers_local/Rubik_s_Cube___HSDIP_camera_submission.pdf" target="_blank" rel="noopener noreferrer">HSDIP @ ICAPS</a>
           </div>
           <div class="venue-row" style="margin-top:0.3rem;">
             <span class="vtag fa" style="font-weight:700; opacity:0.5; font-size:0.6rem; background:transparent; border:none; padding:0.2rem 0.15rem;">2023</span>
-            <span class="vtag fa">AAAI/IAAI</span>
-            <span class="vtag fa nfa">AI Magazine</span>
-            <span class="vtag fa nfa">IJCAI Demo</span>
-            <span class="vtag fa">PLATO @ ICAPS</span>
-            <span class="vtag fa nfa">FinPlan @ ICAPS</span>
+            <a class="vtag fa" href="https://arxiv.org/pdf/2209.00987" target="_blank" rel="noopener noreferrer">AAAI/IAAI</a>
+            <a class="vtag fa nfa" href="https://arxiv.org/pdf/2212.11219" target="_blank" rel="noopener noreferrer">AI Magazine</a>
+            <a class="vtag fa nfa" href="https://www.ijcai.org/proceedings/2023/0839.pdf" target="_blank" rel="noopener noreferrer">IJCAI Demo</a>
+            <a class="vtag fa" href="https://ceur-ws.org/Vol-3493/short-paper-2.pdf" target="_blank" rel="noopener noreferrer">PLATO @ ICAPS</a>
+            <a class="vtag fa nfa" href="https://icaps23.icaps-conference.org/papers/finplan/FinPlan23_paper_7.pdf" target="_blank" rel="noopener noreferrer">FinPlan @ ICAPS</a>
           </div>
 
           <a href="assets/Bharath_Resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link">
@@ -650,7 +687,7 @@
                   AAAI
                   <span class="venue-pill-count" aria-hidden="true">2</span>
                 </span>
-                <span class="venue-pill" title="NeurIPS 2024" aria-label="NeurIPS with 1 publication">NeurIPS</span>
+                <span class="venue-pill venue-case" title="NeurIPS 2024" aria-label="NeurIPS with 1 publication">NeurIPS</span>
               </div>
             </div>
           </div>
@@ -729,7 +766,7 @@
         <div class="pub-entry">
           <p class="pub-title">Towards Effective Planning Strategies for Dynamic Opinion Networks</p>
           <p class="pub-authors"><strong>Bharath Muppasani</strong>, Protik Nag, Vignesh Narayanan, Biplav Srivastava, Michael N. Huhns</p>
-          <div class="pub-meta"><span class="type-badge conference">Conference</span><span class="vtag fa">NeurIPS 2024</span><span class="skill-tag">Opinion Networks</span></div>
+          <div class="pub-meta"><span class="type-badge conference">Conference</span><span class="vtag fa venue-case">NeurIPS 2024</span><span class="skill-tag">Opinion Networks</span></div>
         </div>
 
         <div class="pub-entry">
@@ -755,13 +792,14 @@
           </div>
           <p class="exp-org">Adobe Research · Bengaluru, India</p>
           <p class="exp-desc">
-            Conducting research on persuasive conversational systems that generate context-aware,
-            adaptive responses for effective, goal-oriented interactions.
+            Researching conversational AI for personalized shopping experiences, with a focus on
+            aligning customer needs and business objectives. Studying how language models can support
+            helpful recommendations and adaptive dialogue while preserving user trust.
           </p>
           <div class="proj-tags">
-            <span class="skill-tag">Conversational AI</span>
-            <span class="skill-tag">LLMs</span>
-            <span class="skill-tag">Persuasive Systems</span>
+            <span class="skill-tag">Conversational Commerce</span>
+            <span class="skill-tag">LLM Agents</span>
+            <span class="skill-tag">Personalization</span>
           </div>
         </div>
 
@@ -856,18 +894,18 @@
     sections.forEach(s => observer.observe(s));
   </script>
   <script>
-    // Border glow animation on internship notice every 30s
+    // Border glow animation on internship notices every 30s
     (function() {
-      var el = document.querySelector('.internship-notice');
-      if (!el) return;
-      function glow() {
-        el.classList.remove('glow');
-        void el.offsetWidth;
-        el.classList.add('glow');
-      }
-      el.addEventListener('animationend', function() { el.classList.remove('glow'); });
-      glow();
-      setInterval(glow, 30000);
+      document.querySelectorAll('.internship-notice').forEach(function(el) {
+        function glow() {
+          el.classList.remove('glow');
+          void el.offsetWidth;
+          el.classList.add('glow');
+        }
+        el.addEventListener('animationend', function() { el.classList.remove('glow'); });
+        glow();
+        setInterval(glow, 30000);
+      });
     })();
   </script>
   <script src="js/particles.js"></script>

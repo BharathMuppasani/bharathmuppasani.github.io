@@ -1,5 +1,5 @@
 // MAPF Grid Background - Adapted from personal-index.html
-// Subtle grid with moving agents for background decoration
+// Grid with moving agents for background decoration
 
 (function() {
   const canvas = document.getElementById('mapf-background');
@@ -9,27 +9,27 @@
   let width, height;
   const GRID_SIZE = 30;
   const agents = [];
-  let agentCount = 35;
+  const AGENT_COUNT = 80;
 
-  // Color palette - muted to work as background
-  // Color palette - shades of the mauve/rose accent
+  // Solid colors let the drawing opacity control visibility consistently.
+  // Shades of the mauve/rose accent.
   const PALETTE = [
-    'rgba(183,110,121,0.5)',  // Accent
-    'rgba(154,89,97,0.5)',    // Darker accent
-    'rgba(207,131,142,0.5)',  // Lighter accent
-    'rgba(160,100,110,0.4)',  // Muted accent
-    'rgba(130,80,88,0.4)',    // Deep accent
-    'rgba(180,130,135,0.4)'   // Faded accent
+    '#b76e79',  // Accent
+    '#9a5961',  // Darker accent
+    '#cf838e',  // Lighter accent
+    '#a0646e',  // Muted accent
+    '#825058',  // Deep accent
+    '#b48287'   // Soft accent
   ];
 
   function getGridColor() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
+    return isDark ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.12)';
   }
 
   function getAgentOpacity() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return isDark ? 0.5 : 0.45;
+    return isDark ? 0.8 : 0.7;
   }
 
   class Agent {
@@ -41,7 +41,7 @@
       this.x = Math.floor(Math.random() * (width / GRID_SIZE)) * GRID_SIZE;
       this.y = Math.floor(Math.random() * (height / GRID_SIZE)) * GRID_SIZE;
       this.pickDirection();
-      this.radius = 3;
+      this.radius = 4;
     }
     pickDirection() {
       const s = 0.5;
@@ -95,7 +95,7 @@
 
   function initAgents() {
     agents.length = 0;
-    for (let i = 0; i < agentCount; i++) agents.push(new Agent());
+    for (let i = 0; i < AGENT_COUNT; i++) agents.push(new Agent());
   }
 
   function animate() {
