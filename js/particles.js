@@ -72,9 +72,9 @@ class Particle {
         this.vy *= 0.95;
     }
 
-    draw() {
+    draw(color) {
         const isLightTheme = !(document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark-theme'));
-        const color = isLightTheme ? '#9a5961' : '#ad656d';
+        color = color || (isLightTheme ? '#9a5961' : '#ad656d');
         
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -101,7 +101,7 @@ function initParticles() {
         }
     }
 
-    function drawConnections() {
+    function drawConnections(color) {
         particles.forEach((p1, i) => {
             particles.slice(i + 1).forEach(p2 => {
                 const dx = p1.x - p2.x;
@@ -110,10 +110,8 @@ function initParticles() {
                 const maxDistance = Particle.isMobile() ? 40 : 75;
 
                 if (distance < maxDistance) {
-                    const isLightTheme = !(document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark-theme'));
                     const baseOpacity = Particle.isMobile() ? 0.1 : 0.2;
                     const opacity = (1 - (distance / maxDistance)) * baseOpacity;
-                    const color = isLightTheme ? '#9a5961' : '#ad656d';
                     
                     ctx.beginPath();
                     ctx.moveTo(p1.x, p1.y);
@@ -133,11 +131,14 @@ function initParticles() {
         }
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawConnections();
+        const style = getComputedStyle(document.documentElement);
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark-theme');
+        const color = style.getPropertyValue('--network-color').trim() || (isDark ? '#ad656d' : '#9a5961');
+        drawConnections(color);
         
         particles.forEach(particle => {
             particle.update(mouseX, mouseY);
-            particle.draw();
+            particle.draw(color);
         });
         
         animationFrameId = requestAnimationFrame(animate);

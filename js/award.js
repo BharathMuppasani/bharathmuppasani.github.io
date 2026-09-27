@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     const awardTags = document.querySelectorAll('.award-tag');
 
-    // Get theme colors
-    const style = getComputedStyle(document.body);
-    const accentColor = style.getPropertyValue('--accent').trim() || '#b76e79';
-
     awardTags.forEach(tag => {
         tag.style.cursor = 'pointer';
         tag.style.userSelect = 'none';
 
         tag.addEventListener('click', function (e) {
             e.stopPropagation();
+            // Canvas normalizes CSS hue colors to the hex format confetti expects.
+            const colorContext = document.createElement('canvas').getContext('2d');
+            colorContext.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#b76e79';
+            const accentColor = colorContext.fillStyle;
 
             // --- 1. Trigger Confetti ---
             const rect = tag.getBoundingClientRect();
